@@ -1,0 +1,6 @@
+.#.gitignore
+.metadata/
+.swp
+RemoteSystemsTempFiles/*
+physics/.*
+physics/Debub/*
