@@ -3,4 +3,4 @@
 .swp
 RemoteSystemsTempFiles/*
 physics/.*
-physics/Debub/*
+physics/Debug/*
