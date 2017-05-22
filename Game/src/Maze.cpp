@@ -5,13 +5,13 @@
  *      Author: Simon
  */
 
-#include <Game/src/Maze.h>
+#include "Maze.h"
 #include <cstdlib>
 #include <iostream>
 
 Maze::Maze() {
-	for (int x = 0; x < 100; x++) {
-		for (int y = 0; y < 100; y++) {
+	for (int x = 0; x < SIZE_X; x++) { //initialize the array
+		for (int y = 0; y < SIZE_Y; y++) {
 			grid[x][y] = NONE;
 		}
 	}
@@ -21,52 +21,54 @@ Maze::~Maze() {
 
 }
 
-void Maze::setSeeds() {
+void Maze::setSeeds() { //does what it says on the tin
 	_seeds.clear();
-	_seeds.push_back(glm::vec2(61, 11));
-	_seeds.push_back(glm::vec2(11, 11));
-	_seeds.push_back(glm::vec2(61, 61));
+	for (int i = 0; i < 8; i++) {
+		_seeds.push_back(glm::vec2(std::rand() % SIZE_X, std::rand() % SIZE_Y));
+	}
 }
 
 void Maze::makeRooms() {
+	const static int NUM_ITERATIONS = 20;
+
+	//we need to double-buffer the outside layer for the fractal gen
+	//this ensures that each iteration happens atomically
+	//pointers avoid copying potentially large vectors back and forth
+
+	std::vector<glm::ivec2> * tmp; //used for buffer swapping
+	std::vector<glm::ivec2> *currentOutside = new std::vector<glm::ivec2>(0);
+	std::vector<glm::ivec2> *nextOutside = new std::vector<glm::ivec2>(0);
+
 	for (int seed = 0; seed < _seeds.size(); seed++) { //FOR EVERY SEED
 		int seedX = _seeds[seed].x;
 		int seedY = _seeds[seed].y;
 
-		std::vector<glm::ivec2> *currentOutside = new std::vector<glm::ivec2>(
-				0);
-		std::vector<glm::ivec2> *nextOutside = new std::vector<glm::ivec2>(0);
-
 		grid[seedX][seedY] = ROOM;
-		currentOutside->push_back(glm::ivec2(seedX, seedY));
-
-		const static int NUM_ITERATIONS = 10;
+		currentOutside->emplace_back(seedX, seedY);
 
 		for (int i = 0; i < NUM_ITERATIONS; i++) { //FOR EVERY ITERATION
 			for (int j = 0; j < currentOutside->size(); j++) { //FOR EVERY OUTSIDE TILE
 				glm::ivec2 currentRoom = (*currentOutside)[j];
 				for (int dir = 0; dir < 4; dir++) { //FOR EVERY DIRECTION
-					int propegate = std::rand() % 2; //RNG FOR PROPEGATION
+					int propegate = std::rand() % 2; //this is a really shitty way to do this rng but whatever
 					if (propegate == 1) { //then propegate
 						switch (dir) {
 						case 0: //DOWN
-							if (currentRoom.y + 1 < 100
+							if (currentRoom.y + 1 < SIZE_Y
 									&& grid[currentRoom.x][currentRoom.y + 1]
 											== NONE) {
 								int y = currentRoom.y + 1; //Y coord of new room
 								grid[currentRoom.x][y] = ROOM;
-								nextOutside->push_back(
-										glm::ivec2(currentRoom.x, y));
+								nextOutside->emplace_back(currentRoom.x, y);
 							}
 							break;
 						case 1: //RIGHT
-							if (currentRoom.x + 1 < 100
+							if (currentRoom.x + 1 < SIZE_X
 									&& grid[currentRoom.x + 1][currentRoom.y]
 											== NONE) {
 								int x = currentRoom.x + 1; //X coord of new room
 								grid[x][currentRoom.y] = ROOM;
-								nextOutside->push_back(
-										glm::ivec2(x, currentRoom.y));
+								nextOutside->emplace_back(x, currentRoom.y);
 							}
 							break;
 						case 2: //DOWN
@@ -75,8 +77,7 @@ void Maze::makeRooms() {
 											== NONE) {
 								int y = currentRoom.y - 1; //Y coord of new room
 								grid[currentRoom.x][y] = ROOM;
-								nextOutside->push_back(
-										glm::ivec2(currentRoom.x, y));
+								nextOutside->emplace_back(currentRoom.x, y);
 							}
 							break;
 						case 3: //LEFT
@@ -85,20 +86,23 @@ void Maze::makeRooms() {
 											== NONE) {
 								int x = currentRoom.x - 1; //X coord of new room
 								grid[x][currentRoom.y] = ROOM;
-								nextOutside->push_back(
-										glm::ivec2(x, currentRoom.y));
+								nextOutside->emplace_back(x, currentRoom.y);
 							}
 							break;
 						}
 					}
 				}
 			}
-			std::vector<glm::ivec2> * tmp;
+			//time to swap our buffers
 			tmp = nextOutside;
 			nextOutside = currentOutside;
 			currentOutside = tmp;
 			nextOutside->clear();
 		}
+
+		delete (tmp);
+		delete (nextOutside);
+		delete (currentOutside);
 	}
 
 	/*grid[seedX][seedY] = ROOM;
@@ -163,6 +167,9 @@ void Maze::makeHallways() {
 
 	for (int seed = 0; seed < _seeds.size(); seed++) {
 
+		start = _seeds[seed];
+		end = _seeds[(seed + 1) % _seeds.size()];
+
 		int dx = end.x - start.x; //distance between seeds
 		std::cout << dx << std::endl;
 		int dy = end.y - start.y; //distance between seeds
@@ -201,9 +208,3 @@ void Maze::makeHallways() {
 		}
 	}
 }
-
-/**
- *
- *
- *
- */

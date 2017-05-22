@@ -44,7 +44,7 @@ int Window::create(std::string windowName, int width, int height,
 
 	glClearColor(0.0, 0, 0.0, 1.0);
 
-	SDL_GL_SetSwapInterval(0); //turn on vsync
+	SDL_GL_SetSwapInterval(1); //turn on vsync
 
 	return 0;
 }

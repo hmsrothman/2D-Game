@@ -11,21 +11,29 @@
 #include "Engine/Include/ResourceManager.h"
 #include "Engine/Include/Vertex.h"
 
+/**
+ * Constructor only initializes variables
+ */
 MainGame::MainGame() :
-		_screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _time(
-				0), _fps(0), _maxFPS(60), _frameTime(0) {
+		_screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _fps(
+				0), _maxFPS(60), _frameTime(0) {
 	_camera.init(_screenWidth, _screenHeight);
-
 }
 
 MainGame::~MainGame() {
 }
 
+/**
+ * starts game
+ */
 void MainGame::run() {
 	initSystems();
 	gameLoop();
 }
 
+/**
+ * initializes everything--SDL, opengl, shaders, the maze, etc
+ */
 void MainGame::initSystems() {
 	Engine::init();
 
@@ -41,15 +49,22 @@ void MainGame::initSystems() {
 	_maze.makeHallways();
 }
 
+/**
+ * does what it says on the tin
+ */
 void MainGame::initShaders() {
 	_colorProgram.makeShaderProgram("shaders/colorShading.vert",
 			"shaders/colorShading.frag");
 }
 
+/**
+ * does what it says on the tin
+ */
 void MainGame::processInput() {
-	const float CAMERA_SPEED = 25;
-	const float SCALE_SPEED = 0.001;
+	const float CAMERA_SPEED = 100;
+	const float SCALE_SPEED = 0.05;
 
+	//process events
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
@@ -57,7 +72,6 @@ void MainGame::processInput() {
 			_gameState = GameState::EXIT;
 			break;
 		case SDL_MOUSEMOTION:
-			//	std::cout << event.motion.x << " " << event.motion.y << std::endl;
 			break;
 		case SDL_KEYDOWN:
 			_inputManager.pressKey(event.key.keysym.sym);
@@ -66,6 +80,8 @@ void MainGame::processInput() {
 			_inputManager.releaseKey(event.key.keysym.sym);
 		}
 	}
+
+	//act on keyboard events
 	if (_inputManager.isKeyPressed(SDLK_w)) {
 		_camera.setPosition(_camera.getPosition() + glm::vec2(0, CAMERA_SPEED));
 	}
@@ -90,14 +106,14 @@ void MainGame::processInput() {
 
 void MainGame::gameLoop() {
 	while (_gameState != GameState::EXIT) {
-		float startTicks = SDL_GetTicks();
+		float startTicks = SDL_GetTicks(); //used for frame timing
 
 		processInput();
 		_camera.update();
 		drawGame();
 		calculateFPS();
 
-		//print every 10 frames
+		//print fps every 10 frames
 		static int frameCounter = 0;
 		if (frameCounter++ == 120) {
 			std::cout << _fps << std::endl;
@@ -110,11 +126,11 @@ void MainGame::gameLoop() {
 			std::cout << "ERROR " << error << std::endl;
 		}
 
-		//limit fps to max
+		//limit fps to max; redundant with vsync which should be on, but whatever
 		float frameTicks = SDL_GetTicks() - startTicks;
 
 		if (1000 / _maxFPS > frameTicks) {
-			//SDL_Delay(1000 / _maxFPS - frameTicks);
+			SDL_Delay(1000 / _maxFPS - frameTicks);
 		}
 	}
 }
@@ -123,57 +139,44 @@ void MainGame::drawGame() {
 	glClearDepth(1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	//use shader
 	_colorProgram.use();
 
+	//turn on textures
 	glActiveTexture(GL_TEXTURE0);
 
-	//PASS TEXTURE
+	//pass texture
 	GLint textureLocation = _colorProgram.getUniformLocation("sampler");
 	glUniform1i(textureLocation, 0);
 
-	//PASS TIME
-	_time += 0.01;
-	//GLuint timeLocation = _colorProgram.getUniformLocation("time");
-	//glUniform1f(timeLocation, _time);
-
-	//PASS ORTHOMATRIX
+	//pass matrix
 	GLuint pLocation = _colorProgram.getUniformLocation("P");
 	glm::mat4 cameraMatrix = _camera.getMatrix();
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
-	//DRAW
+	//being draw call
 	_spriteBatch.begin();
 
-	//	glm::vec4 destRect(0, 0, 100, 100);
-//	glm::vec4 uvRect(0, 0, 1, 1);
-//	float depth = 0;
-//	static Engine::GL_Texture texture = Engine::ResourceManager::getTexture(
-//			"jimmyjump_pack/PNG/CharacterLeft_Jump.png");
-//	Engine::Color color;
-//	color.r = 255;
-//	color.g = 255;
-//	color.b = 255;
-//	color.a = 255;
-//
-//	for (int i = 0; i < 1; i++) {
-//		_spriteBatch.draw(destRect, uvRect, texture.id, depth, color);
-//	}
-
+	//the resource manager stops you from making the same texture twice
 	static Engine::GL_Texture roomTexture = Engine::ResourceManager::getTexture(
 			"room.png");
-
 	static Engine::GL_Texture hallwayTexture =
 			Engine::ResourceManager::getTexture("hallway.png");
 
+	//uv coords. form (x , y , x offset , y offset)
 	glm::vec4 uvRect(0, 0, 1, 1);
+
+	//color gets multiplied by texture color
 	Engine::Color color;
+	//right now it's just plain white
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;
 	color.a = 255;
 
-	for (int x = 0; x < 100; x++) {
-		for (int y = 0; y < 100; y++) {
+	//iterate through maze and queue up all of the tiles
+	for (int x = 0; x < _maze.SIZE_X; x++) {
+		for (int y = 0; y < _maze.SIZE_Y; y++) {
 			if (_maze.grid[x][y] == ROOM) {
 				glm::vec4 destRect((x - 61) * 100, (y - 61) * 100, 100, 100);
 				_spriteBatch.draw(destRect, uvRect, roomTexture.id, 0, color);
@@ -185,16 +188,21 @@ void MainGame::drawGame() {
 		}
 	}
 
+	//prep batches
 	_spriteBatch.end();
+
+	//render batches
 	_spriteBatch.renderBatch();
 
-	//UNBIND EVERYTHING
+	//cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);
 	_colorProgram.unuse();
+
+	//swap buffers
 	_window.swapBuffers();
 }
 
-void MainGame::calculateFPS() {
+void MainGame::calculateFPS() { //does what it says on the tin
 	static const int NUM_SAMPLES = 100;
 	static float frameTimes[NUM_SAMPLES];
 	static int currentFrame = 0;

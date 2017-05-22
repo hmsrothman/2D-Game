@@ -11,7 +11,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-enum gridType
+enum tileID
 	: char {
 		ROOM, NONE, HALLWAY
 };
@@ -21,11 +21,15 @@ public:
 	Maze();
 	virtual ~Maze();
 
-	gridType grid[100][100];
+	const int SIZE_X = 100;
+	const int SIZE_Y = 100;
+
+	tileID grid[100][100]; //this shouldn't be too expensive? they're only chars
 
 	void makeRooms();
 	void setSeeds();
 	void makeHallways();
+
 private:
 	std::vector<glm::ivec2> _seeds;
 };
