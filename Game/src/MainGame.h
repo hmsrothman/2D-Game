@@ -19,6 +19,7 @@
 #include "Engine/Include/SpriteBatch.h"
 #include "Engine/Include/InputManager.h"
 #include "Maze.h"
+#include "Player.h"
 
 class MainGame {
 	enum GameState {
@@ -42,6 +43,7 @@ private:
 	Engine::InputManager _inputManager; //makes for smooth input
 
 	Maze _maze; //holds and generates all them rooms and hallways and shit
+	Player _player;
 
 	void initSystems(); //init method. calls the other init method
 	void initShaders(); //the other init method

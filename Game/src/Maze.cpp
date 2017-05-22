@@ -35,7 +35,7 @@ void Maze::makeRooms() {
 	//this ensures that each iteration happens atomically
 	//pointers avoid copying potentially large vectors back and forth
 
-	std::vector<glm::ivec2> * tmp; //used for buffer swapping
+	std::vector<glm::ivec2> * tmp = nullptr; //used for buffer swapping
 	std::vector<glm::ivec2> *currentOutside = new std::vector<glm::ivec2>(0);
 	std::vector<glm::ivec2> *nextOutside = new std::vector<glm::ivec2>(0);
 
@@ -99,11 +99,10 @@ void Maze::makeRooms() {
 			currentOutside = tmp;
 			nextOutside->clear();
 		}
-
-		delete (tmp);
-		delete (nextOutside);
-		delete (currentOutside);
 	}
+
+	delete (nextOutside);
+	delete (currentOutside);
 
 	/*grid[seedX][seedY] = ROOM;
 

@@ -47,6 +47,8 @@ void MainGame::initSystems() {
 	_maze.setSeeds();
 	_maze.makeRooms();
 	_maze.makeHallways();
+
+	_player.setPosition(glm::vec2(50, 50)); //or something. probably find a seed and put them there
 }
 
 /**
@@ -63,6 +65,8 @@ void MainGame::initShaders() {
 void MainGame::processInput() {
 	const float CAMERA_SPEED = 100;
 	const float SCALE_SPEED = 0.05;
+
+	const float PLAYER_SPEED = 10;
 
 	//process events
 	SDL_Event event;
@@ -101,6 +105,22 @@ void MainGame::processInput() {
 	}
 	if (_inputManager.isKeyPressed(SDLK_e)) {
 		_camera.setScale(_camera.getScale() * (1 - SCALE_SPEED));
+	}
+
+	//we'll probably bind the camera to the player later, but for now arrow keys move the player
+	if (_inputManager.isKeyPressed(SDLK_UP)) {
+		_player.setPosition(_player.getPosition() + glm::vec2(0, PLAYER_SPEED));
+	}
+	if (_inputManager.isKeyPressed(SDLK_DOWN)) {
+		_player.setPosition(
+				_player.getPosition() + glm::vec2(0, -PLAYER_SPEED));
+	}
+	if (_inputManager.isKeyPressed(SDLK_LEFT)) {
+		_player.setPosition(
+				_player.getPosition() + glm::vec2(-PLAYER_SPEED, 0));
+	}
+	if (_inputManager.isKeyPressed(SDLK_RIGHT)) {
+		_player.setPosition(_player.getPosition() + glm::vec2(PLAYER_SPEED, 0));
 	}
 }
 
@@ -162,9 +182,13 @@ void MainGame::drawGame() {
 			"room.png");
 	static Engine::GL_Texture hallwayTexture =
 			Engine::ResourceManager::getTexture("hallway.png");
+	static Engine::GL_Texture playerTexture =
+			Engine::ResourceManager::getTexture(
+					"jimmyjump_pack/PNG/CharacterLeft_Jump.png");
 
 	//uv coords. form (x , y , x offset , y offset)
-	glm::vec4 uvRect(0, 0, 1, 1);
+	//it's kinda weird to componsate for the fact that opengl's texture coords are upside-down
+	glm::vec4 uvRect(1, 1, -1, -1);
 
 	//color gets multiplied by texture color
 	Engine::Color color;
@@ -187,6 +211,11 @@ void MainGame::drawGame() {
 			}
 		}
 	}
+
+	//lets render the player too
+	glm::vec2 playerPos = _player.getPosition();
+	glm::vec4 destRect(playerPos.x, playerPos.y, 50, 50);
+	_spriteBatch.draw(destRect, uvRect, playerTexture.id, 0, color);
 
 	//prep batches
 	_spriteBatch.end();
