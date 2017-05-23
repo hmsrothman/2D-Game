@@ -30,15 +30,19 @@ public:
 		_needsMatrixUpdate = true;
 	}
 
-	glm::vec2 getPosition() {
+	glm::vec2 getPosition() const {
 		return _position;
 	}
-	float getScale() {
+
+	float getScale() const {
 		return _scale;
 	}
-	glm::mat4 getMatrix() {
+
+	glm::mat4 getMatrix() const {
 		return _cameraMatrix;
 	}
+
+	glm::vec2 convertScreenToWorld(glm::vec2 screen);
 private:
 	int _screenWidth, _screenHeight;
 	bool _needsMatrixUpdate;

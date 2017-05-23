@@ -18,6 +18,7 @@
 #include "Engine/Include/Camera2D.h"
 #include "Engine/Include/SpriteBatch.h"
 #include "Engine/Include/InputManager.h"
+#include "Engine/Include/Timing.h"
 #include "Maze.h"
 #include "Player.h"
 
@@ -41,6 +42,7 @@ private:
 	Engine::GLSL_Program _colorProgram; //shader program
 	Engine::Camera2D _camera;
 	Engine::InputManager _inputManager; //makes for smooth input
+	Engine::FPSLimiter _fpsLimiter;
 
 	Maze _maze; //holds and generates all them rooms and hallways and shit
 	Player _player;
@@ -50,10 +52,8 @@ private:
 	void processInput(); //does what it says on the tin
 	void gameLoop();	//does what it says on the tin
 	void drawGame();	//does what it says on the tin
-	void calculateFPS();	//does what it says on the tin
 
 	float _fps;
-	float _frameTime;
 	float _maxFPS;
 };
 

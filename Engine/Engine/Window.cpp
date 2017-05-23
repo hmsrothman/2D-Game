@@ -46,6 +46,9 @@ int Window::create(std::string windowName, int width, int height,
 
 	SDL_GL_SetSwapInterval(1); //turn on vsync
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	return 0;
 }
 

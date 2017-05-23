@@ -9,7 +9,8 @@
 
 namespace Engine {
 
-InputManager::InputManager() {
+InputManager::InputManager() :
+		_mouseCoords(0, 0) {
 	// TODO Auto-generated constructor stub
 
 }
@@ -33,6 +34,11 @@ bool InputManager::isKeyPressed(unsigned int keyID) {
 	} else {
 		return false;
 	}
+}
+
+void InputManager::setMouseCoords(float x, float y) {
+	_mouseCoords.x = x;
+	_mouseCoords.y = y;
 }
 
 } /* namespace Engine */

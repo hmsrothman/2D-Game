@@ -7,7 +7,6 @@
 
 #include "Maze.h"
 #include <cstdlib>
-#include <iostream>
 
 Maze::Maze() {
 	for (int x = 0; x < SIZE_X; x++) { //initialize the array
@@ -170,7 +169,6 @@ void Maze::makeHallways() {
 		end = _seeds[(seed + 1) % _seeds.size()];
 
 		int dx = end.x - start.x; //distance between seeds
-		std::cout << dx << std::endl;
 		int dy = end.y - start.y; //distance between seeds
 
 		//if dx or dy are > 0, we can iterate through normally. if they are <0, we have to go backwards.

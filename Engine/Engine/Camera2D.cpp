@@ -37,7 +37,13 @@ void Camera2D::init(int screenWidth, int screenHeight) {
 	_screenHeight = screenHeight;
 	_orthoMatrix = glm::ortho(0.0f, (float) _screenWidth, 0.0f,
 			(float) _screenHeight);
+}
 
+glm::vec2 Camera2D::convertScreenToWorld(glm::vec2 screen) {
+	screen -= glm::vec2(_screenWidth / 2, _screenHeight / 2); 	//center 0,0
+	screen /= _scale; 											//scale
+	screen += _position;										//translate;
+	return screen;
 }
 
 } /* namespace Engine */

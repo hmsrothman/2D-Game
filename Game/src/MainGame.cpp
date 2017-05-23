@@ -16,7 +16,7 @@
  */
 MainGame::MainGame() :
 		_screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _fps(
-				0), _maxFPS(60), _frameTime(0) {
+				0), _maxFPS(60) {
 	_camera.init(_screenWidth, _screenHeight);
 }
 
@@ -48,7 +48,7 @@ void MainGame::initSystems() {
 	_maze.makeRooms();
 	_maze.makeHallways();
 
-	_player.setPosition(glm::vec2(50, 50)); //or something. probably find a seed and put them there
+	_player.setPosition(glm::vec2(0, 0)); //or something. probably find a seed and put them there
 }
 
 /**
@@ -76,12 +76,20 @@ void MainGame::processInput() {
 			_gameState = GameState::EXIT;
 			break;
 		case SDL_MOUSEMOTION:
+			_inputManager.setMouseCoords(event.motion.x, event.motion.y);
 			break;
 		case SDL_KEYDOWN:
 			_inputManager.pressKey(event.key.keysym.sym);
 			break;
 		case SDL_KEYUP:
 			_inputManager.releaseKey(event.key.keysym.sym);
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			_inputManager.pressKey(event.button.button);
+			break;
+		case SDL_MOUSEBUTTONUP:
+			_inputManager.releaseKey(event.button.button);
+			break;
 		}
 	}
 
@@ -122,35 +130,29 @@ void MainGame::processInput() {
 	if (_inputManager.isKeyPressed(SDLK_RIGHT)) {
 		_player.setPosition(_player.getPosition() + glm::vec2(PLAYER_SPEED, 0));
 	}
+
+	//mouse
+	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+		glm::vec2 coords = _inputManager.getMouseCoords();
+		coords = _camera.convertScreenToWorld(coords);
+		std::cout << coords.x << " , " << coords.y << std::endl;
+	}
 }
 
 void MainGame::gameLoop() {
 	while (_gameState != GameState::EXIT) {
-		float startTicks = SDL_GetTicks(); //used for frame timing
-
+		_fpsLimiter.begin();
 		processInput();
 		_camera.update();
 		drawGame();
-		calculateFPS();
+
+		_fps = _fpsLimiter.end();
 
 		//print fps every 10 frames
 		static int frameCounter = 0;
-		if (frameCounter++ == 120) {
+		if (frameCounter++ == 10000) {
 			std::cout << _fps << std::endl;
 			frameCounter = 0;
-		}
-
-		//check for gl error
-		int error;
-		while ((error = glGetError())) {
-			std::cout << "ERROR " << error << std::endl;
-		}
-
-		//limit fps to max; redundant with vsync which should be on, but whatever
-		float frameTicks = SDL_GetTicks() - startTicks;
-
-		if (1000 / _maxFPS > frameTicks) {
-			SDL_Delay(1000 / _maxFPS - frameTicks);
 		}
 	}
 }
@@ -202,10 +204,10 @@ void MainGame::drawGame() {
 	for (int x = 0; x < _maze.SIZE_X; x++) {
 		for (int y = 0; y < _maze.SIZE_Y; y++) {
 			if (_maze.grid[x][y] == ROOM) {
-				glm::vec4 destRect((x - 61) * 100, (y - 61) * 100, 100, 100);
+				glm::vec4 destRect((x) * 100, (y	) * 100, 100, 100);
 				_spriteBatch.draw(destRect, uvRect, roomTexture.id, 0, color);
 			} else if (_maze.grid[x][y] == HALLWAY) {
-				glm::vec4 destRect((x - 61) * 100, (y - 61) * 100, 100, 100);
+				glm::vec4 destRect((x) * 100, (y) * 100, 100, 100);
 				_spriteBatch.draw(destRect, uvRect, hallwayTexture.id, 0,
 						color);
 			}
@@ -230,33 +232,3 @@ void MainGame::drawGame() {
 	//swap buffers
 	_window.swapBuffers();
 }
-
-void MainGame::calculateFPS() { //does what it says on the tin
-	static const int NUM_SAMPLES = 100;
-	static float frameTimes[NUM_SAMPLES];
-	static int currentFrame = 0;
-
-	static float previousTicks = SDL_GetTicks();
-
-	float currentTicks = SDL_GetTicks();
-
-	_frameTime = currentTicks - previousTicks;
-	frameTimes[currentFrame % NUM_SAMPLES] = _frameTime;
-
-	previousTicks = currentTicks;
-
-	int count = ++currentFrame < NUM_SAMPLES ? currentFrame : NUM_SAMPLES;
-	float frameTimeAverage = 0;
-	for (int i = 0; i < count; i++) {
-		frameTimeAverage += frameTimes[i];
-	}
-	frameTimeAverage /= count;
-
-	if (frameTimeAverage > 0) {
-		_fps = 1000.0f / frameTimeAverage;
-	} else {
-		_fps = 60;
-	}
-
-}
-
