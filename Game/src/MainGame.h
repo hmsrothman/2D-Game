@@ -8,9 +8,10 @@
 #ifndef MAINGAME_H_
 #define MAINGAME_H_
 
-#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#include <SDL.h>
 #include <iostream>
-#include <OpenGl/gl3.h>
+#include <Gl/glew.h>
+#include <Gl/gl.h>
 #include "Engine/Include/Sprite.h"
 #include "Engine/Include/GLSLProgram.h"
 #include "Engine/Include/GLTexture.h"

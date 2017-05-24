@@ -38,7 +38,7 @@ void MainGame::initSystems() {
 	Engine::init();
 
 	_window.create("Game Engine", _screenWidth, _screenHeight,
-			Engine::BORDERLESS);
+			0);
 
 	initShaders();
 

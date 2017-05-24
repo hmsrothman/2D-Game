@@ -6,7 +6,7 @@
  */
 
 #include <iostream>
-#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#include <SDL.h>
 #include "Errors.h"
 namespace Engine{
 

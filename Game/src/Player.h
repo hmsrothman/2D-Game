@@ -9,7 +9,7 @@
 #define PLAYER_H_
 
 #include <glm/glm.hpp>
-#include <Maze.h>
+#include "Maze.h"
 
 class Player {
 public:

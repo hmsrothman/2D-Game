@@ -8,7 +8,8 @@
 #ifndef VERTEX_H_
 #define VERTEX_H_
 
-#include <OpenGL/gl3.h>
+#include <Gl\glew.h>
+#include <Gl\gl.h>
 namespace Engine {
 
 struct Color {

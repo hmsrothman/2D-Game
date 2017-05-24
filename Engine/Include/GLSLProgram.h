@@ -9,7 +9,8 @@
 #define GLSLPROGRAM_H_
 
 #include <string>
-#include <OpenGl/gl3.h>
+#include <Gl\glew.h>
+#include <Gl\gl.h>
 namespace Engine{
 
 class GLSL_Program {

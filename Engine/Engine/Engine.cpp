@@ -5,11 +5,14 @@
  *      Author: Simon
  */
 
-#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
-#include <OpenGL/gl3.h>
+#include <SDL.h>
+#include <Gl\glew.h>
+#include <Gl\gl.h>
+#include "Errors.h"
 
 namespace Engine {
 int init() {
+
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);

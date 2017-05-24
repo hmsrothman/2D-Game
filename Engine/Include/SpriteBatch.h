@@ -8,7 +8,8 @@
 #ifndef SPRITEBATCH_H_
 #define SPRITEBATCH_H_
 
-#include <OpenGL/gl3.h>
+#include <Gl\glew.h>
+#include <Gl\gl.h>
 #include "Vertex.h"
 #include <glm/glm.hpp>
 #include <vector>

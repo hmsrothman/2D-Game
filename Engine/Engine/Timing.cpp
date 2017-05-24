@@ -6,7 +6,7 @@
  */
 
 #include <Timing.h>
-#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#include <SDL.h>
 
 namespace Engine {
 

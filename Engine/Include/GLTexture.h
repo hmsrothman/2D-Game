@@ -7,8 +7,8 @@
 
 #ifndef GLTEXTURE_H_
 #define GLTEXTURE_H_
-
-#include <OpenGL/gl3.h>
+#include <Gl\glew.h>
+#include <Gl\gl.h>
 namespace Engine{
 
 struct GL_Texture{

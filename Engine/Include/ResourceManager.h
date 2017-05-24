@@ -11,7 +11,8 @@
 #include "TextureCache.h"
 #include <string>
 #include "GLTexture.h"
-#include <OpenGL/gl3.h>
+#include <Gl\glew.h>
+#include <Gl\gl.h>
 namespace Engine {
 
 class ResourceManager {

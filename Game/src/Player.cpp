@@ -5,7 +5,7 @@
  *      Author: Simon
  */
 
-#include <Game/src/Player.h>
+#include "Player.h"
 
 Player::Player() :
 		_position(0, 0) {
@@ -20,5 +20,4 @@ Player::~Player() {
 void Player::collide(const tileID*, int xSize, int ySize) {
 	std::vector<glm::ivec2> collideTiles;
 	glm::ivec2 cornerPos1 = glm::ivec2(_position);
-}
 }

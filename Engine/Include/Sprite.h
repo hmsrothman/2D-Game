@@ -10,7 +10,8 @@
 
 #include "GLTexture.h"
 #include <string>
-#include <OpenGL/gl3.h>
+#include <Gl\glew.h>
+#include <Gl\gl.h>
 
 namespace Engine {
 

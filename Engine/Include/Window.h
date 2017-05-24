@@ -8,8 +8,9 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 
-#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
-#include <OpenGL/gl3.h>
+#include <SDL.h>
+#include <Gl\glew.h>
+#include <Gl\gl.h>
 #include <string>
 namespace Engine {
 

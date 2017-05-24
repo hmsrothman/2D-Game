@@ -49,6 +49,11 @@ int Window::create(std::string windowName, int width, int height,
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK) {
+		fatalError("Glew makes me sad like IB");
+	}
+
 	return 0;
 }
 
