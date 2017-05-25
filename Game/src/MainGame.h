@@ -19,7 +19,7 @@
 #include "Engine/Include/SpriteBatch.h"
 #include "Engine/Include/InputManager.h"
 #include "Engine/Include/Timing.h"
-#include "Maze.h"
+#include "Dungeon.h"
 #include "Player.h"
 
 class MainGame {
@@ -44,8 +44,8 @@ private:
 	Engine::InputManager _inputManager; //makes for smooth input
 	Engine::FPSLimiter _fpsLimiter;
 
-	Maze _maze; //holds and generates all them rooms and hallways and shit
 	Player _player;
+	Dungeon _dungeon;
 
 	void initSystems(); //init method. calls the other init method
 	void initShaders(); //the other init method

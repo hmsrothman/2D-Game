@@ -26,7 +26,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Engine}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Engine/Debug}&quot;"/>
 								</option>
-								<option id="gnu.c.compiler.option.include.files.53907451" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false" valueType="includeFiles"/>
+								<option id="gnu.c.compiler.option.include.files.53907451" name="Include files (-include)" superClass="gnu.c.compiler.option.include.files" useByScannerDiscovery="false"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.174168577" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.827795002" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
@@ -36,7 +36,7 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1327092610" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/}&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.other.other.506757595" superClass="gnu.cpp.compiler.option.other.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.other.other.506757595" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" useByScannerDiscovery="false" value="-c -fmessage-length=0 -std=c++11" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1006280909" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool command="g++-F/Library/Frameworks -framework Cocoa -framework SDL2" id="cdt.managedbuild.tool.gnu.cross.c.linker.831664377" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker"/>
@@ -62,8 +62,18 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.802469309.1189739043" name="/" resourcePath="src/legacy code">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.1944744347" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.452545451" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.2113610072"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.334660494" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.827795002"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.c.linker.1579124037" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.831664377"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.1962829079" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.160216396"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.archiver.1986316493" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.1852878580"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.assembler.155897587" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.429355774"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="legacy code" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -121,8 +131,18 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1299661238.1329283832" name="/" resourcePath="src/legacy code">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.release.2006341059" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.release" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.1544540110" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.1774487493"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.1677761995" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.905385093"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.c.linker.417414819" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.1145058608"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.833425911" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.1457901263"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.archiver.458664840" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.989827067"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.assembler.485910064" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.661087358"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="legacy code" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

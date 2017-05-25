@@ -9,12 +9,13 @@
 #define PLAYER_H_
 
 #include <glm/glm.hpp>
-#include <Maze.h>
 
 class Player {
 public:
 	Player();
 	virtual ~Player();
+
+	const static int PLAYER_SIZE = 50;
 
 	void setPosition(glm::vec2 newPos) {
 		_position = newPos;
@@ -23,8 +24,6 @@ public:
 	glm::vec2 getPosition() {
 		return _position;
 	}
-
-	void collide(const tileID*, int xSize, int ySize);
 
 private:
 	glm::vec2 _position;
