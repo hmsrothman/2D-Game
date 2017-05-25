@@ -7,12 +7,10 @@
 
 #ifndef PLAYER_H_
 #define PLAYER_H_
+#include "dungeon.h"
 
 #include <glm/glm.hpp>
-<<<<<<< HEAD
-#include "Maze.h"
-=======
->>>>>>> refs/remotes/origin/master
+
 
 class Player {
 public:

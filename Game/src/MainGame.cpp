@@ -41,12 +41,8 @@ void MainGame::initSystems() {
 	Engine::init();
 
 	_window.create("Game Engine", _screenWidth, _screenHeight,
-<<<<<<< HEAD
 			0);
-=======
-			Engine::BORDERLESS);
 	_fpsLimiter.setMaxFPS(_maxFPS);
->>>>>>> refs/remotes/origin/master
 
 	initShaders();
 
@@ -154,7 +150,9 @@ void MainGame::gameLoop() {
 		drawGame();
 
 		_fps = _fpsLimiter.end();
-		_dungeon.iterate();
+		for (int i = 0; i < 10; i++){
+			_dungeon.iterate();
+		}
 
 		//print fps every 10 frames
 		static int frameCounter = 0;
