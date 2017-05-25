@@ -1,6 +1,1 @@
-.#.gitignore
-.metadata/
-.swp
-RemoteSystemsTempFiles/*
-physics/.*
-physics/Debug/*
+Dependencies/*
