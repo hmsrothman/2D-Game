@@ -24,7 +24,9 @@ public:
 	const int SIZE_X = 100;
 	const int SIZE_Y = 100;
 
-	const int TILE_WIDTH = 100;
+	const int TILE_SIZE = 100;
+
+	const int NUM_SEEDS = 20;
 
 	tileID grid[100][100]; //this shouldn't be too expensive? they're only chars
 

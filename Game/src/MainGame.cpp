@@ -10,7 +10,7 @@
 #include "Engine/Include/Engine.h"
 #include "Engine/Include/ResourceManager.h"
 #include "Engine/Include/Vertex.h"
-
+#include <iostream>
 /**
  * Constructor only initializes variables
  */
@@ -27,7 +27,9 @@ MainGame::~MainGame() {
  * starts game
  */
 void MainGame::run() {
+	std::cout << "wtf" << std::endl;
 	initSystems();
+	std::cout << "wtf" << std::endl;
 	gameLoop();
 }
 
@@ -35,18 +37,22 @@ void MainGame::run() {
  * initializes everything--SDL, opengl, shaders, the maze, etc
  */
 void MainGame::initSystems() {
+
 	Engine::init();
 
 	_window.create("Game Engine", _screenWidth, _screenHeight,
+<<<<<<< HEAD
 			0);
+=======
+			Engine::BORDERLESS);
+	_fpsLimiter.setMaxFPS(_maxFPS);
+>>>>>>> refs/remotes/origin/master
 
 	initShaders();
 
 	_spriteBatch.init();
 
-	_maze.setSeeds();
-	_maze.makeRooms();
-	_maze.makeHallways();
+	_dungeon.prepare();
 
 	_player.setPosition(glm::vec2(0, 0)); //or something. probably find a seed and put them there
 }
@@ -63,8 +69,8 @@ void MainGame::initShaders() {
  * does what it says on the tin
  */
 void MainGame::processInput() {
-	const float CAMERA_SPEED = 100;
-	const float SCALE_SPEED = 0.05;
+	const float CAMERA_SPEED = 5;
+	const float SCALE_SPEED = 0.01;
 
 	const float PLAYER_SPEED = 10;
 
@@ -144,13 +150,15 @@ void MainGame::gameLoop() {
 		_fpsLimiter.begin();
 		processInput();
 		_camera.update();
+
 		drawGame();
 
 		_fps = _fpsLimiter.end();
+		_dungeon.iterate();
 
 		//print fps every 10 frames
 		static int frameCounter = 0;
-		if (frameCounter++ == 10000) {
+		if (frameCounter++ == 10) {
 			std::cout << _fps << std::endl;
 			frameCounter = 0;
 		}
@@ -179,14 +187,12 @@ void MainGame::drawGame() {
 	//being draw call
 	_spriteBatch.begin();
 
-	//the resource manager stops you from making the same texture twice
-	static Engine::GL_Texture roomTexture = Engine::ResourceManager::getTexture(
-			"room.png");
-	static Engine::GL_Texture hallwayTexture =
-			Engine::ResourceManager::getTexture("hallway.png");
 	static Engine::GL_Texture playerTexture =
 			Engine::ResourceManager::getTexture(
-					"jimmyjump_pack/PNG/CharacterLeft_Jump.png");
+					"jimmyjump_pack/PNG/AngryCloud.png");
+
+	//hallwayThree = playerTexture;
+	//hallwayFour = playerTexture;
 
 	//uv coords. form (x , y , x offset , y offset)
 	//it's kinda weird to componsate for the fact that opengl's texture coords are upside-down
@@ -200,23 +206,12 @@ void MainGame::drawGame() {
 	color.b = 255;
 	color.a = 255;
 
-	//iterate through maze and queue up all of the tiles
-	for (int x = 0; x < _maze.SIZE_X; x++) {
-		for (int y = 0; y < _maze.SIZE_Y; y++) {
-			if (_maze.grid[x][y] == ROOM) {
-				glm::vec4 destRect((x) * 100, (y	) * 100, 100, 100);
-				_spriteBatch.draw(destRect, uvRect, roomTexture.id, 0, color);
-			} else if (_maze.grid[x][y] == HALLWAY) {
-				glm::vec4 destRect((x) * 100, (y) * 100, 100, 100);
-				_spriteBatch.draw(destRect, uvRect, hallwayTexture.id, 0,
-						color);
-			}
-		}
-	}
+	//render dungeon
+	_dungeon.render(_spriteBatch);
 
 	//lets render the player too
 	glm::vec2 playerPos = _player.getPosition();
-	glm::vec4 destRect(playerPos.x, playerPos.y, 50, 50);
+	glm::vec4 destRect(playerPos.x, playerPos.y, _player.PLAYER_SIZE, _player.PLAYER_SIZE);
 	_spriteBatch.draw(destRect, uvRect, playerTexture.id, 0, color);
 
 	//prep batches

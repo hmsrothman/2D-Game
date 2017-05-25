@@ -7,6 +7,7 @@
 
 #include "Maze.h"
 #include <cstdlib>
+#include "PoissonGenerator.h"
 
 Maze::Maze() {
 	for (int x = 0; x < SIZE_X; x++) { //initialize the array
@@ -21,14 +22,17 @@ Maze::~Maze() {
 }
 
 void Maze::setSeeds() { //does what it says on the tin
+	PoissonGenerator fish;
+	fish.generate(20, SIZE_X, NUM_SEEDS);
+
 	_seeds.clear();
-	for (int i = 0; i < 8; i++) {
-		_seeds.push_back(glm::vec2(std::rand() % SIZE_X, std::rand() % SIZE_Y));
+	for (int i = 0; i < NUM_SEEDS; i++) {
+		_seeds.push_back(fish.pts[i]);
 	}
 }
 
 void Maze::makeRooms() {
-	const static int NUM_ITERATIONS = 20;
+	const static int NUM_ITERATIONS = 1;
 
 	//we need to double-buffer the outside layer for the fractal gen
 	//this ensures that each iteration happens atomically
