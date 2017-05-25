@@ -19,7 +19,7 @@ Window::~Window() {
 }
 
 int Window::create(std::string windowName, int width, int height,
-		unsigned int currentFlags, bool vsync) {
+		unsigned int currentFlags) {
 	unsigned int flags = SDL_WINDOW_OPENGL;
 	if (currentFlags & INVISIBLE) {
 		flags |= SDL_WINDOW_HIDDEN;

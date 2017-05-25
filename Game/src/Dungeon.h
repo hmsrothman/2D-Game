@@ -56,7 +56,8 @@ public:
 	const static int ROOM_SIZE_MEAN = 10;
 	const static int ROOM_SIZE_VAR = 3;
 	const static int GRID_SIZE = 100;
-	const static int GRID_SCALE = 10;
+	const static int GRID_SCALE = 100;
+	const static int PATH_WIDTH = GRID_SCALE/2;
 
 	std::vector<Rectangle> rooms;
 

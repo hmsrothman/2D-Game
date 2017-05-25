@@ -42,7 +42,6 @@ void SpriteBatch::end() {
 void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect,
 		GLuint texture, float depth, const Color& color) {
 
-	if()
 	_glyphs.emplace_back(destRect, uvRect, texture, depth, color);
 }
 

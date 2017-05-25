@@ -231,23 +231,23 @@ void Dungeon::renderRoom(Engine::SpriteBatch &batcher, int x, int y) {
 	char walls = mazeTiles[x][y].walls & WALLS;
 	switch (walls) {
 	case UP | DOWN | LEFT | RIGHT: //open on all sides
-		uvRect = glm::vec4(1, 1, -1, -1); //Symmetrical, so correct
+		uvRect = glm::vec4(1, 1, -4, -4); //Symmetrical, so correct
 		texture = roomFour.id;
 		break;
 	case DOWN | RIGHT | LEFT: //closed on top
-		uvRect = glm::vec4(0, 0, 1, -1); //CORRECT
+		uvRect = glm::vec4(0, 0, 4, -4);
 		texture = roomThreeRotated.id;
 		break;
 	case UP | RIGHT | LEFT: //closed on bottom
-		uvRect = glm::vec4(0, 0, 1, 1); //CORRECT
+		uvRect = glm::vec4(0, 0, 4, 4);
 		texture = roomThreeRotated.id;
 		break;
 	case DOWN | UP | LEFT: //closed on right
-		uvRect = glm::vec4(0, 0, -1, 1); //CORRECT
+		uvRect = glm::vec4(0, 0, -4, 4);
 		texture = roomThree.id;
 		break;
 	case DOWN | UP | RIGHT: //closed on left
-		uvRect = glm::vec4(0, 0, 1, 1);
+		uvRect = glm::vec4(0, 0, 4, 4);
 		texture = roomThree.id;
 		break;
 	default:

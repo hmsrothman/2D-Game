@@ -207,7 +207,7 @@ void MainGame::drawGame() {
 
 	//lets render the player too
 	glm::vec2 playerPos = _player.getPosition();
-	glm::vec4 destRect(playerPos.x, playerPos.y, 50, 50);
+	glm::vec4 destRect(playerPos.x, playerPos.y, _player.PLAYER_SIZE, _player.PLAYER_SIZE);
 	_spriteBatch.draw(destRect, uvRect, playerTexture.id, 0, color);
 
 	//prep batches
