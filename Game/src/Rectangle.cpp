@@ -10,12 +10,10 @@
 
 Rectangle::Rectangle(int x, int y, int xSize, int ySize) :
 		position(x, y, xSize, ySize) {
-	// TODO Auto-generated constructor stub
 
 }
 
 Rectangle::~Rectangle() {
-	// TODO Auto-generated destructor stub
 }
 
 bool Rectangle::overlaps(const Rectangle& other) const {

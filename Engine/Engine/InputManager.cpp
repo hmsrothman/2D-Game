@@ -11,12 +11,10 @@ namespace Engine {
 
 InputManager::InputManager() :
 		_mouseCoords(0, 0) {
-	// TODO Auto-generated constructor stub
 
 }
 
 InputManager::~InputManager() {
-	// TODO Auto-generated destructor stub
 }
 
 void InputManager::pressKey(unsigned int keyID) {

@@ -12,12 +12,10 @@ namespace Engine {
 
 SpriteBatch::SpriteBatch() :
 		_vboID(0), _vaoID(0) {
-	// TODO Auto-generated constructor stub
 
 }
 
 SpriteBatch::~SpriteBatch() {
-	// TODO Auto-generated destructor stub
 }
 
 void SpriteBatch::init() {

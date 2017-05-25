@@ -10,12 +10,10 @@
 
 PoissonGenerator::PoissonGenerator() :
 		_width(0), _pointsPerIter(0), _remainingPoints(0) {
-	// TODO Auto-generated constructor stub
 
 }
 
 PoissonGenerator::~PoissonGenerator() {
-	// TODO Auto-generated destructor stub
 }
 
 void PoissonGenerator::generate(int pointsPerIter, int width, int numPoints) {

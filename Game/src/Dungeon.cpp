@@ -23,26 +23,18 @@ Dungeon::~Dungeon() {
 }
 
 void Dungeon::generate() {
-	std::cout << "asdf" << std::endl;
-
-	for (int x = 0; x < GRID_SIZE; x++) {
-		for (int y = 0; y < GRID_SIZE; y++) {
-			//	tiles[x][y] = NONE;
-		}
-	}
-	std::cout << "asdf" << std::endl;
-
+	prepare();
 	placeRooms();
-	std::cout << "asdf" << std::endl;
-
 	buildHallways();
+	breakMaze();
+	cullDeadEnds();
 }
 
 void Dungeon::placeRooms() {
 	std::default_random_engine generator;
 	std::normal_distribution<float> distribution(ROOM_SIZE_MEAN, ROOM_SIZE_VAR);
 
-	for (int i = 0; i < _roomAttempts; i++) {
+	for (int i = 0; i < roomAttempts; i++) {
 
 		int sizeX = distribution(generator);
 		int sizeY = distribution(generator);
@@ -80,6 +72,7 @@ void Dungeon::placeRooms() {
 			}
 		}
 	}
+	//TODO: get the rooms to have walls
 }
 
 void Dungeon::buildHallways() {
@@ -89,6 +82,37 @@ void Dungeon::buildHallways() {
 	while (!backtrack.empty()) {
 		iterate();
 	}
+}
+
+void Dungeon::breakMaze() {
+	//go through each tile and randomly have it connect out
+	for (int x = 2; x < GRID_SIZE - 2; x++) { //outer two are excluded because they could tunnel to nothing
+		for (int y = 2; y < GRID_SIZE - 2; y++) { //note that outermost is a buffer to ease maze gen
+			int prb = std::rand() % mazeBreakChance;
+			if (prb == 1) {
+				int dir = 1 << (std::rand() % 4); //2^n?
+				switch (dir) {
+				case RIGHT:
+					mazeTiles[x][y].walls |= RIGHT;
+					mazeTiles[x + 1][y].walls |= LEFT;
+					break;
+				case LEFT:
+					mazeTiles[x][y].walls |= LEFT;
+					mazeTiles[x - 1][y].walls |= RIGHT;
+					break;
+				case UP:
+					mazeTiles[x][y].walls |= UP;
+					mazeTiles[x][y + 1].walls |= DOWN;
+					break;
+				case DOWN:
+					mazeTiles[x][y].walls |= DOWN;
+					mazeTiles[x][y - 1].walls |= UP;
+					break;
+				}
+			}
+		}
+	}
+	//TODO: Guarantee that every room has at least one entrance
 }
 
 void Dungeon::prepare() {
@@ -111,9 +135,32 @@ void Dungeon::prepare() {
 	current = start;
 }
 
-void Dungeon::iterate() {
-	bool justBacked = false;
+void Dungeon::cullDeadEnds() {
+	int numCulled = 1;
+	while (numCulled != 0) {
+		numCulled = 0;
+		for (int x = 0; x < GRID_SIZE; x++) {
+			for (int y = 0; y < GRID_SIZE; y++) {
+				if ((mazeTiles[x][y].walls & ROOM_TYPE) == HALLWAY) {
+					char rooms = mazeTiles[x][y].walls & WALLS;
+					if (rooms == LEFT || rooms == RIGHT || rooms == UP
+							|| rooms == DOWN) {
+						++numCulled;
+						mazeTiles[x][y].walls &= ~ROOM_TYPE;
+						mazeTiles[x][y].walls &= ~WALLS;
 
+						mazeTiles[x - 1][y].walls &= ~RIGHT;
+						mazeTiles[x + 1][y].walls &= ~LEFT;
+						mazeTiles[x][y - 1].walls &= ~UP;
+						mazeTiles[x][y + 1].walls &= ~DOWN;
+					}
+				}
+			}
+		}
+	}
+}
+
+void Dungeon::iterate() {
 	//int x;
 	//std::cin >> x;
 	bool left = false, right = false, up = false, down = false;
@@ -141,10 +188,6 @@ void Dungeon::iterate() {
 				< VISITED) {
 			down = true;
 		}
-	}
-
-	if (justBacked) {
-		std::cerr << (int) current->walls << std::endl;
 	}
 
 	if (up | right | left | down) {
@@ -183,11 +226,9 @@ void Dungeon::iterate() {
 			}
 			break;
 		}
-		justBacked = false;
 	} else if (!backtrack.empty()) {
 		current = backtrack.top();
 		backtrack.pop();
-		justBacked = true;
 	} else {
 	}
 }
@@ -251,8 +292,9 @@ void Dungeon::renderRoom(Engine::SpriteBatch &batcher, int x, int y) {
 		texture = roomThree.id;
 		break;
 	default:
-		texture = 0;
-		shouldRender = false;
+		texture = roomFour.id;
+		uvRect = glm::vec4(0, 0, 4, 4);
+		//shouldRender = false;
 		break;
 	}
 	if (shouldRender) {

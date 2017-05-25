@@ -10,12 +10,10 @@
 namespace Engine {
 
 Window::Window() {
-	// TODO Auto-generated constructor stub
 
 }
 
 Window::~Window() {
-	// TODO Auto-generated destructor stub
 }
 
 int Window::create(std::string windowName, int width, int height,

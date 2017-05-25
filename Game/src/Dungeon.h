@@ -57,7 +57,10 @@ public:
 	const static int ROOM_SIZE_VAR = 3;
 	const static int GRID_SIZE = 100;
 	const static int GRID_SCALE = 100;
-	const static int PATH_WIDTH = GRID_SCALE/2;
+	const static int PATH_WIDTH = GRID_SCALE / 2;
+
+	int roomAttempts = 400;
+	int mazeBreakChance = 20; //inverse of chance hallway randomly tunnels to another
 
 	std::vector<Rectangle> rooms;
 
@@ -69,14 +72,14 @@ public:
 
 	void render(Engine::SpriteBatch &batcher);
 private:
-	int _roomAttempts = 400;
 
 	void placeRooms();
 	void buildHallways();
+	void breakMaze();
+	void cullDeadEnds();
 
 	void renderHallway(Engine::SpriteBatch &batcher, int x, int y);
 	void renderRoom(Engine::SpriteBatch &batcher, int x, int y);
-
 
 	Tile* current;
 	Tile *start;
