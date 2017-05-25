@@ -42,6 +42,7 @@ void MainGame::initSystems() {
 
 	_window.create("Game Engine", _screenWidth, _screenHeight,
 			Engine::BORDERLESS);
+	_fpsLimiter.setMaxFPS(_maxFPS);
 
 	initShaders();
 

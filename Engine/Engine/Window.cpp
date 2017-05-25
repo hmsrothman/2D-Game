@@ -19,7 +19,7 @@ Window::~Window() {
 }
 
 int Window::create(std::string windowName, int width, int height,
-		unsigned int currentFlags) {
+		unsigned int currentFlags, bool vsync) {
 	unsigned int flags = SDL_WINDOW_OPENGL;
 	if (currentFlags & INVISIBLE) {
 		flags |= SDL_WINDOW_HIDDEN;
@@ -43,8 +43,6 @@ int Window::create(std::string windowName, int width, int height,
 	}
 
 	glClearColor(0.0, 0, 0.0, 1.0);
-
-	SDL_GL_SetSwapInterval(0); //turn on vsync
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
