@@ -7,7 +7,6 @@
 
 #include <SpriteBatch.h>
 #include <algorithm>
-#include "Rectangle.h"
 
 namespace Engine {
 
