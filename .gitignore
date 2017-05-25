@@ -1,6 +1,12 @@
-.#.gitignore
-.metadata/
+.metadata/*
 .swp
+.*
 RemoteSystemsTempFiles/*
-physics/.*
-physics/Debug/*
+glm/*
+Game/.*
+Game/Debug/*
+Game/Release/*
+Engine/.*
+Engine/Debug/*
+Engine/Release/*
+Engine/CMakeLists.txt
