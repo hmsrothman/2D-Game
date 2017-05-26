@@ -15,6 +15,7 @@
 #include <Engine/Include/Vertex.h>
 #include <Engine/Include/GLTexture.h>
 #include <Engine/Include/ResourceManager.h>
+#include "Velociraptor.h"
 
 Dungeon::Dungeon() :
 		current(nullptr), start(nullptr) {
@@ -30,6 +31,7 @@ void Dungeon::generate() {
 	breakMaze();
 	cullDeadEnds();
 	fillSubTiles();
+	velociraptors.emplace_back();
 }
 
 void Dungeon::placeRooms() {
@@ -319,7 +321,7 @@ void Dungeon::iterateMaze() {
 	}
 }
 
-void Dungeon::tunnel(glm::ivec2 start, char dir, char otherFlags) {
+void Dungeon::tunnel(glm::ivec2 start, unsigned char dir, unsigned char otherFlags) {
 	switch (dir) {
 	case UP:
 		tiles[start.x][start.y].flags |= UP | otherFlags;
@@ -373,7 +375,7 @@ void Dungeon::fillSubTiles() {
 					if (tiles[x][y].flags & DOWN) {
 						subTiles[sx + 1][sy] |= NAVIGABLE;
 					}
-				} else if (tileType == ROOM) {
+				} else if (tileType == ROOM || tileType == DOORWAY) {
 					for (int dx = 0; dx < 3; dx++) {
 						for (int dy = 0; dy < 3; dy++) {
 							subTiles[sx + dx][sy + dy] = tileType | NAVIGABLE;
@@ -414,6 +416,9 @@ void Dungeon::render(Engine::SpriteBatch& hallwayBatcher,
 		}
 	}
 //	std::cout << count << std::endl;
+	for (int i = 0; i < velociraptors.size(); i++) {
+		velociraptors[i].render(otherBatcher);
+	}
 }
 
 void Dungeon::renderSubTile(Engine::SpriteBatch&hallwayBatcher,
@@ -465,175 +470,4 @@ void Dungeon::renderSubTile(Engine::SpriteBatch&hallwayBatcher,
 		break;
 	}
 
-}
-
-void Dungeon::renderRoom(Engine::SpriteBatch &batcher, int x, int y) {
-	static Engine::GL_Texture roomFour = Engine::ResourceManager::getTexture(
-			"room.png");
-	static Engine::GL_Texture roomThreeRotated =
-			Engine::ResourceManager::getTexture("room.png");
-	static Engine::GL_Texture roomThree = Engine::ResourceManager::getTexture(
-			"room.png");
-
-	int texture = 0;
-
-	Engine::Color color;
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	color.a = 255;
-
-	bool shouldRender = true;
-
-	glm::vec4 uvRect(0, 0, 0, 0);
-	char walls = tiles[x][y].flags & WALLS;
-	switch (walls) {
-	case UP | DOWN | LEFT | RIGHT: //open on all sides
-		uvRect = glm::vec4(1, 1, -1, -1); //Symmetrical, so correct
-		texture = roomFour.id;
-		break;
-	case DOWN | RIGHT | LEFT: //closed on top
-		uvRect = glm::vec4(0, 0, 1, -1);
-		texture = roomThreeRotated.id;
-		break;
-	case UP | RIGHT | LEFT: //closed on bottom
-		uvRect = glm::vec4(0, 0, 1, 1);
-		texture = roomThreeRotated.id;
-		break;
-	case DOWN | UP | LEFT: //closed on right
-		uvRect = glm::vec4(0, 0, -1, 1);
-		texture = roomThree.id;
-		break;
-	case DOWN | UP | RIGHT: //closed on left
-		uvRect = glm::vec4(0, 0, 1, 1);
-		texture = roomThree.id;
-		break;
-	default:
-		texture = roomFour.id;
-		uvRect = glm::vec4(0, 0, 1, 1);
-		//shouldRender = false;
-		break;
-	}
-	if (shouldRender) {
-		batcher.draw(
-				glm::vec4(x * GRID_SCALE, y * GRID_SCALE, GRID_SCALE,
-						GRID_SCALE), uvRect, texture, 0, color);
-	}
-}
-
-void Dungeon::renderHallway(Engine::SpriteBatch &batcher, int x, int y) {
-	static Engine::GL_Texture hallwayOne = Engine::ResourceManager::getTexture(
-			"hallwayone.png");
-	static Engine::GL_Texture hallwayOneRotated =
-			Engine::ResourceManager::getTexture("hallwayOneRotated.png");
-	static Engine::GL_Texture hallwayTwoAdjacent =
-			Engine::ResourceManager::getTexture("hallwayTwoAdjacent.png");
-	static Engine::GL_Texture hallwayTwoOpposite =
-			Engine::ResourceManager::getTexture("hallwayTwoOpposite.png");
-	static Engine::GL_Texture hallwayTwoRotated =
-			Engine::ResourceManager::getTexture("hallwayTwoRotated.png");
-	static Engine::GL_Texture hallwayThree =
-			Engine::ResourceManager::getTexture("hallwayThree.png");
-	static Engine::GL_Texture hallwayThreeRotated =
-			Engine::ResourceManager::getTexture("hallwayThreeRotated.png");
-	static Engine::GL_Texture hallwayFour = Engine::ResourceManager::getTexture(
-			"hallwayFour.png");
-
-	int texture = 0;
-
-	Engine::Color color;
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	color.a = 255;
-
-	bool shouldRender = true;
-
-	glm::vec4 uvRect(0, 0, 0, 0);
-	char walls = tiles[x][y].flags & WALLS;
-	switch (walls) {
-	case UP | DOWN | LEFT | RIGHT: //open on all sides
-		uvRect = glm::vec4(1, 1, -1, -1); //Symmetrical, so correct
-		texture = hallwayFour.id;
-		break;
-	case DOWN | RIGHT | LEFT: //closed on top
-		uvRect = glm::vec4(0, 0, 1, -1); //CORRECT
-		texture = hallwayThreeRotated.id;
-		break;
-	case UP | RIGHT | LEFT: //closed on bottom
-		uvRect = glm::vec4(0, 0, 1, 1); //CORRECT
-		texture = hallwayThreeRotated.id;
-		break;
-	case DOWN | UP | LEFT: //closed on right
-		uvRect = glm::vec4(0, 0, -1, 1); //CORRECT
-		texture = hallwayThree.id;
-		break;
-	case DOWN | UP | RIGHT: //closed on left
-		uvRect = glm::vec4(0, 0, 1, 1);
-		texture = hallwayThree.id;
-		break;
-	case DOWN | UP: //throughfare up/down
-		uvRect = glm::vec4(0, 0, 1, 1);
-		texture = hallwayTwoOpposite.id; //CORRECT
-		break;
-	case RIGHT | LEFT: //throughfare right/left
-		uvRect = glm::vec4(0, 0, 1, 1);
-		texture = hallwayTwoRotated.id; //CORRECT
-		break;
-	case RIGHT | UP: //right/up
-		uvRect = glm::vec4(0, 0, -1, -1); //CORRECT
-		texture = hallwayTwoAdjacent.id;
-		break;
-	case RIGHT | DOWN: //right/down
-		uvRect = glm::vec4(0, 0, -1, 1); //CORRECT
-		texture = hallwayTwoAdjacent.id;
-		break;
-	case LEFT | UP: //left/up
-		uvRect = glm::vec4(0, 0, 1, -1); //CORRECT
-		texture = hallwayTwoAdjacent.id;
-		break;
-	case LEFT | DOWN: //left/down
-		uvRect = glm::vec4(0, 0, 1, 1); //CORRECT
-		texture = hallwayTwoAdjacent.id;
-		break;
-	case LEFT:
-		uvRect = glm::vec4(0, 1, 1, -1); //CORRECT
-		texture = hallwayOneRotated.id;
-		break;
-	case RIGHT:
-		uvRect = glm::vec4(1, 1, -1, 1); //CORRECT
-		texture = hallwayOneRotated.id;
-		break;
-	case UP:
-		uvRect = glm::vec4(1, 1, -1, -1); //CORRECT
-		texture = hallwayOne.id;
-		break;
-	case DOWN:
-		uvRect = glm::vec4(0, 0, 1, 1); //CORRECT
-		texture = hallwayOne.id;
-		break;
-	default:
-		texture = 0;
-		shouldRender = false;
-		break;
-	}
-	if (shouldRender) {
-		batcher.draw(
-				glm::vec4(x * GRID_SCALE, y * GRID_SCALE, GRID_SCALE,
-						GRID_SCALE), uvRect, texture, 0, color);
-	}
-}
-
-void Dungeon::renderDoor(Engine::SpriteBatch &batcher, int x, int y) {
-	static Engine::GL_Texture doorway = Engine::ResourceManager::getTexture(
-			"doorway.png");
-	Engine::Color color;
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	color.a = 255;
-	glm::vec4 uvRect = glm::vec4(1, 1, -1, -1); //Symmetrical, so correct
-	batcher.draw(
-			glm::vec4(x * GRID_SCALE, y * GRID_SCALE, GRID_SCALE, GRID_SCALE),
-			uvRect, doorway.id, 0, color);
 }

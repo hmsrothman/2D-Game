@@ -11,6 +11,7 @@
 #include "Engine/Include/ResourceManager.h"
 #include "Engine/Include/Vertex.h"
 #include <iostream>
+#include "Velociraptor.h"
 /**
  * Constructor only initializes variables
  */
@@ -54,6 +55,7 @@ void MainGame::initSystems() {
 	_dungeon.generate();
 
 	_player.setPosition(glm::vec2(0, 0)); //or something. probably find a seed and put them there
+	_camera.lockToEntity(&_player);
 }
 
 /**
@@ -71,7 +73,7 @@ void MainGame::processInput() {
 	const float CAMERA_SPEED = 5;
 	const float SCALE_SPEED = 0.01;
 
-	const float PLAYER_SPEED = 5;
+	const float PLAYER_SPEED = 3;
 
 	//process events
 	SDL_Event event;
@@ -207,20 +209,18 @@ void MainGame::drawGame() {
 
 	//render dungeon
 	_dungeon.render(_hallwayBatcher, _otherBatcher);
+	_dungeon.velociraptors[0].ai(_player, _dungeon);
 
 	//lets render the player too
-	glm::vec2 playerPos = _player.getPosition();
-	glm::vec4 destRect(playerPos.x, playerPos.y, _player.PLAYER_SIZE,
-			_player.PLAYER_SIZE);
-	_otherBatcher.draw(destRect, uvRect, playerTexture.id, 0, color);
+	_player.render(_otherBatcher);
 
 	//prep batches
 	_otherBatcher.end();
 	_hallwayBatcher.end();
 
 	//render batches
-	_otherBatcher.renderBatch();
 	_hallwayBatcher.renderBatch();
+	_otherBatcher.renderBatch();
 
 	//cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);

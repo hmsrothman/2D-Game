@@ -15,6 +15,10 @@
 #include <stack>
 #include <memory>
 #include <Engine/Include/SpriteBatch.h>
+//#include "GameEntity.h"
+//#include "Velociraptor.h"
+
+class Velociraptor;
 
 /**
  * last 4 bits are walls
@@ -57,8 +61,8 @@ public:
 
 	void generate();
 
-	const static int ROOM_SIZE_MEAN = 10;
-	const static int ROOM_SIZE_VAR = 1;
+	const static int ROOM_SIZE_MEAN = 5;
+	const static int ROOM_SIZE_VAR = 0;
 	const static int GRID_SIZE = 100;
 	const static int GRID_SCALE = 20;
 	const static int PATH_WIDTH = GRID_SCALE / 2;
@@ -77,24 +81,22 @@ public:
 	void placeRooms();
 	void iterateMaze();
 	void fillSubTiles();
+	std::vector<Velociraptor> velociraptors;
 
 private:
-
 	void buildHallways();
 	void breakMaze();
 	void cullDeadEnds();
-	void tunnel(glm::ivec2 start, char dir, char otherFlags);
+	void tunnel(glm::ivec2 start, unsigned char dir, unsigned char otherFlags);
 
-	void renderHallway(Engine::SpriteBatch &batcher, int x, int y);
-	void renderRoom(Engine::SpriteBatch &batcher, int x, int y);
-	void renderDoor(Engine::SpriteBatch &batcher, int x, int y);
 	void renderSubTile(Engine::SpriteBatch&hallwayBatcher,
 			Engine::SpriteBatch&otherBatcher, int x, int y,
 			unsigned char tileType);
+
 	Tile* current;
 	Tile *start;
 	std::stack<Tile*> backtrack;
-}
-;
+
+};
 
 #endif /* DUNGEON_H_ */
