@@ -7,6 +7,7 @@
 
 #include <SpriteBatch.h>
 #include <algorithm>
+#include <iostream>
 
 namespace Engine {
 
@@ -26,6 +27,7 @@ void SpriteBatch::begin(GlyphSortType sortType) {
 	_sortType = sortType;
 	_glyphs.clear();
 	_renderBatches.clear();
+	_numQueuedSprites = 0;
 }
 
 void SpriteBatch::end() {
@@ -39,7 +41,6 @@ void SpriteBatch::end() {
 
 void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect,
 		GLuint texture, float depth, const Color& color) {
-
 	_glyphs.emplace_back(destRect, uvRect, texture, depth, color);
 }
 

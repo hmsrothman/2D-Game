@@ -17,7 +17,7 @@
 #include <Engine/Include/ResourceManager.h>
 
 Dungeon::Dungeon() :
-		current(nullptr), start(nullptr){
+		current(nullptr), start(nullptr) {
 }
 
 Dungeon::~Dungeon() {
@@ -29,6 +29,7 @@ void Dungeon::generate() {
 	buildHallways();
 	breakMaze();
 	cullDeadEnds();
+	fillSubTiles();
 }
 
 void Dungeon::placeRooms() {
@@ -68,7 +69,8 @@ void Dungeon::placeRooms() {
 				x++) {
 			for (int y = rect.position.y; y < rect.position.y + rect.position.w;
 					y++) {
-				tiles[x][y].flags |= UP | DOWN | LEFT | RIGHT | VISITED;
+				tiles[x][y].flags |= UP | DOWN | LEFT | RIGHT | VISITED
+						| NAVIGABLE;
 				tiles[x][y].setTileType(ROOM);
 				if (x == rect.position.x) { //if on left, close left wall
 					tiles[x][y].flags &= ~LEFT;
@@ -106,22 +108,22 @@ void Dungeon::breakMaze() {
 					switch (dir) {
 					case UP:
 						if ((tiles[x][y + 1].flags & TILE_TYPE) == ROOM) {
-							tiles[x][y + 1].setTileType(DOOR);
+							tiles[x][y + 1].setTileType(DOORWAY);
 						}
 						break;
 					case DOWN:
 						if ((tiles[x][y - 1].flags & TILE_TYPE) == ROOM) {
-							tiles[x][y - 1].setTileType(DOOR);
+							tiles[x][y - 1].setTileType(DOORWAY);
 						}
 						break;
 					case RIGHT:
 						if ((tiles[x + 1][y].flags & TILE_TYPE) == ROOM) {
-							tiles[x + 1][y].setTileType(DOOR);
+							tiles[x + 1][y].setTileType(DOORWAY);
 						}
 						break;
 					case LEFT:
 						if ((tiles[x - 1][y].flags & TILE_TYPE) == ROOM) {
-							tiles[x - 1][y].setTileType(DOOR);
+							tiles[x - 1][y].setTileType(DOORWAY);
 						}
 						break;
 					}
@@ -156,7 +158,7 @@ void Dungeon::breakMaze() {
 						glm::ivec2 pos(
 								rooms[i].position.x + rooms[i].position.z - 1,
 								rooms[i].position.y + dy);
-						tiles[pos.x][pos.y].setTileType(DOOR);
+						tiles[pos.x][pos.y].setTileType(DOORWAY);
 						tunnel(pos, RIGHT, 0);
 						entrancesMade++;
 					}
@@ -166,7 +168,7 @@ void Dungeon::breakMaze() {
 						int dy = std::rand() % (int) (rooms[i].position.w - 1);
 						glm::ivec2 pos(rooms[i].position.x,
 								rooms[i].position.y + dy);
-						tiles[pos.x][pos.y].setTileType(DOOR);
+						tiles[pos.x][pos.y].setTileType(DOORWAY);
 						tunnel(pos, LEFT, 0);
 						entrancesMade++;
 					}
@@ -176,7 +178,7 @@ void Dungeon::breakMaze() {
 						int dx = std::rand() % (int) (rooms[i].position.z - 1);
 						glm::ivec2 pos(rooms[i].position.x + dx,
 								rooms[i].position.y);
-						tiles[pos.x][pos.y].setTileType(DOOR);
+						tiles[pos.x][pos.y].setTileType(DOORWAY);
 						tunnel(pos, DOWN, 0);
 						entrancesMade++;
 					}
@@ -186,7 +188,7 @@ void Dungeon::breakMaze() {
 						int dx = std::rand() % (int) (rooms[i].position.z - 1);
 						glm::ivec2 pos(rooms[i].position.x + dx,
 								rooms[i].position.y + rooms[i].position.w - 1);
-						tiles[pos.x][pos.y].setTileType(DOOR);
+						tiles[pos.x][pos.y].setTileType(DOORWAY);
 						tunnel(pos, UP, 0);
 						entrancesMade++;
 					}
@@ -208,10 +210,13 @@ void Dungeon::prepare() {
 			}
 		}
 	}
-//place the rooms
-	placeRooms();
+	for (int x = 0; x < GRID_SIZE * 3; x++) {
+		for (int y = 0; y < GRID_SIZE * 3; y++) {
+			subTiles[x][y] = 0;
+		}
+	}
 
-//prepare for hallwaygen
+	//prepare for hallwaygen
 	start = &tiles[1][1];
 	start->flags |= VISITED | HALLWAY; //set it to visted and hallway
 	backtrack.push(start);
@@ -231,6 +236,7 @@ void Dungeon::cullDeadEnds() {
 						++numCulled;
 						tiles[x][y].flags &= ~TILE_TYPE;
 						tiles[x][y].flags &= ~WALLS;
+						tiles[x][y].flags &= ~NAVIGABLE;
 
 						tiles[x - 1][y].flags &= ~RIGHT;
 						tiles[x + 1][y].flags &= ~LEFT;
@@ -278,28 +284,28 @@ void Dungeon::iterateMaze() {
 		switch (dir) {
 		case RIGHT:
 			if (right) {
-				tunnel(current->pos, dir, VISITED);
+				tunnel(current->pos, dir, VISITED | NAVIGABLE);
 				current = &(tiles[current->pos.x + 1][current->pos.y]);
 				backtrack.push(current);
 			}
 			break;
 		case LEFT:
 			if (left) {
-				tunnel(current->pos, dir, VISITED);
+				tunnel(current->pos, dir, VISITED | NAVIGABLE);
 				current = &(tiles[current->pos.x - 1][current->pos.y]);
 				backtrack.push(current);
 			}
 			break;
 		case UP:
 			if (up) {
-				tunnel(current->pos, dir, VISITED);
+				tunnel(current->pos, dir, VISITED | NAVIGABLE);
 				current = &tiles[current->pos.x][current->pos.y + 1];
 				backtrack.push(current);
 			}
 			break;
 		case DOWN:
 			if (down) {
-				tunnel(current->pos, dir, VISITED);
+				tunnel(current->pos, dir, VISITED | NAVIGABLE);
 				current = &(tiles[current->pos.x][current->pos.y - 1]);
 				backtrack.push(current);
 			}
@@ -334,23 +340,131 @@ void Dungeon::tunnel(glm::ivec2 start, char dir, char otherFlags) {
 	}
 }
 
-void Dungeon::render(Engine::SpriteBatch& batcher) {
+void Dungeon::fillSubTiles() {
+	int sx = 0, sy = 0;
 	for (int x = 0; x < GRID_SIZE; x++) {
 		for (int y = 0; y < GRID_SIZE; y++) {
-			char roomType = tiles[x][y].flags & TILE_TYPE;
-			switch (roomType) {
-			case ROOM:
-				renderRoom(batcher, x, y);
-				break;
-			case HALLWAY:
-				renderHallway(batcher, x, y);
-				break;
-			case DOOR:
-				renderDoor(batcher, x, y);
+			if (tiles[x][y].flags & NAVIGABLE) {
+				sx = 3 * x;
+				sy = 3 * y;
+				char tileType = tiles[x][y].flags & TILE_TYPE;
+				if (tileType == HALLWAY) {
+					for (int dx = 0; dx < 3; dx++) {
+						for (int dy = 0; dy < 3; dy++) {
+							subTiles[sx + dx][sy + dy] = tileType;
+							subTiles[sx + dx][sy + dy] &= ~NAVIGABLE;
+						}
+					}
+
+					subTiles[sx + 1][sy + 1] |= NAVIGABLE;
+
+					if (tiles[x][y].flags & LEFT) {
+						subTiles[sx][sy + 1] |= NAVIGABLE;
+					}
+
+					if (tiles[x][y].flags & RIGHT) {
+						subTiles[sx + 2][sy + 1] |= NAVIGABLE;
+					}
+
+					if (tiles[x][y].flags & UP) {
+						subTiles[sx + 1][sy + 2] |= NAVIGABLE;
+					}
+
+					if (tiles[x][y].flags & DOWN) {
+						subTiles[sx + 1][sy] |= NAVIGABLE;
+					}
+				} else if (tileType == ROOM) {
+					for (int dx = 0; dx < 3; dx++) {
+						for (int dy = 0; dy < 3; dy++) {
+							subTiles[sx + dx][sy + dy] = tileType | NAVIGABLE;
+						}
+					}
+				}
 			}
 		}
-
 	}
+}
+
+void Dungeon::render(Engine::SpriteBatch& hallwayBatcher,
+		Engine::SpriteBatch& otherBatcher) {
+	//for (int x = 0; x < GRID_SIZE; x++) {
+	/*for (int y = 0; y < GRID_SIZE; y++) {
+	 char roomType = tiles[x][y].flags & TILE_TYPE;
+	 switch (roomType) {
+	 case ROOM:
+	 renderRoom(batcher, x, y);
+	 break;
+	 case HALLWAY:
+	 renderHallway(batcher, x, y);
+	 break;
+	 case DOOR:
+	 renderDoor(batcher, x, y);
+	 }
+	 }*/
+
+//	int count = 0;
+	for (int x = 0; x < GRID_SIZE * 3; x++) {
+		for (int y = 0; y < GRID_SIZE * 3; y++) {
+			//	std::cout << x << " , " << y << std::endl;
+			if (subTiles[x][y] & NAVIGABLE) {
+				renderSubTile(hallwayBatcher, otherBatcher, x, y,
+						subTiles[x][y] & TILE_TYPE);
+				//	count++;
+			}
+		}
+	}
+//	std::cout << count << std::endl;
+}
+
+void Dungeon::renderSubTile(Engine::SpriteBatch&hallwayBatcher,
+		Engine::SpriteBatch&otherBatcher, int x, int y,
+		unsigned char tileType) {
+	static Engine::GL_Texture doorway = Engine::ResourceManager::getTexture(
+			"doorway.png");
+	static Engine::GL_Texture hallway = Engine::ResourceManager::getTexture(
+			"hallway.png");
+	static Engine::GL_Texture room = Engine::ResourceManager::getTexture(
+			"room.png");
+	static Engine::GL_Texture other = Engine::ResourceManager::getTexture(
+			"jimmyJump_pack/PNG/AngryCloud.png");
+
+	Engine::Color color;
+	color.r = 255;
+	color.g = 255;
+	color.b = 255;
+	color.a = 255;
+
+	glm::vec4 uvRect = glm::vec4(1, 1, -1, -1); //Symmetrical, so correct
+
+	unsigned int texture = 0;
+
+	switch (tileType) {
+	case ROOM:
+		texture = room.id;
+		otherBatcher.draw(
+				glm::vec4(x * GRID_SCALE, y * GRID_SCALE, GRID_SCALE,
+						GRID_SCALE), uvRect, texture, 0, color);
+		break;
+	case HALLWAY:
+		texture = hallway.id;
+		hallwayBatcher.draw(
+				glm::vec4(x * GRID_SCALE, y * GRID_SCALE, GRID_SCALE,
+						GRID_SCALE), uvRect, texture, 0, color);
+		break;
+	case DOORWAY:
+		texture = doorway.id;
+		otherBatcher.draw(
+				glm::vec4(x * GRID_SCALE, y * GRID_SCALE, GRID_SCALE,
+						GRID_SCALE), uvRect, texture, 0, color);
+		break;
+	default:
+		texture = other.id;
+		otherBatcher.draw(
+				glm::vec4(x * GRID_SCALE, y * GRID_SCALE, GRID_SCALE,
+						GRID_SCALE), uvRect, texture, 0, color);
+		break;
+	}
+
 }
 
 void Dungeon::renderRoom(Engine::SpriteBatch &batcher, int x, int y) {
@@ -375,28 +489,28 @@ void Dungeon::renderRoom(Engine::SpriteBatch &batcher, int x, int y) {
 	char walls = tiles[x][y].flags & WALLS;
 	switch (walls) {
 	case UP | DOWN | LEFT | RIGHT: //open on all sides
-		uvRect = glm::vec4(1, 1, -4, -4); //Symmetrical, so correct
+		uvRect = glm::vec4(1, 1, -1, -1); //Symmetrical, so correct
 		texture = roomFour.id;
 		break;
 	case DOWN | RIGHT | LEFT: //closed on top
-		uvRect = glm::vec4(0, 0, 4, -4);
+		uvRect = glm::vec4(0, 0, 1, -1);
 		texture = roomThreeRotated.id;
 		break;
 	case UP | RIGHT | LEFT: //closed on bottom
-		uvRect = glm::vec4(0, 0, 4, 4);
+		uvRect = glm::vec4(0, 0, 1, 1);
 		texture = roomThreeRotated.id;
 		break;
 	case DOWN | UP | LEFT: //closed on right
-		uvRect = glm::vec4(0, 0, -4, 4);
+		uvRect = glm::vec4(0, 0, -1, 1);
 		texture = roomThree.id;
 		break;
 	case DOWN | UP | RIGHT: //closed on left
-		uvRect = glm::vec4(0, 0, 4, 4);
+		uvRect = glm::vec4(0, 0, 1, 1);
 		texture = roomThree.id;
 		break;
 	default:
 		texture = roomFour.id;
-		uvRect = glm::vec4(0, 0, 4, 4);
+		uvRect = glm::vec4(0, 0, 1, 1);
 		//shouldRender = false;
 		break;
 	}
