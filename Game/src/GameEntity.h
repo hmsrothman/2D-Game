@@ -19,7 +19,7 @@ public:
 	GameEntity(int size) :
 			renderSize(size) {
 	}
-	virtual ~GameEntity(){
+	virtual ~GameEntity() {
 
 	}
 	int renderSize;

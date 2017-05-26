@@ -15,10 +15,16 @@
 
 Player::Player() :
 		GameEntity(PLAYER_SIZE) {
-
 }
 
 Player::~Player() {
+}
+
+void Player::move(glm::vec2 displacement, Dungeon& map) {
+	GameEntity::move(displacement, map);
+	map.playerWalkOnTile(
+			glm::ivec2(_position.x / map.GRID_SCALE,
+					_position.y / map.GRID_SCALE));
 }
 
 void Player::render(Engine::SpriteBatch& batcher) { //this doesn't work for some reason

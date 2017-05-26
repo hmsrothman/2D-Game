@@ -38,11 +38,6 @@ void Velociraptor::render(Engine::SpriteBatch& batcher) { //this doesn't work fo
 }
 
 void Velociraptor::ai(Engine::Entity target, Dungeon& map) {
-	glm::vec2 dir = (target.getPosition() - _position);
-	float length = glm::length(dir);
-	if (length != 0) {
-		dir /= length;
-		dir *= SPEED;
-	}
+
 	GameEntity::move(dir, map);
 }
