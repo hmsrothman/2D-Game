@@ -11,6 +11,7 @@
 #include "Engine/Include/ResourceManager.h"
 #include "Engine/Include/Vertex.h"
 #include <iostream>
+#include "Velociraptor.h"
 /**
  * Constructor only initializes variables
  */
@@ -46,11 +47,15 @@ void MainGame::initSystems() {
 
 	initShaders();
 
-	_spriteBatch.init();
+	_hallwayBatcher.init();
+	_otherBatcher.init();
 
+//	_dungeon.prepare();
+//	_dungeon.placeRooms();
 	_dungeon.generate();
 
 	_player.setPosition(glm::vec2(0, 0)); //or something. probably find a seed and put them there
+	_camera.lockToEntity(&_player);
 }
 
 /**
@@ -68,7 +73,7 @@ void MainGame::processInput() {
 	const float CAMERA_SPEED = 5;
 	const float SCALE_SPEED = 0.01;
 
-	const float PLAYER_SPEED = 10;
+	const float PLAYER_SPEED = 3;
 
 	//process events
 	SDL_Event event;
@@ -119,18 +124,18 @@ void MainGame::processInput() {
 
 	//we'll probably bind the camera to the player later, but for now arrow keys move the player
 	if (_inputManager.isKeyPressed(SDLK_UP)) {
-		_player.setPosition(_player.getPosition() + glm::vec2(0, PLAYER_SPEED));
+		_player.move(glm::vec2(0, PLAYER_SPEED), _dungeon);
 	}
 	if (_inputManager.isKeyPressed(SDLK_DOWN)) {
-		_player.setPosition(
-				_player.getPosition() + glm::vec2(0, -PLAYER_SPEED));
+
+		_player.move(glm::vec2(0, -PLAYER_SPEED), _dungeon);
 	}
 	if (_inputManager.isKeyPressed(SDLK_LEFT)) {
-		_player.setPosition(
-				_player.getPosition() + glm::vec2(-PLAYER_SPEED, 0));
+
+		_player.move(glm::vec2(-PLAYER_SPEED, 0), _dungeon);
 	}
 	if (_inputManager.isKeyPressed(SDLK_RIGHT)) {
-		_player.setPosition(_player.getPosition() + glm::vec2(PLAYER_SPEED, 0));
+		_player.move(glm::vec2(PLAYER_SPEED, 0), _dungeon);
 	}
 
 	//mouse
@@ -150,12 +155,17 @@ void MainGame::gameLoop() {
 		drawGame();
 
 		_fps = _fpsLimiter.end();
+<<<<<<< HEAD
 
 		//_dungeon.iterate();
+=======
+		//_dungeon.iterateMaze();
+		//_dungeon.fillSubTiles();
+>>>>>>> refs/remotes/origin/master
 
 		//print fps every 10 frames
 		static int frameCounter = 0;
-		if (frameCounter++ == 10) {
+		if (frameCounter++ == 60) {
 			std::cout << _fps << std::endl;
 			frameCounter = 0;
 		}
@@ -182,14 +192,13 @@ void MainGame::drawGame() {
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
 	//being draw call
-	_spriteBatch.begin();
+	_hallwayBatcher.begin(Engine::GlyphSortType::NONE); //the hallwaybatcher will ony be used for hallways
+														//therefore, we don't need to sort
+	_otherBatcher.begin(Engine::GlyphSortType::TEXTURE);
 
 	static Engine::GL_Texture playerTexture =
 			Engine::ResourceManager::getTexture(
 					"jimmyjump_pack/PNG/AngryCloud.png");
-
-	//hallwayThree = playerTexture;
-	//hallwayFour = playerTexture;
 
 	//uv coords. form (x , y , x offset , y offset)
 	//it's kinda weird to componsate for the fact that opengl's texture coords are upside-down
@@ -204,19 +213,19 @@ void MainGame::drawGame() {
 	color.a = 255;
 
 	//render dungeon
-	_dungeon.render(_spriteBatch);
+	_dungeon.render(_hallwayBatcher, _otherBatcher);
+	_dungeon.velociraptors[0].ai(_player, _dungeon);
 
 	//lets render the player too
-	glm::vec2 playerPos = _player.getPosition();
-	glm::vec4 destRect(playerPos.x, playerPos.y, _player.PLAYER_SIZE,
-			_player.PLAYER_SIZE);
-	_spriteBatch.draw(destRect, uvRect, playerTexture.id, 0, color);
+	_player.render(_otherBatcher);
 
 	//prep batches
-	_spriteBatch.end();
+	_otherBatcher.end();
+	_hallwayBatcher.end();
 
 	//render batches
-	_spriteBatch.renderBatch();
+	_hallwayBatcher.renderBatch();
+	_otherBatcher.renderBatch();
 
 	//cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);

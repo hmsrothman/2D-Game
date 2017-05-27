@@ -11,34 +11,26 @@
 
 #include <glm/glm.hpp>
 #include "Dungeon.h"
+#include "GameEntity.h"
 
+<<<<<<< HEAD
 
 class Player {
+=======
+class Player: public GameEntity {
+>>>>>>> refs/remotes/origin/master
 public:
 	Player();
 	virtual ~Player();
 
-	const static int PLAYER_SIZE = 15;
+	const static int PLAYER_SIZE = 10;
 
 	void setPosition(glm::vec2 newPos) {
 		_position = newPos;
 	}
-
-	glm::vec2 getPosition() {
-		return _position;
-	}
-
-	void move(glm::vec2 translation, const Dungeon& map) {
-		//make a Rectangle which is player sprite
-		//use Rectangle and some Rectangles representing map tiles to check which tiles player is on
-		//make Rectangle(s) which is the wall portion(s) of map tile(s) the player is on
-		//if the player overlaps this (these) rectangle(s), correct accordingly
-		//this will work IFF player speed << path width
-		//if player speed !<< path width gameplay would be fucked anyway so i think we're good
-	}
+	void render(Engine::SpriteBatch& batcher); // this appears to not work
 
 private:
-	glm::vec2 _position;
 };
 
 #endif /* PLAYER_H_ */

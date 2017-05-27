@@ -9,6 +9,7 @@
 #define CAMERA2D_H_
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Entity.h"
 
 namespace Engine {
 
@@ -43,6 +44,8 @@ public:
 	}
 
 	glm::vec2 convertScreenToWorld(glm::vec2 screen);
+
+	void lockToEntity(Entity*entity);
 private:
 	int _screenWidth, _screenHeight;
 	bool _needsMatrixUpdate;
@@ -50,6 +53,9 @@ private:
 	glm::vec2 _position;
 	glm::mat4 _cameraMatrix;
 	glm::mat4 _orthoMatrix;
+
+	Entity* _focus;
+	bool _locked;
 };
 
 } /* namespace Engine */

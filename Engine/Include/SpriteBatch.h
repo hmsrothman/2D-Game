@@ -85,6 +85,8 @@ private:
 	GLuint _vboID;
 	GLuint _vaoID;
 
+	unsigned int _numQueuedSprites;
+
 	GlyphSortType _sortType;
 
 	std::vector<Glyph*> _glyphPointers; //this is for sorting

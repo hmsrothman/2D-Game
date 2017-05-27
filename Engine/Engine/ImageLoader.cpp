@@ -9,9 +9,14 @@
 #include "picopng.h"
 #include "IOManager.h"
 #include "Errors.h"
+<<<<<<< HEAD
 #include <Gl\glew.h>
 #include <Gl\gl.h>
 namespace Engine{
+=======
+#include <OpenGL/gl3.h>
+namespace Engine {
+>>>>>>> refs/remotes/origin/master
 
 GL_Texture ImageLoader::loadPng(const std::string& filePath) {
 	GL_Texture texture = { };
@@ -26,7 +31,8 @@ GL_Texture ImageLoader::loadPng(const std::string& filePath) {
 	int error = decodePNG(out, width, height, &(in[0]), in.size());
 
 	if (error) {
-		fatalError("decode PNG failed with error code " + std::to_string(error));
+		fatalError(
+				"decode PNG failed with error code " + std::to_string(error));
 	}
 
 	glGenTextures(1, &(texture.id));
@@ -36,9 +42,9 @@ GL_Texture ImageLoader::loadPng(const std::string& filePath) {
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-	GL_LINEAR_MIPMAP_LINEAR);
+	GL_NEAREST);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
