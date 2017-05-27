@@ -43,10 +43,30 @@ void Velociraptor::ai(Engine::Entity target, Dungeon map) {
 	//checks the value of the tiles around it
 	//find the biggest value and move in that direction
 	glm::ivec2 pos(0, 0);//'where we are'
+	glm::ivec2 dir(0, 0);//empty
+	glm::ivec2 dest(0, 0);//empty
 	int max = -1;
-	glm::ivec2 dir(0, 0);
-	//if (map.subTiles[pos.x][pos.y]._playerTrail == 1) {
 
-	//}
-	//GameEntity::move(dir, map);
+	dest = pos + glm::ivec2(1, 0);
+	if (map.queryTile(dest) > max) {
+		max = map.queryTile(dest);
+		dir = pos - dest;
+	}
+	dest = pos - glm::ivec2(1, 0);
+	if (map.queryTile(dest) > max) {
+		max = map.queryTile(dest);
+		dir = pos - dest;
+	}
+	dest = pos + glm::ivec2(0, 1);
+	if (map.queryTile(dest) > max) {
+		max = map.queryTile(dest);
+		dir = pos - dest;
+	}
+	dest = pos - glm::ivec2(0,1);
+	if (map.queryTile(dest) > max) {
+		max = map.queryTile(dest);
+		dir = pos - dest;
+	}
+
+	GameEntity::move(dir, map);
 }

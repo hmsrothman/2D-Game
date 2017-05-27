@@ -98,8 +98,8 @@ private:
 	MazeGenTile* current;
 	MazeGenTile *start;
 	std::stack<MazeGenTile*> backtrack;
-	int _test[2];
-	//std::unordered_map<std::array<int, 2>,int> _playerTrail;
+	int _trail[GRID_SIZE][GRID_SIZE];//2d array of trail locations plus the timestamp
+	//std::unordered_map<byte,unsigned int> _playerTrail;
 };
 
 #endif /* DUNGEON_H_ */

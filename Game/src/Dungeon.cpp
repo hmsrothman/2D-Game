@@ -9,7 +9,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <queue>
-//#include <map>
 #include <random>
 #include <stack>
 #include <Engine/Include/Vertex.h>
@@ -216,6 +215,11 @@ void Dungeon::prepare() {
 	for (int x = 0; x < GRID_SIZE * 3; x++) {
 		for (int y = 0; y < GRID_SIZE * 3; y++) {
 			subTiles[x][y] = 0;
+		}
+	}
+	for (int x = 0; x < GRID_SIZE; x++) {
+		for (int y = 0; y < GRID_SIZE; y++) {
+			_trail[x][y] = 0;
 		}
 	}
 
@@ -475,13 +479,15 @@ void Dungeon::renderSubTile(Engine::SpriteBatch&hallwayBatcher,
 
 void Dungeon::playerWalkOnTile(glm::ivec2 tile) {
 	//_playerTrail[tile] = SDL_GetTicks();
+	_trail[tile.x][tile.y] = SDL_GetTicks();
 }
 
 unsigned int Dungeon::queryTile(glm::ivec2 tile) {
+	return _trail[tile.x][tile.y];
 	//auto it = _playerTrail.find(tile);
 	//if (it != _playerTrail.end()) {
 	//	return it->second;
 	//} else {
-		return 0;
+	//	return 0;
 	//}
 }
