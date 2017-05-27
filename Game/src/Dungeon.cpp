@@ -321,7 +321,8 @@ void Dungeon::iterateMaze() {
 	}
 }
 
-void Dungeon::tunnel(glm::ivec2 start, unsigned char dir, unsigned char otherFlags) {
+void Dungeon::tunnel(glm::ivec2 start, unsigned char dir,
+		unsigned char otherFlags) {
 	switch (dir) {
 	case UP:
 		tiles[start.x][start.y].flags |= UP | otherFlags;
@@ -469,5 +470,17 @@ void Dungeon::renderSubTile(Engine::SpriteBatch&hallwayBatcher,
 						GRID_SCALE), uvRect, texture, 0, color);
 		break;
 	}
+}
 
+void Dungeon::playerWalkOnTile(glm::ivec2 tile) {
+	_playerTrail[tile] = SDL_GetTicks();
+}
+
+unsigned int Dungeon::queryTile(glm::ivec2 tile) {
+	auto it = _playerTrail.find(tile);
+	if (it != _playerTrail.end()) {
+		return it->second;
+	} else {
+		return 0;
+	}
 }

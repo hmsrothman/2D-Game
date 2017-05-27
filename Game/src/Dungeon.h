@@ -42,10 +42,10 @@ enum TileFlags
 	NAVIGABLE = 0b10000000,
 };
 
-struct Tile {
+struct MazeGenTile {
 	glm::ivec2 pos;
 	unsigned char flags;
-	Tile() :
+	MazeGenTile() :
 			pos(0, 0), flags(0) {
 	}
 	void setTileType(char roomType) {
@@ -72,7 +72,7 @@ public:
 
 	std::vector<Rectangle> rooms;
 
-	Tile tiles[GRID_SIZE][GRID_SIZE];
+	MazeGenTile tiles[GRID_SIZE][GRID_SIZE];
 	unsigned char subTiles[GRID_SIZE * 3][GRID_SIZE * 3];
 
 	void render(Engine::SpriteBatch &hallwayBatcher,
@@ -83,6 +83,8 @@ public:
 	void fillSubTiles();
 	std::vector<Velociraptor> velociraptors;
 
+	void playerWalkOnTile(glm::ivec2 tile);
+	unsigned int queryTile(glm::ivec2 tile);
 private:
 	void buildHallways();
 	void breakMaze();
@@ -93,10 +95,11 @@ private:
 			Engine::SpriteBatch&otherBatcher, int x, int y,
 			unsigned char tileType);
 
-	Tile* current;
-	Tile *start;
-	std::stack<Tile*> backtrack;
+	MazeGenTile* current;
+	MazeGenTile *start;
+	std::stack<MazeGenTile*> backtrack;
 
+	std::map<glm::ivec2, unsigned int> _playerTrail;
 };
 
 #endif /* DUNGEON_H_ */
