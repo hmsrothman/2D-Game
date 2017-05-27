@@ -37,7 +37,7 @@ void Velociraptor::render(Engine::SpriteBatch& batcher) { //this doesn't work fo
 	batcher.draw(destRect, uvRect, playerTexture.id, 0, color);
 }
 
-void Velociraptor::ai(Engine::Entity target, Dungeon& map) {
+void Velociraptor::ai(Engine::Entity target, Dungeon map) {
 
-	GameEntity::move(dir, map);
+	//GameEntity::move(dir, map);
 }

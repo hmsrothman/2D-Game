@@ -23,7 +23,7 @@ public:
 	static const int VELOCIRAPTOR_SIZE = 7;
 	static constexpr float SPEED = 1;
 
-	void ai(const Engine::Entity target, Dungeon& map);
+	void ai(const Engine::Entity target, Dungeon map);
 };
 
 #endif /* VELOCIRAPTOR_H_ */

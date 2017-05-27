@@ -9,13 +9,14 @@
 #include <cstdlib>
 #include <iostream>
 #include <queue>
-#include <map>
+//#include <map>
 #include <random>
 #include <stack>
 #include <Engine/Include/Vertex.h>
 #include <Engine/Include/GLTexture.h>
 #include <Engine/Include/ResourceManager.h>
 #include "Velociraptor.h"
+#include <SDL.h>
 
 Dungeon::Dungeon() :
 		current(nullptr), start(nullptr) {

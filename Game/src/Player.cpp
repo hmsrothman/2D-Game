@@ -20,15 +20,13 @@ Player::Player() :
 Player::~Player() {
 }
 
-<<<<<<< HEAD
-=======
+
 void Player::move(glm::vec2 displacement, Dungeon& map) {
 	GameEntity::move(displacement, map);
 	map.playerWalkOnTile(
 			glm::ivec2(_position.x / map.GRID_SCALE,
 					_position.y / map.GRID_SCALE));
 }
->>>>>>> refs/remotes/origin/master
 
 void Player::render(Engine::SpriteBatch& batcher) { //this doesn't work for some reason
 	static Engine::GL_Texture playerTexture =
