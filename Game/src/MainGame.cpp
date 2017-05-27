@@ -29,9 +29,9 @@ MainGame::~MainGame() {
  * starts game
  */
 void MainGame::run() {
-	std::cout << "wtf" << std::endl;
+	std::cout << "it is running" << std::endl;
 	initSystems();
-	std::cout << "wtf" << std::endl;
+	std::cout << "init good sys" << std::endl;
 	gameLoop();
 }
 
@@ -39,24 +39,28 @@ void MainGame::run() {
  * initializes everything--SDL, opengl, shaders, the maze, etc
  */
 void MainGame::initSystems() {
-
+	std::cout << "init sys start" << std::endl;
 	Engine::init();
+	std::cout << "init engine" << std::endl;
 	_window.create("Game Engine", _screenWidth, _screenHeight, 0);
-
+	std::cout << "init window" << std::endl;
 
 	_fpsLimiter.setMaxFPS(_maxFPS);
 
 	initShaders();
-
+	std::cout << "init shader" << std::endl;
 	_hallwayBatcher.init();
 	_otherBatcher.init();
+	std::cout << "init batchers" << std::endl;
 
 //	_dungeon.prepare();
 //	_dungeon.placeRooms();
 	_dungeon.generate();
+	std::cout << "gen dung" << std::endl;
 
 	_player.setPosition(glm::vec2(0, 0)); //or something. probably find a seed and put them there
-	//_camera.lockToEntity(&_player);
+	std::cout << "place player, all done" << std::endl;
+	_camera.lockToEntity(&_player);
 }
 
 /**
@@ -148,6 +152,7 @@ void MainGame::processInput() {
 }
 
 void MainGame::gameLoop() {
+	std::cout << "enter game loop" << std::endl;
 	while (_gameState != GameState::EXIT) {
 		_fpsLimiter.begin();
 		processInput();

@@ -37,12 +37,11 @@ void Velociraptor::render(Engine::SpriteBatch& batcher) { //this doesn't work fo
 			VELOCIRAPTOR_SIZE);
 	batcher.draw(destRect, uvRect, playerTexture.id, 0, color);
 }
-
-<<<<<<< HEAD
 void Velociraptor::ai(Engine::Entity target, Dungeon map) {
 	//convert from screen coords to maze coords
 	//checks the value of the tiles around it
 	//find the biggest value and move in that direction
+	/*
 	glm::ivec2 pos(0, 0);//'where we are'
 	glm::ivec2 dir(0, 0);//empty
 	glm::ivec2 dest(0, 0);//empty
@@ -70,16 +69,6 @@ void Velociraptor::ai(Engine::Entity target, Dungeon map) {
 	}
 
 	GameEntity::move(dir, map);
-=======
-void Velociraptor::ai(Engine::Entity target, Dungeon& map) {
-	//convert pos to tile co0rds
-	int max = 0;
-	/*std::vector<std::pair<glm::ivec2, unsigned int>> list;
-	 glm::ivec2 dest(tileCoord.x + 1, tileCord.y);
-	 int check = map.queryTile(dest);
-	 if (check > max && (map.subTiles[dest.x][dest.y] & NAVIGABLE)) {
-	 max = check;
-	 }
-	 GameEntity::move(dir, map);*/
->>>>>>> refs/remotes/origin/master
+	*/
+
 }

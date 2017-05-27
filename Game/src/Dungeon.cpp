@@ -15,11 +15,8 @@
 #include <Engine/Include/GLTexture.h>
 #include <Engine/Include/ResourceManager.h>
 #include "Velociraptor.h"
-<<<<<<< HEAD
+
 #include <SDL.h>
-=======
-#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
->>>>>>> refs/remotes/origin/master
 
 Dungeon::Dungeon() :
 		current(nullptr), start(nullptr) {
@@ -29,13 +26,21 @@ Dungeon::~Dungeon() {
 }
 
 void Dungeon::generate() {
+	std::cout << "start dungeon" << std::endl;
 	prepare();
+	std::cout << "prep" << std::endl;
 	placeRooms();
+	std::cout << "place" << std::endl;
 	buildHallways();
+	std::cout << "buiild" << std::endl;
 	breakMaze();
+	std::cout << "break"<<std::endl;
 	cullDeadEnds();
+	std::cout << "cull" << std::endl;
 	fillSubTiles();
+	std::cout << "fill" << std::endl;
 	velociraptors.emplace_back();
+	std::cout << "velo++" << std::endl;
 }
 
 void Dungeon::placeRooms() {
@@ -44,9 +49,14 @@ void Dungeon::placeRooms() {
 
 	for (int i = 0; i < roomAttempts; i++) {
 
-		int sizeX = distribution(generator);
-		int sizeY = distribution(generator);
-
+		int sizeX =  distribution(generator);
+		int sizeY =  distribution(generator);
+		if (sizeX <= 1) {
+			sizeX = 2;
+		}
+		if (sizeY <= 1) {
+			sizeY = 2;
+		}
 		int x = std::rand() % (GRID_SIZE - sizeX - 2) + 1;
 		int y = std::rand() % (GRID_SIZE - sizeY - 2) + 1;
 
@@ -137,7 +147,7 @@ void Dungeon::breakMaze() {
 			}
 		}
 	}
-
+	std::cout << "make entrance" << std::endl;
 	//randomly give each room two entrances
 	for (int i = 0; i < rooms.size(); i++) {
 		bool left = false, right = false, up = false, down = false;
@@ -219,11 +229,6 @@ void Dungeon::prepare() {
 	for (int x = 0; x < GRID_SIZE * 3; x++) {
 		for (int y = 0; y < GRID_SIZE * 3; y++) {
 			subTiles[x][y] = 0;
-		}
-	}
-	for (int x = 0; x < GRID_SIZE; x++) {
-		for (int y = 0; y < GRID_SIZE; y++) {
-			_trail[x][y] = 0;
 		}
 	}
 
@@ -483,16 +488,16 @@ void Dungeon::renderSubTile(Engine::SpriteBatch&hallwayBatcher,
 
 void Dungeon::playerWalkOnTile(glm::ivec2 tile) {
 	//_playerTrail[tile] = SDL_GetTicks();
-	_trail[tile.x][tile.y] = SDL_GetTicks();
+	//_trail[tile.x][tile.y] = SDL_GetTicks();
 }
 
 unsigned int Dungeon::queryTile(glm::ivec2 tile) {
-	return _trail[tile.x][tile.y];
-	//auto it = _playerTrail.find(tile);
-	//if (it != _playerTrail.end()) {
-	//	return it->second;
-	//} else {
-	//	return 0;
-	//}
+	//return _trail[tile.x][tile.y];
+	auto it = _playerTrail.find(tile);
+	if (it != _playerTrail.end()) {
+		return it->second;
+	} else {
+		return 0;
+	}
 }
 

@@ -80,7 +80,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>..\Dependencies\SDL\lib\x86\SDL2.lib;..\Dependencies\SDL\lib\x86\SDL2main.lib;..\Dependencies\GLEW\lib\glew32s.lib;OpenGL32.lib;..\Engine\Debug\Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Dependencies\SDL\lib\x86\SDL2.lib;..\Dependencies\SDL\lib\x86\SDL2main.lib;..\Dependencies\GLEW\lib\glew32s.lib;OpenGL32.lib;..\Debug\Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

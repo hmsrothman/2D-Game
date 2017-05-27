@@ -15,8 +15,7 @@
 #include <stack>
 #include <memory>
 #include <Engine/Include/SpriteBatch.h>
-//#include "GameEntity.h"
-//#include "Velociraptor.h"
+#include <map>
 
 class Velociraptor;
 
@@ -104,16 +103,9 @@ private:
 	MazeGenTile* current;
 	MazeGenTile *start;
 	std::stack<MazeGenTile*> backtrack;
-<<<<<<< HEAD
-	int _trail[GRID_SIZE][GRID_SIZE];//2d array of trail locations plus the timestamp
-	//std::unordered_map<byte,unsigned int> _playerTrail;
-=======
-
-	//static bool compareIvec2(const glm::ivec2& lhs, const glm::ivec2& rhs);
 
 	std::map<glm::ivec2, unsigned int, vecCompare> _playerTrail;
 
->>>>>>> refs/remotes/origin/master
 };
 
 #endif /* DUNGEON_H_ */
