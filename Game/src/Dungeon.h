@@ -10,7 +10,7 @@
 
 #include <vector>
 #include "Rectangle.h"
-#include <map>
+#include <unordered_map>
 #include <random>
 #include <stack>
 #include <memory>
@@ -62,7 +62,7 @@ public:
 	void generate();
 
 	const static int ROOM_SIZE_MEAN = 5;
-	const static int ROOM_SIZE_VAR = 0;
+	const static int ROOM_SIZE_VAR = 1;
 	const static int GRID_SIZE = 100;
 	const static int GRID_SCALE = 20;
 	const static int PATH_WIDTH = GRID_SCALE / 2;
@@ -98,8 +98,8 @@ private:
 	MazeGenTile* current;
 	MazeGenTile *start;
 	std::stack<MazeGenTile*> backtrack;
-
-	std::map<glm::ivec2, unsigned int> _playerTrail;
+	int _test[2];
+	//std::unordered_map<std::array<int, 2>,int> _playerTrail;
 };
 
 #endif /* DUNGEON_H_ */

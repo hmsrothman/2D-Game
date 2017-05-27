@@ -12,6 +12,7 @@
 #include "Engine/Include/Vertex.h"
 #include <iostream>
 #include "Velociraptor.h"
+#include "Engine/Include/Camera2D.h"
 /**
  * Constructor only initializes variables
  */
@@ -55,7 +56,7 @@ void MainGame::initSystems() {
 	_dungeon.generate();
 
 	_player.setPosition(glm::vec2(0, 0)); //or something. probably find a seed and put them there
-	_camera.lockToEntity(&_player);
+	//_camera.lockToEntity(&_player);
 }
 
 /**
