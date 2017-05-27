@@ -11,11 +11,12 @@
 
 Player::Player() :
 		_position(0, 0) {
-	// TODO Auto-generated constructor stub
 
 }
 
 Player::~Player() {
-	// TODO Auto-generated destructor stub
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/remotes/origin/master

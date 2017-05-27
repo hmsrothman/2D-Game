@@ -10,6 +10,7 @@
 #include "dungeon.h"
 
 #include <glm/glm.hpp>
+#include "Dungeon.h"
 
 
 class Player {
@@ -34,7 +35,6 @@ public:
 		//if the player overlaps this (these) rectangle(s), correct accordingly
 		//this will work IFF player speed << path width
 		//if player speed !<< path width gameplay would be fucked anyway so i think we're good
-
 	}
 
 private:

@@ -40,15 +40,20 @@ void MainGame::initSystems() {
 
 	Engine::init();
 
+<<<<<<< HEAD
 	_window.create("Game Engine", _screenWidth, _screenHeight,
 			0);
+=======
+	_window.create("Game Engine", _screenWidth, _screenHeight, 0);
+
+>>>>>>> refs/remotes/origin/master
 	_fpsLimiter.setMaxFPS(_maxFPS);
 
 	initShaders();
 
 	_spriteBatch.init();
 
-	_dungeon.prepare();
+	_dungeon.generate();
 
 	_player.setPosition(glm::vec2(0, 0)); //or something. probably find a seed and put them there
 }
@@ -150,9 +155,13 @@ void MainGame::gameLoop() {
 		drawGame();
 
 		_fps = _fpsLimiter.end();
+<<<<<<< HEAD
 		for (int i = 0; i < 10; i++){
 			_dungeon.iterate();
 		}
+=======
+		//_dungeon.iterate();
+>>>>>>> refs/remotes/origin/master
 
 		//print fps every 10 frames
 		static int frameCounter = 0;
@@ -209,7 +218,8 @@ void MainGame::drawGame() {
 
 	//lets render the player too
 	glm::vec2 playerPos = _player.getPosition();
-	glm::vec4 destRect(playerPos.x, playerPos.y, _player.PLAYER_SIZE, _player.PLAYER_SIZE);
+	glm::vec4 destRect(playerPos.x, playerPos.y, _player.PLAYER_SIZE,
+			_player.PLAYER_SIZE);
 	_spriteBatch.draw(destRect, uvRect, playerTexture.id, 0, color);
 
 	//prep batches
