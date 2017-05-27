@@ -16,7 +16,4 @@ Player::Player() :
 
 Player::~Player() {
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> refs/remotes/origin/master
