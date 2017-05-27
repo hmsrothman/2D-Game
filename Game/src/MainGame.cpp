@@ -155,13 +155,9 @@ void MainGame::gameLoop() {
 		drawGame();
 
 		_fps = _fpsLimiter.end();
-<<<<<<< HEAD
-
-		//_dungeon.iterate();
-=======
 		//_dungeon.iterateMaze();
 		//_dungeon.fillSubTiles();
->>>>>>> refs/remotes/origin/master
+
 
 		//print fps every 10 frames
 		static int frameCounter = 0;

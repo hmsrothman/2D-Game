@@ -109,16 +109,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Dungeon.cpp" />
+    <ClCompile Include="src\GameEntity.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MainGame.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
+    <ClCompile Include="src\Velociraptor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Dungeon.h" />
+    <ClInclude Include="src\GameEntity.h" />
     <ClInclude Include="src\MainGame.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Rectangle.h" />
+    <ClInclude Include="src\Velociraptor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

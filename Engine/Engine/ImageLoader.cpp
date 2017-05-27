@@ -9,14 +9,10 @@
 #include "picopng.h"
 #include "IOManager.h"
 #include "Errors.h"
-<<<<<<< HEAD
 #include <Gl\glew.h>
 #include <Gl\gl.h>
-namespace Engine{
-=======
-#include <OpenGL/gl3.h>
+//#include <OpenGL/gl3.h>
 namespace Engine {
->>>>>>> refs/remotes/origin/master
 
 GL_Texture ImageLoader::loadPng(const std::string& filePath) {
 	GL_Texture texture = { };

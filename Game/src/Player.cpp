@@ -21,8 +21,7 @@ Player::Player() :
 Player::~Player() {
 }
 
-<<<<<<< HEAD
-=======
+
 void Player::render(Engine::SpriteBatch& batcher) { //this doesn't work for some reason
 	static Engine::GL_Texture playerTexture =
 			Engine::ResourceManager::getTexture(
@@ -37,4 +36,3 @@ void Player::render(Engine::SpriteBatch& batcher) { //this doesn't work for some
 	glm::vec4 destRect(_position.x, _position.y, PLAYER_SIZE, PLAYER_SIZE);
 	batcher.draw(destRect, uvRect, playerTexture.id, 0, color);
 }
->>>>>>> refs/remotes/origin/master

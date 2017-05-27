@@ -13,12 +13,8 @@
 #include "Dungeon.h"
 #include "GameEntity.h"
 
-<<<<<<< HEAD
 
-class Player {
-=======
 class Player: public GameEntity {
->>>>>>> refs/remotes/origin/master
 public:
 	Player();
 	virtual ~Player();
