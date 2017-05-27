@@ -20,6 +20,12 @@
 
 class Velociraptor;
 
+struct vecCompare: public std::binary_function<glm::ivec2, glm::ivec2, bool> {
+	bool operator()(const glm::ivec2& lhs, const glm::ivec2& rhs) const {
+		return lhs.x + lhs.y < rhs.x + rhs.y;
+	}
+};
+
 /**
  * last 4 bits are walls
  * 5th to last bit is bool visited by maze gen
@@ -98,8 +104,16 @@ private:
 	MazeGenTile* current;
 	MazeGenTile *start;
 	std::stack<MazeGenTile*> backtrack;
+<<<<<<< HEAD
 	int _trail[GRID_SIZE][GRID_SIZE];//2d array of trail locations plus the timestamp
 	//std::unordered_map<byte,unsigned int> _playerTrail;
+=======
+
+	//static bool compareIvec2(const glm::ivec2& lhs, const glm::ivec2& rhs);
+
+	std::map<glm::ivec2, unsigned int, vecCompare> _playerTrail;
+
+>>>>>>> refs/remotes/origin/master
 };
 
 #endif /* DUNGEON_H_ */

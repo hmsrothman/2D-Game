@@ -26,7 +26,7 @@ public:
 	}
 	void render(Engine::SpriteBatch& batcher); // this appears to not work
 
-	void Player::move(glm::vec2 displacement, Dungeon& map);
+	void move(glm::vec2 displacement, Dungeon& map);
 
 private:
 };

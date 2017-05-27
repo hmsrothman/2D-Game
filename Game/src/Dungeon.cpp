@@ -15,7 +15,11 @@
 #include <Engine/Include/GLTexture.h>
 #include <Engine/Include/ResourceManager.h>
 #include "Velociraptor.h"
+<<<<<<< HEAD
 #include <SDL.h>
+=======
+#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+>>>>>>> refs/remotes/origin/master
 
 Dungeon::Dungeon() :
 		current(nullptr), start(nullptr) {
@@ -491,3 +495,4 @@ unsigned int Dungeon::queryTile(glm::ivec2 tile) {
 	//	return 0;
 	//}
 }
+
