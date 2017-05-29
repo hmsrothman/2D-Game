@@ -52,7 +52,7 @@ void MainGame::initSystems() {
 
 //	_dungeon.prepare();
 //	_dungeon.placeRooms();
-	_dungeon.generate();
+	_dungeon.genMap();
 
 	_player.setPosition(glm::vec2(0, 0)); //or something. probably find a seed and put them there
 	_camera.lockToEntity(&_player);
@@ -190,22 +190,6 @@ void MainGame::drawGame() {
 	_hallwayBatcher.begin(Engine::GlyphSortType::NONE); //the hallwaybatcher will ony be used for hallways
 														//therefore, we don't need to sort
 	_otherBatcher.begin(Engine::GlyphSortType::TEXTURE);
-
-	static Engine::GL_Texture playerTexture =
-			Engine::ResourceManager::getTexture(
-					"jimmyjump_pack/PNG/AngryCloud.png");
-
-	//uv coords. form (x , y , x offset , y offset)
-	//it's kinda weird to componsate for the fact that opengl's texture coords are upside-down
-	glm::vec4 uvRect(1, 1, -1, -1);
-
-	//color gets multiplied by texture color
-	Engine::Color color;
-	//right now it's just plain white
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	color.a = 255;
 
 	//render dungeon
 	_dungeon.render(_hallwayBatcher, _otherBatcher);
