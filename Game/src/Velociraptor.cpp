@@ -11,10 +11,25 @@
 #include <Engine/Include/ResourceManager.h>
 #include <glm/glm.hpp>
 #include <iostream>
+#include "TileFlags.h"
 
 Velociraptor::Velociraptor() :
 		GameEntity(VELOCIRAPTOR_SIZE) {
-	_position = glm::vec2(20 + renderSize / 2, 20 + renderSize / 2);
+	int rng = std::rand() % 4;
+	switch (rng) {
+	case 0:
+		currentDir = UP;
+		break;
+	case 1:
+		currentDir = DOWN;
+		break;
+	case 2:
+		currentDir = RIGHT;
+		break;
+	case 3:
+		currentDir = LEFT;
+		break;
+	}
 }
 
 Velociraptor::~Velociraptor() {
@@ -37,7 +52,6 @@ void Velociraptor::render(Engine::SpriteBatch& batcher) const {
 }
 
 void Velociraptor::ai(GameEntity& target, Dungeon& map) {
-	//convert pos to tile co0rds
 	glm::ivec2 currentPos((_position.x + renderSize / 2) / map.scale,
 			(_position.y + renderSize / 2) / map.scale);
 
@@ -74,25 +88,80 @@ void Velociraptor::ai(GameEntity& target, Dungeon& map) {
 			dir = RIGHT;
 		}
 
-		if (max == 0 && glm::length(dir)) {
-			int rng = std::rand() % 4;
-			switch (rng) {
-			case 0:
-				dir = UP;
-				break;
-			case 1:
-				dir = DOWN;
-				break;
-			case 2:
-				dir = RIGHT;
-				break;
-			case 3:
-				dir = LEFT;
-				break;
+		if (max == 0) {
+			if (currentDir == UP) {
+				if (!(map.tileArray[map.getIndex(currentPos.x, currentPos.y + 1)]
+						& NAVIGABLE)) {
+					int rng = std::rand() % 3;
+					switch (rng) {
+					case 0:
+						currentDir = LEFT;
+						break;
+					case 1:
+						currentDir = DOWN;
+						break;
+					case 2:
+						currentDir = RIGHT;
+						break;
+					}
+				}
+			}
+			if (currentDir == DOWN) {
+				if (!(map.tileArray[map.getIndex(currentPos.x, currentPos.y - 1)]
+						& NAVIGABLE)) {
+					int rng = std::rand() % 3;
+					switch (rng) {
+					case 0:
+						currentDir = LEFT;
+						break;
+					case 1:
+						currentDir = UP;
+						break;
+					case 2:
+						currentDir = RIGHT;
+						break;
+					}
+				}
+			}
+			if (currentDir == LEFT) {
+				if (!(map.tileArray[map.getIndex(currentPos.x - 1, currentPos.y)]
+						& NAVIGABLE)) {
+					int rng = std::rand() % 3;
+					switch (rng) {
+					case 0:
+						currentDir = DOWN;
+						break;
+					case 1:
+						currentDir = UP;
+						break;
+					case 2:
+						currentDir = RIGHT;
+						break;
+					}
+				}
+			}
+			if (currentDir == RIGHT) {
+				if (!(map.tileArray[map.getIndex(currentPos.x + 1, currentPos.y)]
+						& NAVIGABLE)) {
+					int rng = std::rand() % 3;
+					switch (rng) {
+					case 0:
+						currentDir = DOWN;
+						break;
+					case 1:
+						currentDir = UP;
+						break;
+					case 2:
+						currentDir = LEFT;
+						break;
+					}
+				}
 			}
 		}
 
-		currentDir = dir;
+		if (max != 0) {
+			currentDir = dir;
+		}
 		if (currentDir == UP || currentDir == DOWN) {
 			_position.x = currentPos.x * map.scale + map.scale / 2
 					- renderSize / 2;
