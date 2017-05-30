@@ -57,6 +57,10 @@ private:
 	void breakMaze();
 	void cullDeadEnds();
 	void tunnel(glm::ivec2 start, unsigned char dir, unsigned char otherFlags);
+
+	int getIndex(int x, int y) {
+		return x * _gridSize * 3 + y;
+	}
 };
 
 #endif /* DUNGEONGENERATOR_H_ */

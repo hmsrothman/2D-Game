@@ -8,6 +8,7 @@
 #include <Game/src/DungeonGenerator.h>
 #include <random>
 #include <stack>
+#include <iostream>
 
 DungeonGenerator::DungeonGenerator() {
 }
@@ -20,7 +21,7 @@ void DungeonGenerator::generate(unsigned char** out_tileArray,
 		int* out_gridSize) {
 
 	subTiles = (unsigned char*) malloc(
-			_gridSize * 3 * _gridSize * 3 * sizeof(unsigned char));
+			(_gridSize * 3) * (_gridSize * 3) * sizeof(unsigned char));
 	prepare();
 	placeRooms();
 	buildHallways();
@@ -28,7 +29,7 @@ void DungeonGenerator::generate(unsigned char** out_tileArray,
 	cullDeadEnds();
 	fillSubTiles();
 	*out_tileArray = subTiles;
-	*out_gridSize = _gridSize;
+	*out_gridSize = _gridSize * 3;
 }
 
 void DungeonGenerator::prepare() {
@@ -43,7 +44,7 @@ void DungeonGenerator::prepare() {
 	}
 	for (int x = 0; x < _gridSize * 3; x++) {
 		for (int y = 0; y < _gridSize * 3; y++) {
-			subTiles[x * _gridSize * y] = 0;
+			subTiles[getIndex(x, y)] = 0;
 		}
 	}
 
@@ -328,34 +329,34 @@ void DungeonGenerator::fillSubTiles() {
 				if (tileType == HALLWAY) {
 					for (int dx = 0; dx < 3; dx++) {
 						for (int dy = 0; dy < 3; dy++) {
-							subTiles[(sx + dx) * _gridSize * 3 + (sy + dy)] =
-									tileType;
-							subTiles[(sx + dx) * _gridSize * 3 + (sy + dy)] &=
-									~NAVIGABLE;
+							subTiles[getIndex(sx + dx, sy + dy)] = tileType;
+							subTiles[getIndex(sx + dx, sy + dy)] &= ~NAVIGABLE;
 						}
 					}
 
-					subTiles[(sx + 1) * _gridSize * 3 + (sy + 1)] |= NAVIGABLE;
+					subTiles[getIndex(sx + 1, sy + 1)] |= NAVIGABLE;
 
 					if (tiles[x][y].flags & LEFT) {
-						subTiles[sx * _gridSize * 3 + sy + 1] |= NAVIGABLE;
+						subTiles[getIndex(sx, sy + 1)] |= NAVIGABLE;
 					}
 
 					if (tiles[x][y].flags & RIGHT) {
-						subTiles[(sx + 2)*_gridSize*3 +sy + 1] |= NAVIGABLE;
+						subTiles[getIndex(sx + 2, sy + 1)] |= NAVIGABLE;
 					}
 
 					if (tiles[x][y].flags & UP) {
-						subTiles[(sx + 1)*_gridSize*3 +sy + 2] |= NAVIGABLE;
+						subTiles[(sx + 1) * _gridSize * 3 + sy + 2] |=
+								NAVIGABLE;
 					}
 
 					if (tiles[x][y].flags & DOWN) {
-						subTiles[(sx + 1)*_gridSize*3 +sy] |= NAVIGABLE;
+						subTiles[(sx + 1) * _gridSize * 3 + sy] |= NAVIGABLE;
 					}
 				} else if (tileType == ROOM || tileType == DOORWAY) {
 					for (int dx = 0; dx < 3; dx++) {
 						for (int dy = 0; dy < 3; dy++) {
-							subTiles[(sx + dx)*_gridSize*3 +sy + dy] = tileType | NAVIGABLE;
+							subTiles[(sx + dx) * _gridSize * 3 + sy + dy] =
+									tileType | NAVIGABLE;
 						}
 					}
 				}

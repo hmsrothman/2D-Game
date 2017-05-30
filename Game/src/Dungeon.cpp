@@ -18,7 +18,7 @@ Dungeon::Dungeon() {
 }
 
 Dungeon::~Dungeon() {
-//	delete (tileArray);
+	delete (tileArray);
 }
 
 void Dungeon::genMap() {
@@ -43,12 +43,12 @@ void Dungeon::render(Engine::SpriteBatch& hallwayBatcher,
 	 }
 	 }*/
 
-	for (int x = 0; x < gridSize * 3; x++) {
-		for (int y = 0; y < gridSize * 3; y++) {
+	for (int x = 0; x < gridSize; x++) {
+		for (int y = 0; y < gridSize; y++) {
 			//	std::cout << x << " , " << y << std::endl;
 			if (tileArray[getIndex(x, y)] & NAVIGABLE) {
 				renderSubTile(hallwayBatcher, otherBatcher, x, y,
-						(unsigned char) tileArray[getIndex(x, y)] & TILE_TYPE);
+						tileArray[getIndex(x, y)] & TILE_TYPE);
 			}
 		}
 	}
