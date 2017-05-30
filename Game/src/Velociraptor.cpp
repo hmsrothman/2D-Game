@@ -21,7 +21,7 @@ Velociraptor::Velociraptor() :
 Velociraptor::~Velociraptor() {
 }
 
-void Velociraptor::render(Engine::SpriteBatch& batcher) { //this doesn't work for some reason
+void Velociraptor::render(Engine::SpriteBatch& batcher) const{
 	static Engine::GL_Texture playerTexture =
 			Engine::ResourceManager::getTexture(
 					"jimmyjump_pack/PNG/CharacterLeft_Jump.png");

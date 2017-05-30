@@ -21,6 +21,7 @@
 #include "Engine/Include/Timing.h"
 #include "Dungeon.h"
 #include "Player.h"
+#include "DungeonRenderer.h"
 
 class MainGame {
 	enum GameState {
@@ -49,6 +50,7 @@ private:
 
 	Player _player;
 	Dungeon _dungeon;
+	DungeonRenderer _dungeonRenderer;
 
 	void initSystems(); //init method. calls the other init method
 	void initShaders(); //the other init method

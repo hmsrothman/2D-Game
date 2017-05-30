@@ -192,7 +192,7 @@ void MainGame::drawGame() {
 	_otherBatcher.begin(Engine::GlyphSortType::TEXTURE);
 
 	//render dungeon
-	_dungeon.render(_hallwayBatcher, _otherBatcher);
+	_dungeonRenderer.render(_dungeon, _hallwayBatcher, _otherBatcher);
 	_dungeon.velociraptors[0].ai(_player, _dungeon);
 
 	//lets render the player too

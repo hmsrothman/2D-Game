@@ -18,7 +18,7 @@ public:
 	Velociraptor();
 	virtual ~Velociraptor();
 
-	void render(Engine::SpriteBatch& batcher);
+	void render(Engine::SpriteBatch& batcher) const;
 
 	static const int VELOCIRAPTOR_SIZE = 7;
 	static constexpr float SPEED = 1;

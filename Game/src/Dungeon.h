@@ -25,27 +25,20 @@ public:
 	Dungeon();
 	virtual ~Dungeon();
 
+	int scale = 20;
+
 	unsigned char * tileArray = nullptr;
 	int gridSize = 0;
 
-	const static int GRID_SCALE = 20;
-
 	void genMap();
-
-	void render(Engine::SpriteBatch &hallwayBatcher,
-			Engine::SpriteBatch& otherBatcher);
 
 	std::vector<Velociraptor> velociraptors;
 
 	void playerWalkOnTile(glm::ivec2 tile);
 	unsigned int queryTile(glm::ivec2 tile);
 
-	int getIndex(int x, int y);
+	int getIndex(int x, int y) const;
 private:
-	void renderSubTile(Engine::SpriteBatch&hallwayBatcher,
-			Engine::SpriteBatch&otherBatcher, int x, int y,
-			unsigned char tileType);
-
 	std::map<glm::ivec2, unsigned int, vecCompare> _playerTrail;
 
 };

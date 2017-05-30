@@ -10,51 +10,59 @@
 
 void GameEntity::move(glm::vec2 translation, Dungeon& map) {
 	glm::vec2 pos = _position;
-	int currentX = pos.x / map.GRID_SCALE;
-	int currentY = pos.y / map.GRID_SCALE;
+	int currentX = pos.x / map.scale;
+	int currentY = pos.y / map.scale;
 
 	glm::vec2 destination = pos + translation;
-	int destinationX = destination.x / map.GRID_SCALE;
-	int destinationY = destination.y / map.GRID_SCALE;
+	int destinationX = destination.x / map.scale;
+	int destinationY = destination.y / map.scale;
 
-	bool botLeftCantMove = (map.tileArray[map.getIndex(currentX,currentY)] & NAVIGABLE)
-			&& !((map.tileArray[map.getIndex(destinationX,destinationY)] & NAVIGABLE));
+	bool botLeftCantMove = (map.tileArray[map.getIndex(currentX, currentY)]
+			& NAVIGABLE)
+			&& !((map.tileArray[map.getIndex(destinationX, destinationY)]
+					& NAVIGABLE));
 
 	pos += glm::vec2(renderSize, 0);
 
-	currentX = pos.x / map.GRID_SCALE;
-	currentY = pos.y / map.GRID_SCALE;
+	currentX = pos.x / map.scale;
+	currentY = pos.y / map.scale;
 
 	destination = pos + translation;
-	destinationX = destination.x / map.GRID_SCALE;
-	destinationY = destination.y / map.GRID_SCALE;
+	destinationX = destination.x / map.scale;
+	destinationY = destination.y / map.scale;
 
-	bool botRightCantMove = (map.tileArray[map.getIndex(currentX,currentY)] & NAVIGABLE)
-			&& !((map.tileArray[map.getIndex(destinationX,destinationY)] & NAVIGABLE));
+	bool botRightCantMove = (map.tileArray[map.getIndex(currentX, currentY)]
+			& NAVIGABLE)
+			&& !((map.tileArray[map.getIndex(destinationX, destinationY)]
+					& NAVIGABLE));
 
 	pos += glm::vec2(0, renderSize);
 
-	currentX = pos.x / map.GRID_SCALE;
-	currentY = pos.y / map.GRID_SCALE;
+	currentX = pos.x / map.scale;
+	currentY = pos.y / map.scale;
 
 	destination = pos + translation;
-	destinationX = destination.x / map.GRID_SCALE;
-	destinationY = destination.y / map.GRID_SCALE;
+	destinationX = destination.x / map.scale;
+	destinationY = destination.y / map.scale;
 
-	bool topRightCantMove = (map.tileArray[map.getIndex(currentX,currentY)] & NAVIGABLE)
-			&& !((map.tileArray[map.getIndex(destinationX,destinationY)] & NAVIGABLE));
+	bool topRightCantMove = (map.tileArray[map.getIndex(currentX, currentY)]
+			& NAVIGABLE)
+			&& !((map.tileArray[map.getIndex(destinationX, destinationY)]
+					& NAVIGABLE));
 
 	pos -= glm::vec2(renderSize, 0);
 
-	currentX = pos.x / map.GRID_SCALE;
-	currentY = pos.y / map.GRID_SCALE;
+	currentX = pos.x / map.scale;
+	currentY = pos.y / map.scale;
 
 	destination = pos + translation;
-	destinationX = destination.x / map.GRID_SCALE;
-	destinationY = destination.y / map.GRID_SCALE;
+	destinationX = destination.x / map.scale;
+	destinationY = destination.y / map.scale;
 
-	bool topLeftCantMove = (map.tileArray[map.getIndex(currentX,currentY)] & NAVIGABLE)
-			&& !((map.tileArray[map.getIndex(destinationX,destinationY)] & NAVIGABLE));
+	bool topLeftCantMove = (map.tileArray[map.getIndex(currentX, currentY)]
+			& NAVIGABLE)
+			&& !((map.tileArray[map.getIndex(destinationX, destinationY)]
+					& NAVIGABLE));
 
 	if (topLeftCantMove || topRightCantMove || botLeftCantMove
 			|| botRightCantMove) {
