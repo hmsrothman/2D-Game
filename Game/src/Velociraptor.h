@@ -20,7 +20,7 @@ public:
 
 	void render(Engine::SpriteBatch& batcher) const;
 
-	static const int VELOCIRAPTOR_SIZE = 7;
+	static const int VELOCIRAPTOR_SIZE = 10;
 	static constexpr float SPEED = 1;
 
 	void ai(GameEntity& target, Dungeon& map);

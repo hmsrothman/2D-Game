@@ -74,6 +74,24 @@ void Velociraptor::ai(GameEntity& target, Dungeon& map) {
 			dir = RIGHT;
 		}
 
+		if (max == 0 && glm::length(dir)) {
+			int rng = std::rand() % 4;
+			switch (rng) {
+			case 0:
+				dir = UP;
+				break;
+			case 1:
+				dir = DOWN;
+				break;
+			case 2:
+				dir = RIGHT;
+				break;
+			case 3:
+				dir = LEFT;
+				break;
+			}
+		}
+
 		currentDir = dir;
 		if (currentDir == UP || currentDir == DOWN) {
 			_position.x = currentPos.x * map.scale + map.scale / 2
@@ -86,6 +104,6 @@ void Velociraptor::ai(GameEntity& target, Dungeon& map) {
 	}
 }
 
-void Velociraptor::kill(){
+void Velociraptor::kill() {
 
 }

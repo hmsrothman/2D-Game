@@ -29,9 +29,7 @@ MainGame::~MainGame() {
  * starts game
  */
 void MainGame::run() {
-	std::cout << "wtf" << std::endl;
 	initSystems();
-	std::cout << "wtf" << std::endl;
 	gameLoop();
 }
 
@@ -54,7 +52,9 @@ void MainGame::initSystems() {
 //	_dungeon.prepare();
 //	_dungeon.placeRooms();
 	_dungeon.genMap();
-	_dungeon.spawnVelociraptor();
+	for (int i = 0; i < 400; i++) {
+		_dungeon.spawnVelociraptor();
+	}
 
 	bool playerGood = false;
 	while (!playerGood) {
@@ -148,12 +148,13 @@ void MainGame::processInput() {
 	if (_inputManager.isKeyPressed(SDLK_RIGHT)) {
 		_player.move(glm::vec2(PLAYER_SPEED, 0), _dungeon);
 	}
-	_player.move(glm::vec2(0, 0), _dungeon);
 
 	//mouse
 	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
 		glm::vec2 coords = _inputManager.getMouseCoords();
 		coords = _camera.convertScreenToWorld(coords);
+		coords = _player.getPosition() - coords;
+		coords = glm::normalize(coords);
 		std::cout << coords.x << " , " << coords.y << std::endl;
 	}
 }
@@ -185,6 +186,9 @@ void MainGame::gameLoop() {
 }
 
 void MainGame::ded() {
+	_player.setPosition(glm::vec2(0, 0));
+	_camera.setPosition(glm::vec2(0, 0));
+	_camera.update();
 	glClearDepth(1.0);
 	_colorProgram.use();
 	glActiveTexture(GL_TEXTURE0);
@@ -234,7 +238,9 @@ void MainGame::drawGame() {
 	//render dungeon
 	_dungeonRenderer.render(_dungeon, _hallwayBatcher, _otherBatcher);
 
-	_dungeon.velociraptors[0].ai(_player, _dungeon);
+	for (int i = 0; i < 400; i++) {
+		_dungeon.velociraptors[i].ai(_player, _dungeon);
+	}
 
 	//lets render the player too
 	_player.render(_otherBatcher);
