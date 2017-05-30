@@ -22,9 +22,16 @@ public:
 	virtual ~GameEntity() {
 
 	}
+	void setPosition(glm::vec2 newPos) {
+		_position = newPos;
+	}
 	int renderSize;
 	void move(glm::vec2 translation, Dungeon& map);
-	virtual void render(Engine::SpriteBatch& batcher) = 0;
+	virtual void render(Engine::SpriteBatch& batcher) const = 0;
+
+	virtual void kill()=0;
+
+	const static glm::ivec2 UP, DOWN, LEFT, RIGHT;
 };
 
 #endif /* GAMEENTITY_H_ */

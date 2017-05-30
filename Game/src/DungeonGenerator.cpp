@@ -56,6 +56,8 @@ void DungeonGenerator::prepare() {
 }
 
 void DungeonGenerator::placeRooms() {
+
+	//rooms.emplace_back(0, 0, 5, 5);
 	std::default_random_engine generator;
 	std::normal_distribution<float> distribution(_roomSizeMean, _roomSizeVar);
 

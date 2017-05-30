@@ -23,10 +23,12 @@ Player::~Player() {
 void Player::move(glm::vec2 displacement, Dungeon& map) {
 	GameEntity::move(displacement, map);
 	map.playerWalkOnTile(
-			glm::ivec2(_position.x / map.scale, _position.y / map.scale));
+			glm::ivec2((_position.x + renderSize / 2) / map.scale,
+					(_position.y + renderSize / 2) / map.scale));
 }
 
-void Player::render(Engine::SpriteBatch& batcher) { //this doesn't work for some reason
+void Player::render(Engine::SpriteBatch& batcher) const {
+
 	static Engine::GL_Texture playerTexture =
 			Engine::ResourceManager::getTexture(
 					"jimmyjump_pack/PNG/AngryCloud.png");
@@ -39,4 +41,9 @@ void Player::render(Engine::SpriteBatch& batcher) { //this doesn't work for some
 	color.a = 255;
 	glm::vec4 destRect(_position.x, _position.y, PLAYER_SIZE, PLAYER_SIZE);
 	batcher.draw(destRect, uvRect, playerTexture.id, 0, color);
+}
+
+void Player::kill() {
+	std::cout << "u ded" << std::endl;
+	isded = true;
 }

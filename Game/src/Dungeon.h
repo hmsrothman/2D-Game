@@ -16,7 +16,7 @@ class Velociraptor;
 
 struct vecCompare: public std::binary_function<glm::ivec2, glm::ivec2, bool> {
 	bool operator()(const glm::ivec2& lhs, const glm::ivec2& rhs) const {
-		return lhs.x + lhs.y < rhs.x + rhs.y;
+		return lhs.x * 300 + lhs.y < (rhs.x * 300 + rhs.y); //this magic number is equal to gridSize. not sure how to pass ite
 	}
 };
 
@@ -31,6 +31,7 @@ public:
 	int gridSize = 0;
 
 	void genMap();
+	void spawnVelociraptor();
 
 	std::vector<Velociraptor> velociraptors;
 
@@ -39,7 +40,7 @@ public:
 
 	int getIndex(int x, int y) const;
 private:
-	std::map<glm::ivec2, unsigned int, vecCompare> _playerTrail;
+	std::map<int, unsigned int> _playerTrail;
 
 };
 

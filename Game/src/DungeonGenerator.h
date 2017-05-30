@@ -36,7 +36,7 @@ private:
 	int _roomSizeMean = 5;
 	int _roomSizeVar = 1;
 	int _roomAttempts = 400;
-	int _mazeBreakChance = 500;
+	int _mazeBreakChance = 1;
 	const static int _gridSize = 100;
 
 	MazeGenTile* _current = nullptr;

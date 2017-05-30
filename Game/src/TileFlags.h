@@ -24,5 +24,4 @@ enum TileFlags
 	NAVIGABLE = 0b10000000,
 };
 
-
 #endif /* TILEFLAGS_H_ */

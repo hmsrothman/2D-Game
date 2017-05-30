@@ -27,12 +27,26 @@ void Dungeon::genMap() {
 	gen.generate(&tileArray, &gridSize);
 }
 
+void Dungeon::spawnVelociraptor() {
+	Velociraptor newRaptor;
+	bool velGood = false;
+	while (!velGood) {
+		int x = std::rand() % gridSize;
+		int y = std::rand() % gridSize;
+		if (tileArray[getIndex(x, y)] & NAVIGABLE) {
+			newRaptor.setPosition(glm::vec2(x * scale, y * scale)); //or something. probably find a seed and put them there
+			velGood = true;
+		}
+	}
+	velociraptors.push_back(newRaptor);
+}
+
 void Dungeon::playerWalkOnTile(glm::ivec2 tile) {
-	_playerTrail[tile] = SDL_GetTicks();
+	_playerTrail[getIndex(tile.x, tile.y)] = SDL_GetTicks();
 }
 
 unsigned int Dungeon::queryTile(glm::ivec2 tile) {
-	auto it = _playerTrail.find(tile);
+	auto it = _playerTrail.find(getIndex(tile.x, tile.y));
 	if (it != _playerTrail.end()) {
 		return it->second;
 	} else {

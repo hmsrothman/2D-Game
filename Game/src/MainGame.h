@@ -60,6 +60,8 @@ private:
 
 	float _fps;	//frames per second. computer by the limiter
 	float _maxFPS;	//max allowable fps. passed to the limiter
+
+	void ded();
 };
 
 #endif /* MAINGAME_H_ */

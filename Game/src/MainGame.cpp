@@ -12,6 +12,7 @@
 #include "Engine/Include/Vertex.h"
 #include <iostream>
 #include "Velociraptor.h"
+#include "TileFlags.h"
 /**
  * Constructor only initializes variables
  */
@@ -53,8 +54,18 @@ void MainGame::initSystems() {
 //	_dungeon.prepare();
 //	_dungeon.placeRooms();
 	_dungeon.genMap();
+	_dungeon.spawnVelociraptor();
 
-	_player.setPosition(glm::vec2(0, 0)); //or something. probably find a seed and put them there
+	bool playerGood = false;
+	while (!playerGood) {
+		int x = std::rand() % _dungeon.gridSize;
+		int y = std::rand() % _dungeon.gridSize;
+		if (_dungeon.tileArray[_dungeon.getIndex(x, y)] & NAVIGABLE) {
+			_player.setPosition(
+					glm::vec2(x * _dungeon.scale, y * _dungeon.scale)); //or something. probably find a seed and put them there
+			playerGood = true;
+		}
+	}
 	_camera.lockToEntity(&_player);
 }
 
@@ -137,6 +148,7 @@ void MainGame::processInput() {
 	if (_inputManager.isKeyPressed(SDLK_RIGHT)) {
 		_player.move(glm::vec2(PLAYER_SPEED, 0), _dungeon);
 	}
+	_player.move(glm::vec2(0, 0), _dungeon);
 
 	//mouse
 	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
@@ -148,11 +160,15 @@ void MainGame::processInput() {
 
 void MainGame::gameLoop() {
 	while (_gameState != GameState::EXIT) {
+
 		_fpsLimiter.begin();
 		processInput();
 		_camera.update();
-
-		drawGame();
+		if (!_player.isded) {
+			drawGame();
+		} else {
+			ded();
+		}
 
 		_fps = _fpsLimiter.end();
 		//_dungeon.iterateMaze();
@@ -164,7 +180,31 @@ void MainGame::gameLoop() {
 			std::cout << _fps << std::endl;
 			frameCounter = 0;
 		}
+
 	}
+}
+
+void MainGame::ded() {
+	glClearDepth(1.0);
+	_colorProgram.use();
+	glActiveTexture(GL_TEXTURE0);
+	GLint textureLocation = _colorProgram.getUniformLocation("sampler");
+	glUniform1i(textureLocation, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	static Engine::GL_Texture dedTexture = Engine::ResourceManager::getTexture(
+			"endgame.png");
+	_otherBatcher.begin();
+	glm::vec4 destRect(-300, -300, 300, 300);
+	glm::vec4 uvRect(0, 0, 1, -1);
+	Engine::Color color;
+	color.r = 255;
+	color.g = 255;
+	color.b = 255;
+	color.a = 255;
+	_otherBatcher.draw(destRect, uvRect, dedTexture.id, 0, color);
+	_otherBatcher.end();
+	_otherBatcher.renderBatch();
+	_window.swapBuffers();
 }
 
 void MainGame::drawGame() {
@@ -193,6 +233,7 @@ void MainGame::drawGame() {
 
 	//render dungeon
 	_dungeonRenderer.render(_dungeon, _hallwayBatcher, _otherBatcher);
+
 	_dungeon.velociraptors[0].ai(_player, _dungeon);
 
 	//lets render the player too

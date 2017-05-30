@@ -8,6 +8,11 @@
 #include "GameEntity.h"
 #include "TileFlags.h"
 
+const glm::ivec2 GameEntity::UP(0, 1);
+const glm::ivec2 GameEntity::DOWN(0, -1);
+const glm::ivec2 GameEntity::RIGHT(1, 0);
+const glm::ivec2 GameEntity::LEFT(-1, 0);
+
 void GameEntity::move(glm::vec2 translation, Dungeon& map) {
 	glm::vec2 pos = _position;
 	int currentX = pos.x / map.scale;

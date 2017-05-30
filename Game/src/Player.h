@@ -19,13 +19,13 @@ public:
 
 	const static int PLAYER_SIZE = 10;
 
-	void setPosition(glm::vec2 newPos) {
-		_position = newPos;
-	}
-	void render(Engine::SpriteBatch& batcher); // this appears to not work
+	void render(Engine::SpriteBatch& batcher) const; // this appears to not work
 
 	void move(glm::vec2 displacement, Dungeon& map);
 
+	void kill();
+
+	bool isded=false;
 private:
 };
 
