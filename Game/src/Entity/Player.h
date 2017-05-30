@@ -9,8 +9,8 @@
 #define PLAYER_H_
 
 #include <glm/glm.hpp>
-#include "Dungeon.h"
 #include "GameEntity.h"
+#include "../Dungeon/Dungeon.h"
 
 class Player: public GameEntity {
 public:

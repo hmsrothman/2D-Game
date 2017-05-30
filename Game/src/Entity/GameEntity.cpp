@@ -6,7 +6,7 @@
  */
 
 #include "GameEntity.h"
-#include "TileFlags.h"
+#include "../Dungeon/TileFlags.h"
 
 const glm::ivec2 GameEntity::UP(0, 1);
 const glm::ivec2 GameEntity::DOWN(0, -1);

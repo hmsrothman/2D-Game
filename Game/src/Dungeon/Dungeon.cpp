@@ -9,7 +9,7 @@
 #include <Engine/Include/Vertex.h>
 #include <Engine/Include/GLTexture.h>
 #include <Engine/Include/ResourceManager.h>
-#include "Velociraptor.h"
+#include "../Entity/Velociraptor.h"
 #include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
 #include "DungeonGenerator.h"
 #include "TileFlags.h"

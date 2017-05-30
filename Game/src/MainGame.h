@@ -19,9 +19,9 @@
 #include "Engine/Include/SpriteBatch.h"
 #include "Engine/Include/InputManager.h"
 #include "Engine/Include/Timing.h"
-#include "Dungeon.h"
-#include "Player.h"
-#include "DungeonRenderer.h"
+#include "Entity/Player.h"
+#include "Dungeon/DungeonRenderer.h"
+#include "Dungeon/Dungeon.h"
 
 class MainGame {
 	enum GameState {

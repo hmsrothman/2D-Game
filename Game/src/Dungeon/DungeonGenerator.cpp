@@ -5,7 +5,7 @@
  *      Author: Simon
  */
 
-#include <Game/src/DungeonGenerator.h>
+#include "DungeonGenerator.h"
 #include <random>
 #include <stack>
 #include <iostream>

@@ -9,7 +9,7 @@
 #include "TileFlags.h"
 #include <Engine/Include/GLTexture.h>
 #include <Engine/Include/ResourceManager.h>
-#include "Velociraptor.h"
+#include "../Entity/Velociraptor.h"
 
 DungeonRenderer::DungeonRenderer() {
 

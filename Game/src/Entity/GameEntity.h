@@ -10,7 +10,7 @@
 
 #include <Engine/Include/Entity.h>
 #include <glm/glm.hpp>
-#include "Dungeon.h"
+#include "../Dungeon/Dungeon.h"
 
 class Dungeon;
 

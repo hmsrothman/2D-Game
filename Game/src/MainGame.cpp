@@ -11,8 +11,8 @@
 #include "Engine/Include/ResourceManager.h"
 #include "Engine/Include/Vertex.h"
 #include <iostream>
-#include "Velociraptor.h"
-#include "TileFlags.h"
+#include "Entity/Velociraptor.h"
+#include "Dungeon/TileFlags.h"
 /**
  * Constructor only initializes variables
  */

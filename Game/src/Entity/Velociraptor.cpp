@@ -5,13 +5,13 @@
  *      Author: Simon
  */
 
-#include "Velociraptor.h"
 #include <Engine/Include/Vertex.h>
 #include <Engine/Include/GLTexture.h>
 #include <Engine/Include/ResourceManager.h>
 #include <glm/glm.hpp>
+#include "Velociraptor.h"
 #include <iostream>
-#include "TileFlags.h"
+#include "../Dungeon/TileFlags.h"
 
 Velociraptor::Velociraptor() :
 		GameEntity(VELOCIRAPTOR_SIZE) {

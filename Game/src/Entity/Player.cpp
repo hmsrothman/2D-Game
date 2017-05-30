@@ -5,13 +5,13 @@
  *      Author: Simon
  */
 
-#include "Player.h"
 #include <iostream>
 #include <unordered_set>
 #include <Engine/Include/ResourceManager.h>
 #include <Engine/Include/Vertex.h>
-#include "Dungeon.h"
 #include "GameEntity.h"
+#include "Player.h"
+#include "../Dungeon/Dungeon.h"
 
 Player::Player() :
 		GameEntity(PLAYER_SIZE) {

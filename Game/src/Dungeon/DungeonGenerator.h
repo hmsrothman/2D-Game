@@ -8,7 +8,7 @@
 #ifndef DUNGEONGENERATOR_H_
 #define DUNGEONGENERATOR_H_
 
-#include "Rectangle.h"
+#include "../Rectangle.h"
 #include <stack>
 #include <vector>
 #include "TileFlags.h"
