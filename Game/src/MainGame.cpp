@@ -11,15 +11,23 @@
 #include "Engine/Include/ResourceManager.h"
 #include "Engine/Include/Vertex.h"
 #include <iostream>
+<<<<<<< HEAD
 #include "Velociraptor.h"
 #include "Engine/Include/Camera2D.h"
+=======
+#include "Entity/Velociraptor.h"
+#include "Dungeon/TileFlags.h"
+#include "Items/Gun.h"
+
+>>>>>>> refs/remotes/origin/master
 /**
  * Constructor only initializes variables
  */
 MainGame::MainGame() :
 		_screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _fps(
-				0), _maxFPS(60) {
+				0), _maxFPS(60), _player(&_inputManager, &_camera) {
 	_camera.init(_screenWidth, _screenHeight);
+
 }
 
 MainGame::~MainGame() {
@@ -29,9 +37,13 @@ MainGame::~MainGame() {
  * starts game
  */
 void MainGame::run() {
+<<<<<<< HEAD
 	std::cout << "it is running" << std::endl;
 	initSystems();
 	std::cout << "init good sys" << std::endl;
+=======
+	initSystems();
+>>>>>>> refs/remotes/origin/master
 	gameLoop();
 }
 
@@ -55,11 +67,31 @@ void MainGame::initSystems() {
 
 //	_dungeon.prepare();
 //	_dungeon.placeRooms();
+<<<<<<< HEAD
 	_dungeon.generate();
 	std::cout << "gen dung" << std::endl;
 
 	_player.setPosition(glm::vec2(0, 0)); //or something. probably find a seed and put them there
 	std::cout << "place player, all done" << std::endl;
+=======
+	_dungeon.genMap();
+	for (int i = 0; i < 400; i++) {
+		_dungeon.spawnVelociraptor();
+	}
+
+	bool playerGood = false;
+	while (!playerGood) {
+		int x = std::rand() % _dungeon.gridSize;
+		int y = std::rand() % _dungeon.gridSize;
+		if (_dungeon.tileArray[_dungeon.getIndex(x, y)] & NAVIGABLE) {
+			_player.setPosition(
+					glm::vec2(x * _dungeon.scale, y * _dungeon.scale)); //or something. probably find a seed and put them there
+			playerGood = true;
+		}
+	}
+
+	_player.addGun(new Gun("Magnum", 60, 1, 0.1f, 5, 5));
+>>>>>>> refs/remotes/origin/master
 	_camera.lockToEntity(&_player);
 }
 
@@ -105,73 +137,76 @@ void MainGame::processInput() {
 		}
 	}
 
-	//act on keyboard events
-	if (_inputManager.isKeyPressed(SDLK_w)) {
-		_camera.setPosition(_camera.getPosition() + glm::vec2(0, CAMERA_SPEED));
-	}
-	if (_inputManager.isKeyPressed(SDLK_a)) {
-		_camera.setPosition(
-				_camera.getPosition() + glm::vec2(-CAMERA_SPEED, 0));
-	}
-	if (_inputManager.isKeyPressed(SDLK_s)) {
-		_camera.setPosition(
-				_camera.getPosition() + glm::vec2(0, -CAMERA_SPEED));
-	}
-	if (_inputManager.isKeyPressed(SDLK_d)) {
-		_camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0));
-	}
 	if (_inputManager.isKeyPressed(SDLK_q)) {
-		_camera.setScale(_camera.getScale() * (SCALE_SPEED + 1));
+		_camera.setScale(_camera.getScale() * (1 + SCALE_SPEED));
 	}
+
 	if (_inputManager.isKeyPressed(SDLK_e)) {
 		_camera.setScale(_camera.getScale() * (1 - SCALE_SPEED));
-	}
-
-	//we'll probably bind the camera to the player later, but for now arrow keys move the player
-	if (_inputManager.isKeyPressed(SDLK_UP)) {
-		_player.move(glm::vec2(0, PLAYER_SPEED), _dungeon);
-	}
-	if (_inputManager.isKeyPressed(SDLK_DOWN)) {
-
-		_player.move(glm::vec2(0, -PLAYER_SPEED), _dungeon);
-	}
-	if (_inputManager.isKeyPressed(SDLK_LEFT)) {
-
-		_player.move(glm::vec2(-PLAYER_SPEED, 0), _dungeon);
-	}
-	if (_inputManager.isKeyPressed(SDLK_RIGHT)) {
-		_player.move(glm::vec2(PLAYER_SPEED, 0), _dungeon);
-	}
-
-	//mouse
-	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
-		glm::vec2 coords = _inputManager.getMouseCoords();
-		coords = _camera.convertScreenToWorld(coords);
-		std::cout << coords.x << " , " << coords.y << std::endl;
 	}
 }
 
 void MainGame::gameLoop() {
 	std::cout << "enter game loop" << std::endl;
 	while (_gameState != GameState::EXIT) {
+
 		_fpsLimiter.begin();
 		processInput();
 		_camera.update();
+		if (!_player.isded) {
+			drawGame();
+		} else {
+			ded();
+		}
 
-		drawGame();
+		_player.update(_dungeon.bullets);
 
 		_fps = _fpsLimiter.end();
+<<<<<<< HEAD
 		//_dungeon.iterateMaze();
 		//_dungeon.fillSubTiles();
 
 
+=======
+		_dungeonController.updatePlayer(_player, _inputManager, _dungeon,
+				_camera);
+		_dungeonController.updateRaptors(_dungeon.velociraptors, _player,
+				_dungeon);
+>>>>>>> refs/remotes/origin/master
 		//print fps every 10 frames
 		static int frameCounter = 0;
 		if (frameCounter++ == 60) {
 			std::cout << _fps << std::endl;
 			frameCounter = 0;
 		}
+
 	}
+}
+
+void MainGame::ded() {
+	_player.setPosition(glm::vec2(0, 0));
+	_camera.setPosition(glm::vec2(0, 0));
+	_camera.update();
+	glClearDepth(1.0);
+	_colorProgram.use();
+	glActiveTexture(GL_TEXTURE0);
+	GLint textureLocation = _colorProgram.getUniformLocation("sampler");
+	glUniform1i(textureLocation, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	static Engine::GL_Texture dedTexture = Engine::ResourceManager::getTexture(
+			"endgame.png");
+	_otherBatcher.begin();
+	glm::vec4 destRect(-300, -300, 300, 300);
+	glm::vec4 uvRect(0, 0, 1, -1);
+	Engine::Color color;
+	color.r = 255;
+	color.g = 255;
+	color.b = 255;
+	color.a = 255;
+	_otherBatcher.draw(destRect, uvRect, dedTexture.id, 0, color);
+	_otherBatcher.end();
+	_otherBatcher.renderBatch();
+	_window.swapBuffers();
 }
 
 void MainGame::drawGame() {
@@ -198,25 +233,8 @@ void MainGame::drawGame() {
 														//therefore, we don't need to sort
 	_otherBatcher.begin(Engine::GlyphSortType::TEXTURE);
 
-	static Engine::GL_Texture playerTexture =
-			Engine::ResourceManager::getTexture(
-					"jimmyjump_pack/PNG/AngryCloud.png");
-
-	//uv coords. form (x , y , x offset , y offset)
-	//it's kinda weird to componsate for the fact that opengl's texture coords are upside-down
-	glm::vec4 uvRect(1, 1, -1, -1);
-
-	//color gets multiplied by texture color
-	Engine::Color color;
-	//right now it's just plain white
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	color.a = 255;
-
 	//render dungeon
-	_dungeon.render(_hallwayBatcher, _otherBatcher);
-	_dungeon.velociraptors[0].ai(_player, _dungeon);
+	_dungeonRenderer.render(_dungeon, _hallwayBatcher, _otherBatcher);
 
 	//lets render the player too
 	_player.render(_otherBatcher);

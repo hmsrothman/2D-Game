@@ -20,8 +20,10 @@
 #include "Engine/Include/SpriteBatch.h"
 #include "Engine/Include/InputManager.h"
 #include "Engine/Include/Timing.h"
-#include "Dungeon.h"
-#include "Player.h"
+#include "Entity/Player.h"
+#include "Dungeon/DungeonRenderer.h"
+#include "Dungeon/DungeonController.h"
+#include "Dungeon/Dungeon.h"
 
 class MainGame {
 	enum GameState {
@@ -50,6 +52,8 @@ private:
 
 	Player _player;
 	Dungeon _dungeon;
+	DungeonRenderer _dungeonRenderer;
+	DungeonController _dungeonController;
 
 	void initSystems(); //init method. calls the other init method
 	void initShaders(); //the other init method
@@ -59,6 +63,8 @@ private:
 
 	float _fps;	//frames per second. computer by the limiter
 	float _maxFPS;	//max allowable fps. passed to the limiter
+
+	void ded();
 };
 
 #endif /* MAINGAME_H_ */

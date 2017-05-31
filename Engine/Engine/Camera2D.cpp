@@ -57,11 +57,14 @@ void Camera2D::init(int screenWidth, int screenHeight) {
 }
 
 glm::vec2 Camera2D::convertScreenToWorld(glm::vec2 screen) {
-	screen.y = _screenHeight - screen.y;
-	screen -= glm::vec2(_screenWidth / 2, _screenHeight / 2); 	//center 0,0
-	screen /= _scale; 											//scale
-	screen += _position;										//translate;
-	return screen;
+	screen.x -= _screenWidth / 2;
+	screen.y -= _screenHeight / 2;
+	screen.x /= _screenWidth / 2;
+	screen.y /= -_screenHeight / 2;
+	glm::vec4 coords(screen.x, screen.y, 0, 1);
+	coords = coords * glm::inverse(_cameraMatrix);
+	coords += glm::vec4(_position, 0, 0);
+	return glm::vec2(coords.x, coords.y);
 }
 
 void Camera2D::lockToEntity(Entity *entity) {
