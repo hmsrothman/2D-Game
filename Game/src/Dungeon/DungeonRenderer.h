@@ -16,7 +16,7 @@ public:
 	DungeonRenderer();
 	virtual ~DungeonRenderer();
 
-	void render(const Dungeon& dungeon, Engine::SpriteBatch &hallwayBatcher,
+	void render(Dungeon& dungeon, Engine::SpriteBatch &hallwayBatcher,
 			Engine::SpriteBatch& otherBatcher);
 private:
 	void renderSubTile(const Dungeon& dungeon, Engine::SpriteBatch&hallwayBatcher,

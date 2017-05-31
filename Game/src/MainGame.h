@@ -21,6 +21,7 @@
 #include "Engine/Include/Timing.h"
 #include "Entity/Player.h"
 #include "Dungeon/DungeonRenderer.h"
+#include "Dungeon/DungeonController.h"
 #include "Dungeon/Dungeon.h"
 
 class MainGame {
@@ -51,6 +52,7 @@ private:
 	Player _player;
 	Dungeon _dungeon;
 	DungeonRenderer _dungeonRenderer;
+	DungeonController _dungeonController;
 
 	void initSystems(); //init method. calls the other init method
 	void initShaders(); //the other init method

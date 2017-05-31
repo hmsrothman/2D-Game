@@ -18,7 +18,7 @@ DungeonRenderer::DungeonRenderer() {
 DungeonRenderer::~DungeonRenderer() {
 }
 
-void DungeonRenderer::render(const Dungeon& dungeon,
+void DungeonRenderer::render(Dungeon& dungeon,
 		Engine::SpriteBatch& hallwayBatcher,
 		Engine::SpriteBatch& otherBatcher) {
 
@@ -34,6 +34,10 @@ void DungeonRenderer::render(const Dungeon& dungeon,
 //	std::cout << count << std::endl;
 	for (int i = 0; i < dungeon.velociraptors.size(); i++) {
 		dungeon.velociraptors[i].render(otherBatcher);
+	}
+
+	for(auto& bullet:dungeon.bullets){
+		bullet.draw(otherBatcher);
 	}
 }
 

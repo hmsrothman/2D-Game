@@ -76,3 +76,8 @@ void GameEntity::move(glm::vec2 translation, Dungeon& map) {
 		_position += translation;
 	}
 }
+
+void GameEntity::giveItem(Item& item) {
+	_inventory.addItem(item);
+}
+

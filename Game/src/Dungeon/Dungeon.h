@@ -11,14 +11,9 @@
 #include <vector>
 #include <map>
 #include <Engine/Include/SpriteBatch.h>
+#include "../Items/Bullet.h"
 
 class Velociraptor;
-
-struct vecCompare: public std::binary_function<glm::ivec2, glm::ivec2, bool> {
-	bool operator()(const glm::ivec2& lhs, const glm::ivec2& rhs) const {
-		return lhs.x * 300 + lhs.y < (rhs.x * 300 + rhs.y); //this magic number is equal to gridSize. not sure how to pass ite
-	}
-};
 
 class Dungeon {
 public:
@@ -39,9 +34,10 @@ public:
 	unsigned int queryTile(glm::ivec2 tile);
 
 	int getIndex(int x, int y) const;
+
+	std::vector<Bullet> bullets;
 private:
 	std::map<int, unsigned int> _playerTrail;
-
 };
 
 #endif /* DUNGEON_H_ */

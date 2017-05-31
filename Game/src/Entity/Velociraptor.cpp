@@ -38,7 +38,7 @@ Velociraptor::~Velociraptor() {
 void Velociraptor::render(Engine::SpriteBatch& batcher) const {
 	static Engine::GL_Texture playerTexture =
 			Engine::ResourceManager::getTexture(
-					"jimmyjump_pack/PNG/CharacterLeft_Jump.png");
+					"velociraptor.png");
 	glm::vec4 uvRect(1, 1, -1, -1);
 	Engine::Color color;
 	//right now it's just plain white
