@@ -23,7 +23,7 @@
 #include "Dungeon/DungeonRenderer.h"
 #include "Dungeon/DungeonController.h"
 #include "Dungeon/Dungeon.h"
-#include <Engine/Include/SpriteFont.h>
+#include "Engine/Include/Font.h"
 
 class MainGame {
 	enum GameState {
@@ -46,7 +46,8 @@ private:
 										 //necessary because there are an obscene amount of hallway tiles
 	Engine::SpriteBatch _otherBatcher;//batcher for everything else. when in doubt, use this one
 	Engine::SpriteBatch _HUDBatcher;
-	Engine::SpriteFont * _spriteFont;
+
+	Engine::Font _font;
 
 	Engine::GLSL_Program _colorProgram; //shader program
 	Engine::Camera2D _camera;			//camera

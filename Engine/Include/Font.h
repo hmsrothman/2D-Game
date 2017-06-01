@@ -11,6 +11,11 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <string>
+#include <glm/glm.hpp>
+#include <OpenGL/gl3.h>
+#include <map>
+#include "SpriteBatch.h"
+#include "Vertex.h"
 
 namespace Engine {
 
@@ -23,9 +28,14 @@ struct Character {
 
 class Font {
 public:
+	Font() {
+
+	}
 	static FT_Library ft;
-	Font();
+	Font(const std::string& path);
 	void load(const std::string& path, int size);
+	void draw(SpriteBatch & batcher, std::string text, glm::vec2 position,
+			float scale);
 	virtual ~Font();
 private:
 	FT_Face _face;

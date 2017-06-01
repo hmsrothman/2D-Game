@@ -8,10 +8,12 @@
 #ifndef RESOURCEMANAGER_H_
 #define RESOURCEMANAGER_H_
 
-#include "TextureCache.h"
+#include "Cache.h"
 #include <string>
 #include "GLTexture.h"
 #include <OpenGL/gl3.h>
+#include "Font.h"
+
 namespace Engine {
 
 class ResourceManager {
@@ -20,8 +22,8 @@ public:
 	static Font getFont(const std::string& fontPath);
 
 private:
-	static TextureCache _textureCache;
-	static FontCache _fontCache;
+	static Cache<GL_Texture> _textureCache;
+	static Cache<Font> _fontCache;
 };
 }
 #endif /* RESOURCEMANAGER_H_ */

@@ -14,7 +14,7 @@
 #include "Entity/Velociraptor.h"
 #include "Dungeon/TileFlags.h"
 #include "Items/Gun.h"
-
+#include "Engine/Include/Font.h"
 /**
  * Constructor only initializes variables
  */
@@ -52,8 +52,7 @@ void MainGame::initSystems() {
 	_otherBatcher.init();
 	_HUDBatcher.init();
 
-	_spriteFont = new Engine::SpriteFont("roboto/roboto-regular.ttf", 28);
-
+	_font = Engine::ResourceManager::getFont("roboto/roboto-black.ttf");
 //	_dungeon.prepare();
 //	_dungeon.placeRooms();
 	_dungeon.genMap();
@@ -197,21 +196,26 @@ void MainGame::drawGame() {
 														//therefore, we don't need to sort
 	_otherBatcher.begin(Engine::GlyphSortType::TEXTURE);
 
+	_HUDBatcher.begin(Engine::GlyphSortType::TEXTURE);
+
 	//render dungeon
 	_dungeonRenderer.render(_dungeon, _hallwayBatcher, _otherBatcher);
 
 	//lets render the player too
 	_player.render(_otherBatcher);
 
+	_font.draw(_HUDBatcher, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", _player.getPosition(), 1);
 	//prep batches
 	_otherBatcher.end();
 	_hallwayBatcher.end();
+	_HUDBatcher.end();
 
 	//render batches
 	_hallwayBatcher.renderBatch();
 	_otherBatcher.renderBatch();
+	_HUDBatcher.renderBatch();
 
-	drawHUD();
+	//drawHUD();
 
 	//cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -227,9 +231,6 @@ void MainGame::drawHUD() {
 	_HUDBatcher.begin();
 
 	sprintf(buffer, "Blah");
-	_spriteFont->draw(_HUDBatcher, "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-			_player.getPosition(), glm::vec2(1), 0,
-			Engine::Color(255, 255, 255, 255));
 
 	_HUDBatcher.end();
 	_HUDBatcher.renderBatch();
