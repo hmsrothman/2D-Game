@@ -7,51 +7,55 @@
 
 #include "DungeonController.h"
 #include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#include <iostream>
 
 DungeonController::DungeonController() {
-	// TODO Auto-generated constructor stub
 
 }
 
 DungeonController::~DungeonController() {
-	// TODO Auto-generated destructor stub
 }
 
-void DungeonController::updateRaptors(std::vector<Velociraptor>& raptors,
+void DungeonController::update(std::vector<Velociraptor>& raptors,
 		GameEntity& target, Dungeon& map) {
 	for (auto& raptor : raptors) {
 		raptor.ai(target, map);
+		if (raptor.getBoundingBox().overlaps(target.getBoundingBox())) {
+			if (!target.invuln) {
+				target.health -= raptor.damage;
+				target.giveInvulnFrames(59);
+			}
+		}
+	}
+
+	if (target.health <= 0) {
+		target.kill();
 	}
 
 	for (int i = 0; i < map.bullets.size();) {
-		if (map.bullets[i].update(raptors)) {
+		if (map.bullets[i].update(map, raptors)) {
 			map.bullets[i] = map.bullets.back();
 			map.bullets.pop_back();
 		} else {
 			i++;
 		}
 	}
-}
 
-void DungeonController::updatePlayer(Player& player,
-		Engine::InputManager& inputManager, Dungeon& map,
-		Engine::Camera2D& camera) {
-	if (inputManager.isKeyPressed(SDLK_UP)) {
-		player.move(glm::vec2(0, player.speed), map);
-	}
-	if (inputManager.isKeyPressed(SDLK_DOWN)) {
-
-		player.move(glm::vec2(0, -player.speed), map);
-	}
-	if (inputManager.isKeyPressed(SDLK_LEFT)) {
-
-		player.move(glm::vec2(-player.speed, 0), map);
-	}
-	if (inputManager.isKeyPressed(SDLK_RIGHT)) {
-		player.move(glm::vec2(player.speed, 0), map);
-	}
-
-	if (inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
-
+	for (int j = 0; j < map.bullets.size(); j++) {
+		for (int i = 0; i < raptors.size();) {
+			if (raptors[i].getBoundingBox().overlaps(
+					map.bullets[j].getBoundingBox())) {
+				raptors[i].health -= map.bullets[j].damage;
+				if (raptors[i].health <= 0) {
+					raptors[i] = raptors.back();
+					raptors.pop_back();
+				} else {
+					i++;
+				}
+				map.bullets[j].shouldDie = true;
+			} else {
+				i++;
+			}
+		}
 	}
 }

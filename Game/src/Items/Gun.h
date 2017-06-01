@@ -14,7 +14,7 @@
 class Gun {
 public:
 	Gun(std::string name, int fireRate, int bulletsPerShot, float _spread,
-			float speed, float damage);
+			float speed, float damage, int clip);
 	virtual ~Gun();
 	int ammo = 10;
 	int damage = 5;
@@ -33,6 +33,8 @@ private:
 	float _bulletDamage;
 
 	int _frameCounter = 0;
+
+	int _clip;
 
 	void fire(const glm::vec2& pos, const glm::vec2& dir,
 			std::vector<Bullet>& bullets);

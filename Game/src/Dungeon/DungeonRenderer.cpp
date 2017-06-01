@@ -53,11 +53,8 @@ void DungeonRenderer::renderSubTile(const Dungeon& dungeon,
 	static Engine::GL_Texture other = Engine::ResourceManager::getTexture(
 			"jimmyJump_pack/PNG/AngryCloud.png");
 
-	Engine::Color color;
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	color.a = 255;
+	Engine::Color color(255,255,255,255);
+
 
 	glm::vec4 uvRect = glm::vec4(1, 1, -1, -1); //Symmetrical, so correct
 

@@ -22,7 +22,6 @@ MainGame::MainGame() :
 		_screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _fps(
 				0), _maxFPS(60), _player(&_inputManager, &_camera) {
 	_camera.init(_screenWidth, _screenHeight);
-
 }
 
 MainGame::~MainGame() {
@@ -40,7 +39,7 @@ void MainGame::run() {
  * initializes everything--SDL, opengl, shaders, the maze, etc
  */
 void MainGame::initSystems() {
-
+	_camera.setScale(0.25f);
 	Engine::init();
 
 	_window.create("Game Engine", _screenWidth, _screenHeight, 0);
@@ -51,6 +50,9 @@ void MainGame::initSystems() {
 
 	_hallwayBatcher.init();
 	_otherBatcher.init();
+	_HUDBatcher.init();
+
+	_spriteFont = new Engine::SpriteFont("roboto/roboto-regular.ttf", 28);
 
 //	_dungeon.prepare();
 //	_dungeon.placeRooms();
@@ -70,7 +72,7 @@ void MainGame::initSystems() {
 		}
 	}
 
-	_player.addGun(new Gun("Magnum", 60, 1, 0.1f, 5, 5));
+	_player.addGun(new Gun("Magnum", 1, 10, 0.1f, 2, 50, 100));
 	_camera.lockToEntity(&_player);
 }
 
@@ -86,10 +88,7 @@ void MainGame::initShaders() {
  * does what it says on the tin
  */
 void MainGame::processInput() {
-	const float CAMERA_SPEED = 5;
 	const float SCALE_SPEED = 0.01;
-
-	const float PLAYER_SPEED = 3;
 
 	//process events
 	SDL_Event event;
@@ -137,13 +136,10 @@ void MainGame::gameLoop() {
 			ded();
 		}
 
-		_player.update(_dungeon.bullets);
+		_player.update(_dungeon.bullets, _dungeon);
 
 		_fps = _fpsLimiter.end();
-		_dungeonController.updatePlayer(_player, _inputManager, _dungeon,
-				_camera);
-		_dungeonController.updateRaptors(_dungeon.velociraptors, _player,
-				_dungeon);
+		_dungeonController.update(_dungeon.velociraptors, _player, _dungeon);
 		//print fps every 10 frames
 		static int frameCounter = 0;
 		if (frameCounter++ == 60) {
@@ -169,11 +165,8 @@ void MainGame::ded() {
 	_otherBatcher.begin();
 	glm::vec4 destRect(-300, -300, 300, 300);
 	glm::vec4 uvRect(0, 0, 1, -1);
-	Engine::Color color;
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	color.a = 255;
+	Engine::Color color(255, 255, 255, 255);
+
 	_otherBatcher.draw(destRect, uvRect, dedTexture.id, 0, color);
 	_otherBatcher.end();
 	_otherBatcher.renderBatch();
@@ -218,10 +211,27 @@ void MainGame::drawGame() {
 	_hallwayBatcher.renderBatch();
 	_otherBatcher.renderBatch();
 
+	drawHUD();
+
 	//cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);
 	_colorProgram.unuse();
 
 	//swap buffers
 	_window.swapBuffers();
+}
+
+void MainGame::drawHUD() {
+	char buffer[256];
+
+	_HUDBatcher.begin();
+
+	sprintf(buffer, "Blah");
+	_spriteFont->draw(_HUDBatcher, "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+			_player.getPosition(), glm::vec2(1), 0,
+			Engine::Color(255, 255, 255, 255));
+
+	_HUDBatcher.end();
+	_HUDBatcher.renderBatch();
+
 }

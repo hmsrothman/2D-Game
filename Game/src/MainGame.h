@@ -23,6 +23,7 @@
 #include "Dungeon/DungeonRenderer.h"
 #include "Dungeon/DungeonController.h"
 #include "Dungeon/Dungeon.h"
+#include <Engine/Include/SpriteFont.h>
 
 class MainGame {
 	enum GameState {
@@ -44,6 +45,9 @@ private:
 	Engine::SpriteBatch _hallwayBatcher; //optimization; allows to render many hallways without needing to sort
 										 //necessary because there are an obscene amount of hallway tiles
 	Engine::SpriteBatch _otherBatcher;//batcher for everything else. when in doubt, use this one
+	Engine::SpriteBatch _HUDBatcher;
+	Engine::SpriteFont * _spriteFont;
+
 	Engine::GLSL_Program _colorProgram; //shader program
 	Engine::Camera2D _camera;			//camera
 	Engine::InputManager _inputManager; //makes for smooth input
@@ -59,6 +63,7 @@ private:
 	void processInput(); //does what it says on the tin
 	void gameLoop();	//does what it says on the tin
 	void drawGame();	//does what it says on the tin
+	void drawHUD(); 	//does what it says on the tin
 
 	float _fps;	//frames per second. computer by the limiter
 	float _maxFPS;	//max allowable fps. passed to the limiter

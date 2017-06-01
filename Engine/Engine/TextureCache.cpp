@@ -7,7 +7,7 @@
 
 #include "TextureCache.h"
 #include "ImageLoader.h"
-namespace Engine{
+namespace Engine {
 
 TextureCache::TextureCache() {
 

@@ -7,6 +7,7 @@
 
 #include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
 #include <OpenGL/gl3.h>
+#include <iostream>
 
 namespace Engine {
 int init() {

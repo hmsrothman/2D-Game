@@ -25,13 +25,13 @@ public:
 	void move(glm::vec2 displacement, Dungeon& map);
 	void kill();
 
-	void update(std::vector<Bullet>& bullets);
+	void update(std::vector<Bullet>& bullets, Dungeon& map);
 
 	bool isded = false;
 
 	void addGun(Gun* gun);
 
-	int speed = 10;
+	int speed = 2;
 private:
 	std::vector<Gun*> _guns;
 	int _currentGun = -1;
