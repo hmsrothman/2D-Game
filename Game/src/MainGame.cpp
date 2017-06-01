@@ -204,7 +204,7 @@ void MainGame::drawGame() {
 	//lets render the player too
 	_player.render(_otherBatcher);
 
-	_font.draw(_HUDBatcher, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", _player.getPosition(), 1);
+	_font.draw(_HUDBatcher, "01234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", _player.getPosition(), 1);
 	//prep batches
 	_otherBatcher.end();
 	_hallwayBatcher.end();

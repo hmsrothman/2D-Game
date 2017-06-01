@@ -39,7 +39,7 @@ void Font::load(const std::string& path, int size) {
 	std::cout << "NUM GLYPHS: " << _face->num_glyphs << std::endl;
 
 	for (GLubyte c = 0; c < 127; c++) {
-		if (FT_Load_Char(_face, FT_Get_Char_Index(_face, c), FT_LOAD_RENDER)) {
+		if (FT_Load_Char(_face, c, FT_LOAD_RENDER)) {
 			fatalError("failed to load character");
 		}
 
