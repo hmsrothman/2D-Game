@@ -42,27 +42,35 @@ private:
 	GameState _gameState; //what is the game doing right now?
 
 	//used for rendering in batches. 10/10 would recomend
-	Engine::SpriteBatch _hallwayBatcher; //optimization; allows to render many hallways without needing to sort
+	Engine::SpriteBatch _mapBatcher; //optimization; allows to render many hallways without needing to sort
 										 //necessary because there are an obscene amount of hallway tiles
 	Engine::SpriteBatch _otherBatcher;//batcher for everything else. when in doubt, use this one
 	Engine::SpriteBatch _HUDBatcher;
 
 	Engine::Font _font;
 
-	Engine::GLSL_Program _colorProgram; //shader program
+	Engine::GLSL_Program _textureShader; //shader for world, player, etc
+	Engine::GLSL_Program _textShader; 	 //shader for text
+
 	Engine::Camera2D _camera;			//camera
+
 	Engine::InputManager _inputManager; //makes for smooth input
+
 	Engine::FPSLimiter _fpsLimiter;		//monitors and caps fps
 
 	Player _player;
+
 	Dungeon _dungeon;
 	DungeonRenderer _dungeonRenderer;
 	DungeonController _dungeonController;
 
 	void initSystems(); //init method. calls the other init method
 	void initShaders(); //the other init method
+
 	void processInput(); //does what it says on the tin
+
 	void gameLoop();	//does what it says on the tin
+
 	void drawGame();	//does what it says on the tin
 	void drawHUD(); 	//does what it says on the tin
 

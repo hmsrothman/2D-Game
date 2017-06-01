@@ -45,6 +45,8 @@ int Window::create(std::string windowName, int width, int height,
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	SDL_GL_SetSwapInterval(1);
+
 	return 0;
 }
 

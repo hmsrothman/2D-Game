@@ -16,12 +16,11 @@ public:
 	DungeonRenderer();
 	virtual ~DungeonRenderer();
 
-	void render(Dungeon& dungeon, Engine::SpriteBatch &hallwayBatcher,
-			Engine::SpriteBatch& otherBatcher);
+	void renderDungeon(Dungeon& dungeon, Engine::SpriteBatch &batcher);
+	void renderRaptors(Dungeon& dungeon, Engine::SpriteBatch &batcher);
 private:
-	void renderSubTile(const Dungeon& dungeon, Engine::SpriteBatch&hallwayBatcher,
-			Engine::SpriteBatch&otherBatcher, int x, int y,
-			unsigned char tileType);
+	void renderSubTile(const Dungeon& dungeon, Engine::SpriteBatch&batcher,
+			int x, int y, unsigned char tileType);
 
 };
 

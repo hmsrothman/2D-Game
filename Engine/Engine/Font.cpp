@@ -84,7 +84,8 @@ void Font::draw(SpriteBatch & batcher, std::string text, glm::vec2 position,
 				ch.TextureID, 0, color);
 
 		position.x += (ch.Advance >> 6) * scale;
-
+		//TODO: we need a text shader that does color like so:
+		//color = vec4(vertexColor,tex.r); (texture supplies alpha)
 	}
 }
 

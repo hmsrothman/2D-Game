@@ -44,21 +44,27 @@ void MainGame::initSystems() {
 
 	_window.create("Game Engine", _screenWidth, _screenHeight, 0);
 
-	_fpsLimiter.setMaxFPS(_maxFPS);
+	_fpsLimiter.setMaxFPS(60);
 
 	initShaders();
 
-	_hallwayBatcher.init();
+	//setup sprite batchers
+	_mapBatcher.init();
 	_otherBatcher.init();
 	_HUDBatcher.init();
 
+	//setup font
 	_font = Engine::ResourceManager::getFont("roboto/roboto-black.ttf");
-//	_dungeon.prepare();
-//	_dungeon.placeRooms();
+
 	_dungeon.genMap();
 	for (int i = 0; i < 400; i++) {
 		_dungeon.spawnVelociraptor();
 	}
+
+	//build the map batcher only once
+	_mapBatcher.begin();
+	_dungeonRenderer.renderDungeon(_dungeon, _mapBatcher);
+	_mapBatcher.end();
 
 	bool playerGood = false;
 	while (!playerGood) {
@@ -71,7 +77,7 @@ void MainGame::initSystems() {
 		}
 	}
 
-	_player.addGun(new Gun("Magnum", 1, 10, 0.1f, 2, 50, 100));
+	_player.addGun(new Gun("Magnum", 1, 10, 0.1f, 2, 50, 100000));
 	_camera.lockToEntity(&_player);
 }
 
@@ -79,8 +85,10 @@ void MainGame::initSystems() {
  * does what it says on the tin
  */
 void MainGame::initShaders() {
-	_colorProgram.makeShaderProgram("shaders/colorShading.vert",
+	_textureShader.makeShaderProgram("shaders/colorShading.vert",
 			"shaders/colorShading.frag");
+	_textShader.makeShaderProgram("shaders/colorShading.vert",
+			"shaders/text.frag");
 }
 
 /**
@@ -128,35 +136,40 @@ void MainGame::gameLoop() {
 
 		_fpsLimiter.begin();
 		processInput();
+		_player.update(_dungeon.bullets, _dungeon);
+		_dungeonController.update(_dungeon.velociraptors, _player, _dungeon);
 		_camera.update();
 		if (!_player.isded) {
 			drawGame();
+			drawHUD();
 		} else {
 			ded();
 		}
-
-		_player.update(_dungeon.bullets, _dungeon);
-
 		_fps = _fpsLimiter.end();
-		_dungeonController.update(_dungeon.velociraptors, _player, _dungeon);
-		//print fps every 10 frames
+
+		//print fps every n frames
 		static int frameCounter = 0;
 		if (frameCounter++ == 60) {
 			std::cout << _fps << std::endl;
 			frameCounter = 0;
 		}
 
+		//swap buffers
+		_window.swapBuffers();
 	}
 }
 
 void MainGame::ded() {
+	glClearDepth(1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	_player.setPosition(glm::vec2(0, 0));
 	_camera.setPosition(glm::vec2(0, 0));
 	_camera.update();
 	glClearDepth(1.0);
-	_colorProgram.use();
+	_textureShader.use();
 	glActiveTexture(GL_TEXTURE0);
-	GLint textureLocation = _colorProgram.getUniformLocation("sampler");
+	GLint textureLocation = _textureShader.getUniformLocation("sampler");
 	glUniform1i(textureLocation, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	static Engine::GL_Texture dedTexture = Engine::ResourceManager::getTexture(
@@ -169,7 +182,6 @@ void MainGame::ded() {
 	_otherBatcher.draw(destRect, uvRect, dedTexture.id, 0, color);
 	_otherBatcher.end();
 	_otherBatcher.renderBatch();
-	_window.swapBuffers();
 }
 
 void MainGame::drawGame() {
@@ -177,62 +189,70 @@ void MainGame::drawGame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//use shader
-	_colorProgram.use();
+	_textureShader.use();
 
 	//turn on textures
 	glActiveTexture(GL_TEXTURE0);
 
 	//pass texture
-	GLint textureLocation = _colorProgram.getUniformLocation("sampler");
+	GLint textureLocation = _textureShader.getUniformLocation("sampler");
 	glUniform1i(textureLocation, 0);
 
 	//pass matrix
-	GLuint pLocation = _colorProgram.getUniformLocation("P");
+	GLuint pLocation = _textureShader.getUniformLocation("P");
 	glm::mat4 cameraMatrix = _camera.getMatrix();
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
 	//being draw call
-	_hallwayBatcher.begin(Engine::GlyphSortType::NONE); //the hallwaybatcher will ony be used for hallways
-														//therefore, we don't need to sort
 	_otherBatcher.begin(Engine::GlyphSortType::TEXTURE);
 
-	_HUDBatcher.begin(Engine::GlyphSortType::TEXTURE);
-
-	//render dungeon
-	_dungeonRenderer.render(_dungeon, _hallwayBatcher, _otherBatcher);
-
-	//lets render the player too
+	//render player
 	_player.render(_otherBatcher);
 
-	_font.draw(_HUDBatcher, "01234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", _player.getPosition(), 1);
-	//prep batches
+	//render raptors and bullets and stuff
+	_dungeonRenderer.renderRaptors(_dungeon, _otherBatcher);
+
+	//prep batcher
 	_otherBatcher.end();
-	_hallwayBatcher.end();
-	_HUDBatcher.end();
 
-	//render batches
-	_hallwayBatcher.renderBatch();
+	//render batches (including map)
+	_mapBatcher.renderBatch();
 	_otherBatcher.renderBatch();
-	_HUDBatcher.renderBatch();
-
-	//drawHUD();
 
 	//cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);
-	_colorProgram.unuse();
-
-	//swap buffers
-	_window.swapBuffers();
+	_textureShader.unuse();
 }
 
 void MainGame::drawHUD() {
-	char buffer[256];
+
+	static char charBuffer[256];
+
+	//use shader
+	_textShader.use();
+
+	//turn on textures
+	glActiveTexture(GL_TEXTURE0);
+
+	//pass texture
+	GLint textureLocation = _textureShader.getUniformLocation("sampler");
+	glUniform1i(textureLocation, 0);
+
+	//pass matrix
+	GLuint pLocation = _textureShader.getUniformLocation("P");
+	glm::mat4 cameraMatrix = _camera.getMatrix();
+	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
 	_HUDBatcher.begin();
 
-	sprintf(buffer, "Blah");
+	snprintf(charBuffer, 256, "Your health is: %.1f", _player.health);
+
+	_font.draw(_HUDBatcher, charBuffer, _player.getPosition(), 1);
 
 	_HUDBatcher.end();
 	_HUDBatcher.renderBatch();
 
+	//cleanup
+	glBindTexture(GL_TEXTURE_2D, 0);
+	_textShader.unuse();
 }

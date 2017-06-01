@@ -90,6 +90,7 @@ private:
 
 	std::vector<Glyph*> _glyphPointers; //this is for sorting
 	std::vector<Glyph> _glyphs;	//these are the glyphs
+
 	std::vector<RenderBatch> _renderBatches;
 
 	void createRenderBatches();
