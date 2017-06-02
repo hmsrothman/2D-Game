@@ -5,8 +5,8 @@
  *      Author: Simon
  */
 
-<<<<<<< HEAD:Game/src/Dungeon.cpp
-#include <Game/src/Dungeon.h>
+
+
 #include <cstdlib>
 #include <iostream>
 #include <queue>
@@ -15,15 +15,13 @@
 #include <Engine/Include/Vertex.h>
 #include <Engine/Include/GLTexture.h>
 #include <Engine/Include/ResourceManager.h>
-#include "Velociraptor.h"
+#include "Game/src/Entity/Velociraptor.h"
 
 #include <SDL.h>
-=======
+
 #include "DungeonGenerator.h"
 #include <random>
-#include <stack>
-#include <iostream>
->>>>>>> refs/remotes/origin/master:Game/src/Dungeon/DungeonGenerator.cpp
+
 
 DungeonGenerator::DungeonGenerator() {
 }
@@ -32,16 +30,11 @@ DungeonGenerator::~DungeonGenerator() {
 
 }
 
-<<<<<<< HEAD:Game/src/Dungeon.cpp
-void Dungeon::generate() {
-	std::cout << "start dungeon" << std::endl;
-=======
 void DungeonGenerator::generate(unsigned char** out_tileArray,
 		int* out_gridSize) {
 
 	subTiles = (unsigned char*) malloc(
 			(_gridSize * 3) * (_gridSize * 3) * sizeof(unsigned char));
->>>>>>> refs/remotes/origin/master:Game/src/Dungeon/DungeonGenerator.cpp
 	prepare();
 	std::cout << "prep" << std::endl;
 	placeRooms();
@@ -53,14 +46,10 @@ void DungeonGenerator::generate(unsigned char** out_tileArray,
 	cullDeadEnds();
 	std::cout << "cull" << std::endl;
 	fillSubTiles();
-<<<<<<< HEAD:Game/src/Dungeon.cpp
 	std::cout << "fill" << std::endl;
 	velociraptors.emplace_back();
 	std::cout << "velo++" << std::endl;
-=======
-	*out_tileArray = subTiles;
-	*out_gridSize = _gridSize * 3;
->>>>>>> refs/remotes/origin/master:Game/src/Dungeon/DungeonGenerator.cpp
+
 }
 
 void DungeonGenerator::prepare() {
@@ -92,18 +81,7 @@ void DungeonGenerator::placeRooms() {
 	std::default_random_engine generator;
 	std::normal_distribution<float> distribution(_roomSizeMean, _roomSizeVar);
 
-<<<<<<< HEAD:Game/src/Dungeon.cpp
-		int sizeX =  distribution(generator);
-		int sizeY =  distribution(generator);
-		if (sizeX <= 1) {
-			sizeX = 2;
-		}
-		if (sizeY <= 1) {
-			sizeY = 2;
-		}
-		int x = std::rand() % (GRID_SIZE - sizeX - 2) + 1;
-		int y = std::rand() % (GRID_SIZE - sizeY - 2) + 1;
-=======
+
 	for (int i = 0; i < _roomAttempts; i++) {
 		int sizeX = 0;
 		int sizeY = 0;
@@ -116,7 +94,6 @@ void DungeonGenerator::placeRooms() {
 
 		int x = std::rand() % (_gridSize - sizeX - 2) + 1;
 		int y = std::rand() % (_gridSize - sizeY - 2) + 1;
->>>>>>> refs/remotes/origin/master:Game/src/Dungeon/DungeonGenerator.cpp
 
 		Rectangle newRect(x, y, sizeX, sizeY);
 
@@ -432,7 +409,6 @@ void DungeonGenerator::tunnel(glm::ivec2 start, unsigned char dir,
 		break;
 	}
 }
-<<<<<<< HEAD:Game/src/Dungeon.cpp
 
 void Dungeon::playerWalkOnTile(glm::ivec2 tile) {
 	//_playerTrail[tile] = SDL_GetTicks();
@@ -449,5 +425,3 @@ unsigned int Dungeon::queryTile(glm::ivec2 tile) {
 	}
 }
 
-=======
->>>>>>> refs/remotes/origin/master:Game/src/Dungeon/DungeonGenerator.cpp

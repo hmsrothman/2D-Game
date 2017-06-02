@@ -12,7 +12,7 @@
 #include "GameEntity.h"
 #include "Player.h"
 #include "../Dungeon/Dungeon.h"
-#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#include "Dependencies/SDL/lib/SDL2.lib"
 
 class Bullet;
 

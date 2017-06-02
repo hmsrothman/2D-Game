@@ -108,21 +108,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Dungeon.cpp" />
-    <ClCompile Include="src\GameEntity.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\MainGame.cpp" />
-    <ClCompile Include="src\Player.cpp" />
-    <ClCompile Include="src\Rectangle.cpp" />
-    <ClCompile Include="src\Velociraptor.cpp" />
+    <ClInclude Include="src\Dungeon\Dungeon.h" />
+    <ClInclude Include="src\Dungeon\DungeonController.h" />
+    <ClInclude Include="src\Dungeon\DungeonGenerator.h" />
+    <ClInclude Include="src\Dungeon\DungeonRenderer.h" />
+    <ClInclude Include="src\Dungeon\TileFlags.h" />
+    <ClInclude Include="src\Entity\GameEntity.h" />
+    <ClInclude Include="src\Entity\Player.h" />
+    <ClInclude Include="src\Entity\Velociraptor.h" />
+    <ClInclude Include="src\Items\Bullet.h" />
+    <ClInclude Include="src\Items\Gun.h" />
+    <ClInclude Include="src\Items\Inventory.h" />
+    <ClInclude Include="src\Items\Item.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Dungeon.h" />
-    <ClInclude Include="src\GameEntity.h" />
-    <ClInclude Include="src\MainGame.h" />
-    <ClInclude Include="src\Player.h" />
-    <ClInclude Include="src\Rectangle.h" />
-    <ClInclude Include="src\Velociraptor.h" />
+    <ClCompile Include="src\Dungeon\Dungeon.cpp" />
+    <ClCompile Include="src\Dungeon\DungeonController.cpp" />
+    <ClCompile Include="src\Dungeon\DungeonGenerator.cpp" />
+    <ClCompile Include="src\Dungeon\DungeonRenderer.cpp" />
+    <ClCompile Include="src\Entity\GameEntity.cpp" />
+    <ClCompile Include="src\Entity\Player.cpp" />
+    <ClCompile Include="src\Entity\Velociraptor.cpp" />
+    <ClCompile Include="src\Items\Bullet.cpp" />
+    <ClCompile Include="src\Items\Gun.cpp" />
+    <ClCompile Include="src\Items\Inventory.cpp" />
+    <ClCompile Include="src\Items\Item.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
