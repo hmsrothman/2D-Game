@@ -6,7 +6,8 @@
  */
 
 #include "DungeonController.h"
-#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+//#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#include "Dependencies\SDL\lib\x86\SDL2.lib"
 
 DungeonController::DungeonController() {
 	// TODO Auto-generated constructor stub

@@ -10,7 +10,8 @@
 #include <Engine/Include/GLTexture.h>
 #include <Engine/Include/ResourceManager.h>
 #include "../Entity/Velociraptor.h"
-#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#include "Dependencies\SDL\lib\x86\SDL2.lib"
+#include "Dependencies\SDL\lib\x86\SDL2main.lib"
 #include "DungeonGenerator.h"
 #include "TileFlags.h"
 #include <iostream>

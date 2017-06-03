@@ -51,6 +51,12 @@
     <ClInclude Include="src\Items\Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MainGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Rectangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Dungeon\Dungeon.cpp">
@@ -84,6 +90,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Items\Item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Rectangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
