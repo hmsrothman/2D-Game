@@ -11,13 +11,25 @@
 #include <string>
 #include <map>
 #include "ResourceLoader.h"
-
+#include <iterator>
 namespace Engine {
 
 template<class T>
 class Cache {
 public:
 	T get(const std::string& path);
+
+	typename std::map<std::string,T>::iterator begin() {
+		return _map.begin();
+	}
+
+	typename std::map<std::string,T>::iterator end() {
+		return _map.end();
+	}
+
+	void clear() {
+		_map.clear();
+	}
 private:
 	T load(const std::string& path);
 	std::map<std::string, T> _map;

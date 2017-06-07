@@ -12,34 +12,29 @@
 
 namespace Engine {
 
-FT_Library Font::ft = nullptr;
+FT_Library FontLoader::ft = nullptr;
 
-Font::Font(const std::string& path) {
-	load(path, 32);
-}
 
-Font::~Font() {
-}
+Font FontLoader::loadFont(const std::string& path, int size) {
+	FT_Face face;
+	std::map<GLchar, Character> characters;
 
-void Font::load(const std::string& path, int size) {
 	if (!ft) { //lazy init freetype
 		if (FT_Init_FreeType(&ft)) {
 			fatalError("FT init failed");
 		}
 	}
 	//load the font
-	if (FT_New_Face(ft, "roboto/roboto-black.ttf", 0, &_face)) {
+	if (FT_New_Face(ft, "roboto/roboto-black.ttf", 0, &face)) {
 		fatalError("font face creation failed");
 	}
-	FT_Set_Pixel_Sizes(_face, 0, size);
+	FT_Set_Pixel_Sizes(face, 0, size);
 
 	//setup character map... gonna be honest, this part is copy-pasta. blame learnopengl.com if it no work
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
 
-	std::cout << "NUM GLYPHS: " << _face->num_glyphs << std::endl;
-
 	for (GLubyte c = 0; c < 127; c++) {
-		if (FT_Load_Char(_face, c, FT_LOAD_RENDER)) {
+		if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
 			fatalError("failed to load character");
 		}
 
@@ -48,9 +43,9 @@ void Font::load(const std::string& path, int size) {
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glTexImage2D(
 		GL_TEXTURE_2D, 0,
-		GL_RED, _face->glyph->bitmap.width, _face->glyph->bitmap.rows, 0,
+		GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0,
 		GL_RED,
-		GL_UNSIGNED_BYTE, _face->glyph->bitmap.buffer);
+		GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 
 		// Set texture options
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -58,22 +53,21 @@ void Font::load(const std::string& path, int size) {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		// Now store character for later use
-		Character character = { texture, glm::ivec2(_face->glyph->bitmap.width,
-				_face->glyph->bitmap.rows), glm::ivec2(
-				_face->glyph->bitmap_left, _face->glyph->bitmap_top),
-				(GLuint) _face->glyph->advance.x };
-		_characters.insert(std::pair<GLchar, Character>(c, character));
+		Character character = { texture, glm::ivec2(face->glyph->bitmap.width,
+				face->glyph->bitmap.rows), glm::ivec2(face->glyph->bitmap_left,
+				face->glyph->bitmap_top), (GLuint) face->glyph->advance.x };
+		characters.insert(std::pair<GLchar, Character>(c, character));
 	}
-	FT_Done_Face(_face);
-
+	FT_Done_Face (face);
+	return Font(characters);
 }
 
-void Font::draw(SpriteBatch & batcher, std::string text, glm::vec2 position,
-		float scale) {
+void FontRenderer::drawText(Font& font, SpriteBatch & batcher, std::string text,
+		glm::vec2 position, float scale) {
 	Color color(255, 255, 255, 255);
 
 	for (auto c = text.begin(); c < text.end(); c++) {
-		Character ch = _characters[*c];
+		Character ch = font.characters[*c];
 
 		float x = position.x + ch.Bearing.x * scale;
 		float y = position.y - (ch.Size.y - ch.Bearing.y) * scale;
@@ -84,8 +78,6 @@ void Font::draw(SpriteBatch & batcher, std::string text, glm::vec2 position,
 				ch.TextureID, 0, color);
 
 		position.x += (ch.Advance >> 6) * scale;
-		//TODO: we need a text shader that does color like so:
-		//color = vec4(vertexColor,tex.r); (texture supplies alpha)
 	}
 }
 

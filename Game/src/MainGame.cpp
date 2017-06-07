@@ -21,7 +21,8 @@
 MainGame::MainGame() :
 		_screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _fps(
 				0), _maxFPS(60), _player(&_inputManager, &_camera) {
-	_camera.init(_screenWidth, _screenHeight);
+	_camera.init(_screenWidth, _screenHeight), _HUDCamera.init(_screenWidth,
+			_screenHeight);
 }
 
 MainGame::~MainGame() {
@@ -139,6 +140,7 @@ void MainGame::gameLoop() {
 		_player.update(_dungeon.bullets, _dungeon);
 		_dungeonController.update(_dungeon.velociraptors, _player, _dungeon);
 		_camera.update();
+		_HUDCamera.update();
 		if (!_player.isded) {
 			drawGame();
 			drawHUD();
@@ -163,15 +165,27 @@ void MainGame::ded() {
 	glClearDepth(1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	_player.setPosition(glm::vec2(0, 0));
-	_camera.setPosition(glm::vec2(0, 0));
-	_camera.update();
 	glClearDepth(1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//use shader
 	_textureShader.use();
+
+	//turn on textures
 	glActiveTexture(GL_TEXTURE0);
+
+	//pass texture
 	GLint textureLocation = _textureShader.getUniformLocation("sampler");
 	glUniform1i(textureLocation, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//pass matrix
+	GLuint pLocation = _textureShader.getUniformLocation("P");
+	glm::mat4 cameraMatrix = _HUDCamera.getMatrix();
+	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+
+	//_player.setPosition(glm::vec2(0, 0));
+	//_camera.setPosition(glm::vec2(0, 0));
+	//_camera.update();
 	static Engine::GL_Texture dedTexture = Engine::ResourceManager::getTexture(
 			"endgame.png");
 	_otherBatcher.begin();
@@ -240,14 +254,15 @@ void MainGame::drawHUD() {
 
 	//pass matrix
 	GLuint pLocation = _textureShader.getUniformLocation("P");
-	glm::mat4 cameraMatrix = _camera.getMatrix();
+	glm::mat4 cameraMatrix = _HUDCamera.getMatrix();
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
 	_HUDBatcher.begin();
 
 	snprintf(charBuffer, 256, "Your health is: %.1f", _player.health);
 
-	_font.draw(_HUDBatcher, charBuffer, _player.getPosition(), 1);
+	Engine::FontRenderer::drawText(_font, _HUDBatcher, charBuffer,
+			glm::vec2(0, 0), 1);
 
 	_HUDBatcher.end();
 	_HUDBatcher.renderBatch();

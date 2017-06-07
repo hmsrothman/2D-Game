@@ -26,20 +26,27 @@ struct Character {
 	GLuint Advance;    // Offset to advance to next glyph
 };
 
-class Font {
-public:
+struct Font {
 	Font() {
 
 	}
-	static FT_Library ft;
-	Font(const std::string& path);
-	void load(const std::string& path, int size);
-	void draw(SpriteBatch & batcher, std::string text, glm::vec2 position,
-			float scale);
-	virtual ~Font();
+	Font(std::map<GLchar, Character> &chars) :
+			characters(chars) {
+	}
+	std::map<GLchar, Character> characters;
+};
+
+class FontLoader {
+public:
+	static Font loadFont(const std::string& path, int size);
 private:
-	FT_Face _face;
-	std::map<GLchar, Character> _characters;
+	static FT_Library ft;
+};
+
+class FontRenderer {
+public:
+	static void drawText(Font& font, SpriteBatch & batcher, std::string text,
+			glm::vec2 position, float scale);
 };
 
 } /* namespace Engine */

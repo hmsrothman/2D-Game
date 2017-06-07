@@ -42,17 +42,17 @@ private:
 	GameState _gameState; //what is the game doing right now?
 
 	//used for rendering in batches. 10/10 would recomend
-	Engine::SpriteBatch _mapBatcher; //optimization; allows to render many hallways without needing to sort
-										 //necessary because there are an obscene amount of hallway tiles
-	Engine::SpriteBatch _otherBatcher;//batcher for everything else. when in doubt, use this one
-	Engine::SpriteBatch _HUDBatcher;
+	Engine::SpriteBatch _mapBatcher; //renders map. only loaded to once
+	Engine::SpriteBatch _otherBatcher;//renders entities etc
+	Engine::SpriteBatch _HUDBatcher;//renders HUD
 
-	Engine::Font _font;
+	Engine::Font _font;//font for HUD
 
 	Engine::GLSL_Program _textureShader; //shader for world, player, etc
 	Engine::GLSL_Program _textShader; 	 //shader for text
 
-	Engine::Camera2D _camera;			//camera
+	Engine::Camera2D _camera;			//camera for scene
+	Engine::Camera2D _HUDCamera;		//camera for HUD
 
 	Engine::InputManager _inputManager; //makes for smooth input
 
