@@ -8,9 +8,9 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-#include "GLTexture.h"
 #include <string>
 #include <OpenGL/gl3.h>
+#include "GLTexture.h"
 
 namespace Engine {
 

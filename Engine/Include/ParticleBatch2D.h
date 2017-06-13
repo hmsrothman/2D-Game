@@ -12,9 +12,10 @@
 #include "vertex.h"
 #include "GLTexture.h"
 
-class SpriteBatch;
 
 namespace Engine {
+
+class SpriteBatch;
 
 class Particle2D {
 public:

@@ -10,7 +10,7 @@
 #include "Errors.h"
 namespace Engine{
 
-void fatalError(std::string errorString) {
+void fatalError(const std::string& errorString) {
 	std::cout << errorString << std::endl;
 	SDL_Quit();
 	exit(1);

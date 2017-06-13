@@ -14,10 +14,11 @@
 #include <glm/glm.hpp>
 #include <OpenGL/gl3.h>
 #include <map>
-#include "SpriteBatch.h"
-#include "Vertex.h"
+
 
 namespace Engine {
+
+class SpriteBatch;
 
 struct Character {
 	GLuint TextureID;  //texture

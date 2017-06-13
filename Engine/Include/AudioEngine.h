@@ -21,6 +21,8 @@ public:
 	friend class AudioEngine;
 private:
 	Mix_Chunk* _chunk = nullptr;
+	static int _currentChannel;
+
 };
 
 class Music {

@@ -12,6 +12,7 @@
 #include <map>
 #include "ResourceLoader.h"
 #include <iterator>
+
 namespace Engine {
 
 template<class T>
