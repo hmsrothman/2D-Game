@@ -13,7 +13,7 @@
 #include "../Dungeon/Dungeon.h"
 #include "../Items/Item.h"
 #include "../Items/Inventory.h"
-#include "../Rectangle.h"
+#include "Rectangle.h"
 
 class Dungeon;
 
