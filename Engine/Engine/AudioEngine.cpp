@@ -11,12 +11,9 @@
 
 namespace Engine {
 
-int SoundEffect::_currentChannel = 0;
-
 void SoundEffect::play(int loops /*=0*/) {
-	if (Mix_PlayChannel(_currentChannel++, _chunk, loops) == -1) {
-		_currentChannel = 0;
-		if (Mix_PlayChannel(_currentChannel++, _chunk, loops) == -1) {
+	if (Mix_PlayChannel(-1, _chunk, loops) == -1) {
+		if (Mix_PlayChannel(0, _chunk, loops) == -1) {
 			fatalError("sound effect playing failed");
 		}
 	}
@@ -41,6 +38,7 @@ void Music::resume() {
 }
 
 AudioEngine::AudioEngine() {
+	// TODO Auto-generated constructor stub
 
 }
 

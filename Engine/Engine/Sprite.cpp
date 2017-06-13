@@ -5,11 +5,10 @@
  *      Author: Simon
  */
 
+#include "Sprite.h"
 #include "Vertex.h"
 #include <cstddef>
 #include "ResourceManager.h"
-#include "GLTexture.h"
-#include "Sprite.h"
 
 namespace Engine{
 

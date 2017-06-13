@@ -9,11 +9,9 @@
 #define CAMERA2D_H_
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
+#include "Entity.h"
 
 namespace Engine {
-
-class Entity;
 
 class Camera2D {
 public:

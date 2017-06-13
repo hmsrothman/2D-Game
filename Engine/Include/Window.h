@@ -36,9 +36,8 @@ public:
 	void swapBuffers();
 
 private:
-	SDL_Window* _SDLWindow = nullptr;
-	int _screenWidth = 0;
-	int _screenHeight = 0;
+	SDL_Window* _SDLWindow;
+	int _screenWidth, _screenHeight;
 };
 }
 #endif /* WINDOW_H_ */

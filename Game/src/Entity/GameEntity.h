@@ -20,7 +20,7 @@ class Dungeon;
 class GameEntity: public Engine::Entity {
 public:
 	GameEntity(int size) :
-			renderSize(size), invulnTime(0) {
+			renderSize(size) {
 	}
 	virtual ~GameEntity() {
 

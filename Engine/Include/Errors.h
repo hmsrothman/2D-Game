@@ -12,7 +12,7 @@
 
 namespace Engine{
 
-extern void fatalError(const std::string& errorString);
+extern void fatalError(std::string errorString);
 
 }
 #endif /* ERRORS_H_ */

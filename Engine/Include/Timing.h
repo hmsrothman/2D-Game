@@ -23,11 +23,11 @@ public:
 	float end(); //returns fps
 
 private:
-	float _maxFPS = 0;
-	unsigned int _startTicks = 0;
-	unsigned int _endTicks = 0;
-	float _fps = 0;
-	float _frameTime = 0;
+	float _maxFPS;
+	unsigned int _startTicks;
+	unsigned int _endTicks;
+	float _fps;
+	float _frameTime;
 
 	void calculateFPS();
 };

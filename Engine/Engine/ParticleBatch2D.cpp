@@ -6,7 +6,7 @@
  */
 
 #include <ParticleBatch2D.h>
-#include "SpriteBatch.h"
+#include <SpriteBatch.h>
 
 namespace Engine {
 
@@ -34,6 +34,7 @@ void ParticleBatch2D::draw(SpriteBatch & batcher) {
 		glm::vec4 uvRect(0, 0, 1, 1);
 		batcher.draw(destRect, uvRect, _texture.id, 0, p._color);
 	}
+
 }
 
 void ParticleBatch2D::update() {

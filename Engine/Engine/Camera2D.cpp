@@ -6,7 +6,6 @@
  */
 
 #include <Camera2D.h>
-#include "Entity.h"
 
 namespace Engine {
 
