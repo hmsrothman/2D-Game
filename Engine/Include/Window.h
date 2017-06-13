@@ -8,9 +8,16 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 
-#include <SDL.h>
+
+#ifdef _WIN32
+#include "windows.h"
 #include <Gl\glew.h>
-#include <Gl\gl.h>
+#include <gl\GL.h>
+#include <SDL.h>
+#else
+#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#include <OpenGl/gl3.h>
+#endif
 #include <string>
 namespace Engine {
 

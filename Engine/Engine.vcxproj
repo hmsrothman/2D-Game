@@ -75,7 +75,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>Include\ ; ..\Dependencies\SDL\Include\ ; ..\Dependencies\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Include\;..\Dependencies\SDL\Include\;..\Dependencies\;..\Dependencies\Freetype\Include\Freetype2\;..\Dependencies\Freetype\Include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -112,35 +112,41 @@
     <ClCompile Include="engine\Camera2D.cpp" />
     <ClCompile Include="engine\Engine.cpp" />
     <ClCompile Include="engine\Errors.cpp" />
+    <ClCompile Include="Engine\Font.cpp" />
     <ClCompile Include="engine\GLSLProgram.cpp" />
     <ClCompile Include="engine\ImageLoader.cpp" />
+    <ClCompile Include="Engine\IMainGame.cpp" />
     <ClCompile Include="engine\InputManager.cpp" />
     <ClCompile Include="engine\IOManager.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Include\ ; ..\Dependencies\</AdditionalIncludeDirectories>
     </ClCompile>
     <ClCompile Include="engine\picopng.cpp" />
     <ClCompile Include="engine\ResourceManager.cpp" />
-    <ClCompile Include="engine\Sprite.cpp" />
     <ClCompile Include="engine\SpriteBatch.cpp" />
-    <ClCompile Include="engine\TextureCache.cpp" />
     <ClCompile Include="engine\Timing.cpp" />
     <ClCompile Include="engine\Window.cpp" />
+    <ClCompile Include="Include\IButton.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Cache.h" />
     <ClInclude Include="include\Camera2D.h" />
     <ClInclude Include="include\Engine.h" />
+    <ClInclude Include="Include\Entity.h" />
     <ClInclude Include="include\Errors.h" />
+    <ClInclude Include="Include\Font.h" />
     <ClInclude Include="include\GLSLProgram.h" />
     <ClInclude Include="include\GLTexture.h" />
+    <ClInclude Include="Include\IButton.h" />
     <ClInclude Include="include\ImageLoader.h" />
+    <ClInclude Include="Include\IMainGame.h" />
     <ClInclude Include="include\InputManager.h" />
     <ClInclude Include="include\IOManager.h" />
     <ClInclude Include="include\picopng.h" />
+    <ClInclude Include="Include\ResourceLoader.h" />
     <ClInclude Include="include\ResourceManager.h" />
-    <ClInclude Include="include\Sprite.h" />
     <ClInclude Include="include\SpriteBatch.h" />
-    <ClInclude Include="include\TextureCache.h" />
     <ClInclude Include="include\Timing.h" />
+    <ClInclude Include="Include\Util.h" />
     <ClInclude Include="include\Vertex.h" />
     <ClInclude Include="include\Window.h" />
   </ItemGroup>

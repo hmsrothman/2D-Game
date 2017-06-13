@@ -5,16 +5,18 @@
  *      Author: Simon
  */
 
-<<<<<<< HEAD
-#include <SDL.h>
+
+#ifdef _WIN32
+#include "windows.h"
 #include <Gl\glew.h>
-#include <Gl\gl.h>
-#include "Errors.h"
-=======
+#include <gl\GL.h>
+#include <SDL.h>
+#else
 #include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
-#include <OpenGL/gl3.h>
+#include <OpenGl/gl3.h>
+#endif
 #include <iostream>
->>>>>>> refs/remotes/origin/master
+#include "Errors.h"
 
 namespace Engine {
 int init() {

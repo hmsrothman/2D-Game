@@ -8,15 +8,19 @@
 #ifndef MAINGAME_H_
 #define MAINGAME_H_
 
-<<<<<<< HEAD
-//#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
-#include "Dependencies\SDL\lib\x86\SDL2.lib"
-=======
-#include <Engine/Include/IMainGame.h>
+#ifdef _WIN32
+#include "Dependencies\SDL\include\SDL.h"
+#include "windows.h"
+#include <gl\glew.h>
+#include <gl\GL.h>
+
+#else
 #include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
->>>>>>> refs/remotes/origin/master
-#include <iostream>
 #include <OpenGl/gl3.h>
+#endif
+#include <Engine/Include/IMainGame.h>
+#include <iostream>
+
 #include "Engine/Include/GLSLProgram.h"
 #include "Engine/Include/GLTexture.h"
 #include "Engine/Include/Window.h"
@@ -51,8 +55,6 @@ private:
 	Engine::SpriteBatch _HUDBatcher; //renders HUD
 
 	Engine::Font _font; //font for HUD
-
-<<<<<<< HEAD
 	//used for rendering in batches. 10/10 would recomend
 	Engine::SpriteBatch _mapBatcher; //optimization; allows to render many hallways without needing to sort
 										 //necessary because there are an obscene amount of hallway tiles
@@ -69,20 +71,14 @@ private:
 	Engine::InputManager _inputManager; //makes for smooth input
 
 	Engine::FPSLimiter _fpsLimiter;		//monitors and caps fps
-=======
-	Engine::GLSL_Program _textureShader; //shader for world, player, etc
-	Engine::GLSL_Program _textShader; 	 //shader for text
 
-	Engine::Camera2D _camera;			//camera for scene
 	Engine::Camera2D _HUDCamera;		//camera for HUD
->>>>>>> refs/remotes/origin/master
 
 	Player _player;
 
 	Dungeon _dungeon;
 	DungeonRenderer _dungeonRenderer;
 	DungeonController _dungeonController;
-<<<<<<< HEAD
 
 	void initSystems(); //init method. calls the other init method
 	void initShaders(); //the other init method
@@ -98,8 +94,7 @@ private:
 	float _maxFPS;	//max allowable fps. passed to the limiter
 
 	void ded();
-=======
->>>>>>> refs/remotes/origin/master
+
 };
 
 #endif /* MAINGAME_H_ */

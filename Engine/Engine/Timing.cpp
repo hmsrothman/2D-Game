@@ -6,7 +6,11 @@
  */
 
 #include <Timing.h>
+#ifdef _WIN32
 #include <SDL.h>
+#else
+#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#endif
 
 namespace Engine {
 

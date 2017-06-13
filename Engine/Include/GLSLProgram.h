@@ -9,8 +9,14 @@
 #define GLSLPROGRAM_H_
 
 #include <string>
+
+#ifdef _WIN32
+#include "windows.h"
 #include <Gl\glew.h>
 #include <Gl\gl.h>
+#else
+#include <OpenGl/gl3.h>
+#endif
 namespace Engine{
 
 class GLSL_Program {

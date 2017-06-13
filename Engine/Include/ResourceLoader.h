@@ -11,7 +11,7 @@
 #include "GLTexture.h"
 #include "Font.h"
 #include "ImageLoader.h"
-#include "/Library/Frameworks/SDL2_mixer.framework/Headers/SDL_Mixer.h"
+
 #include "Errors.h"
 
 namespace Engine {
@@ -37,7 +37,7 @@ public:
 		return FontLoader::loadFont(path, 32);
 	}
 };
-
+/*
 template<>
 class ResourceLoader<Mix_Chunk*> {
 public:
@@ -67,8 +67,9 @@ public:
 		return nullptr;
 	}
 };
-
+*/
 }
+
 /* namespace Engine */
 
 #endif /* RESOURCELOADER_H_ */

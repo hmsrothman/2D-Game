@@ -6,7 +6,13 @@
  */
 
 #include <Font.h>
-#include <OpenGL/gl3.h>
+#ifdef _WIN32
+#include "windows.h"
+#include <gl\glew.h>
+#include <gl\gL.h>
+#else
+#include <OpenGl/gl3.h>
+#endif
 #include <Errors.h>
 #include <iostream>
 

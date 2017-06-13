@@ -12,7 +12,13 @@
 #include FT_FREETYPE_H
 #include <string>
 #include <glm/glm.hpp>
-#include <OpenGL/gl3.h>
+#ifdef _WIN32
+#include "windows.h"
+#include <Gl\glew.h>
+#include <gl\GL.h>
+#else
+#include <OpenGl/gl3.h>
+#endif
 #include <map>
 #include "SpriteBatch.h"
 #include "Vertex.h"

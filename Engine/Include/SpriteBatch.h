@@ -7,9 +7,13 @@
 
 #ifndef SPRITEBATCH_H_
 #define SPRITEBATCH_H_
-
+#ifdef _WIN32
+#include "windows.h"
 #include <Gl\glew.h>
-#include <Gl\gl.h>
+#include <gl\GL.h>
+#else
+#include <OpenGl/gl3.h>
+#endif
 #include "Vertex.h"
 #include <glm/glm.hpp>
 #include <vector>

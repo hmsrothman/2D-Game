@@ -6,13 +6,12 @@
  */
 
 #include "DungeonController.h"
-<<<<<<< HEAD
-//#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
-#include "Dependencies\SDL\lib\x86\SDL2.lib"
-=======
+#ifdef _WIN32
+#include "Dependencies\SDL\include\SDL.h"
+#else
 #include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#endif
 #include <iostream>
->>>>>>> refs/remotes/origin/master
 
 DungeonController::DungeonController() {
 

@@ -11,14 +11,15 @@
 #include "Cache.h"
 #include <string>
 #include "GLTexture.h"
-<<<<<<< HEAD
+#ifdef _WIN32
+#include "windows.h"
 #include <Gl\glew.h>
-#include <Gl\gl.h>
-=======
-#include <OpenGL/gl3.h>
+#include <gl\GL.h>
+#else
+#include <OpenGl/gl3.h>
+#endif
 #include "Font.h"
 
->>>>>>> refs/remotes/origin/master
 namespace Engine {
 
 class ResourceManager {
