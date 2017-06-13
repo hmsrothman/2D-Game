@@ -8,10 +8,10 @@
 #include "ResourceManager.h"
 namespace Engine {
 
-Cache<GL_Texture> ResourceManager::_textureCache;
+Cache<GLTexture> ResourceManager::_textureCache;
 Cache<Font> ResourceManager::_fontCache;
 
-GL_Texture ResourceManager::getTexture(const std::string& texturePath) {
+GLTexture ResourceManager::getTexture(const std::string& texturePath) {
 	return _textureCache.get(texturePath);
 }
 

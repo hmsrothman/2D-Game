@@ -10,9 +10,9 @@
 namespace Engine {
 
 Camera2D::Camera2D() :
-		_position(0, 0), _cameraMatrix(1), _scale(1), _needsMatrixUpdate(true), _screenWidth(
-				500), _screenHeight(500), _orthoMatrix(1), _locked(0), _focus(
-				nullptr) {
+		_position(0, 0), _scale(1),  _cameraMatrix(1), _needsMatrixUpdate(true), _screenWidth(
+				500), _screenHeight(500), _orthoMatrix(1),  _focus(
+				nullptr), _locked(0){
 
 }
 

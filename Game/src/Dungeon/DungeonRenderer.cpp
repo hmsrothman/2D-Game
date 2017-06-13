@@ -45,14 +45,14 @@ void DungeonRenderer::renderDungeon(Dungeon& dungeon,
 
 void DungeonRenderer::renderSubTile(const Dungeon& dungeon,
 		Engine::SpriteBatch& batcher, int x, int y, unsigned char tileType) {
-	static Engine::GL_Texture doorway = Engine::ResourceManager::getTexture(
-			"doorway.png");
-	static Engine::GL_Texture hallway = Engine::ResourceManager::getTexture(
-			"hallway.png");
-	static Engine::GL_Texture room = Engine::ResourceManager::getTexture(
-			"room.png");
-	static Engine::GL_Texture other = Engine::ResourceManager::getTexture(
-			"jimmyJump_pack/PNG/AngryCloud.png");
+	static Engine::GLTexture doorway = Engine::ResourceManager::getTexture(
+			"resources/doorway.png");
+	static Engine::GLTexture hallway = Engine::ResourceManager::getTexture(
+			"resources/hallway.png");
+	static Engine::GLTexture room = Engine::ResourceManager::getTexture(
+			"resources/room.png");
+	static Engine::GLTexture other = Engine::ResourceManager::getTexture(
+			"resources/jimmyJump_pack/PNG/AngryCloud.png");
 
 	Engine::Color color(255, 255, 255, 255);
 

@@ -36,10 +36,10 @@ Velociraptor::~Velociraptor() {
 }
 
 void Velociraptor::render(Engine::SpriteBatch& batcher) const {
-	static Engine::GL_Texture playerTexture =
-			Engine::ResourceManager::getTexture("velociraptor.png");
+	static Engine::GLTexture playerTexture =
+			Engine::ResourceManager::getTexture("Resources/velociraptor.png");
 	glm::vec4 uvRect(1, 1, -1, -1);
-	Engine::Color color(255,255,255,255);
+	Engine::Color color(255, 255, 255, 255);
 
 	glm::vec4 destRect(_position.x, _position.y, VELOCIRAPTOR_SIZE,
 			VELOCIRAPTOR_SIZE);

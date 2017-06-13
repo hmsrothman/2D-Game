@@ -11,7 +11,7 @@
 #include "../Dungeon/Dungeon.h"
 
 Bullet::Bullet(glm::vec2 position, glm::vec2 dir, float Damage, float speed) :
-		_position(position), _dir(dir), damage(Damage), _speed(speed) {
+		_position(position),  damage(Damage), _dir(dir), _speed(speed) {
 
 }
 
@@ -39,7 +39,7 @@ void Bullet::draw(Engine::SpriteBatch& batcher) {
 	Engine::Color color(255,255,255,255);
 
 	batcher.draw(destRect, uv,
-			Engine::ResourceManager::getTexture("jimmyJump_pack/PNG/bullet.png").id,
+			Engine::ResourceManager::getTexture("Resources/jimmyJump_pack/PNG/bullet.png").id,
 			0, color);
 }
 

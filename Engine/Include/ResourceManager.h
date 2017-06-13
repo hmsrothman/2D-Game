@@ -18,11 +18,11 @@ namespace Engine {
 
 class ResourceManager {
 public:
-	static GL_Texture getTexture(const std::string& texturePath);
+	static GLTexture getTexture(const std::string& texturePath);
 	static Font getFont(const std::string& fontPath);
 
 private:
-	static Cache<GL_Texture> _textureCache;
+	static Cache<GLTexture> _textureCache;
 	static Cache<Font> _fontCache;
 };
 }

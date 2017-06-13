@@ -23,9 +23,9 @@ public:
 };
 
 template<>
-class ResourceLoader<GL_Texture> {
+class ResourceLoader<GLTexture> {
 public:
-	GL_Texture load(const std::string & path) {
+	GLTexture load(const std::string & path) {
 		return ImageLoader::loadPng(path);
 	}
 };

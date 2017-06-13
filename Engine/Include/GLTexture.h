@@ -11,7 +11,7 @@
 #include <OpenGL/gl3.h>
 namespace Engine{
 
-struct GL_Texture{
+struct GLTexture{
 	GLuint id;
 	int width;
 	int height;

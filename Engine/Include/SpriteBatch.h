@@ -24,9 +24,9 @@ public:
 	Glyph() {
 
 	}
-	GLuint texture;
+	GLuint texture = 0;
 
-	float depth;
+	float depth = 0;
 
 	Vertex topLeft;
 	Vertex bottomLeft;

@@ -31,8 +31,8 @@ void Player::move(glm::vec2 displacement, Dungeon& map) {
 }
 
 void Player::render(Engine::SpriteBatch& batcher) const {
-	static Engine::GL_Texture playerTexture =
-			Engine::ResourceManager::getTexture("archaeologist.png");
+	static Engine::GLTexture playerTexture =
+			Engine::ResourceManager::getTexture("Resources/archaeologist.png");
 	glm::vec4 uvRect(1, 1, -1, -1);
 	Engine::Color color(255,255,255,255);
 

@@ -19,6 +19,11 @@
 class Player: public GameEntity {
 public:
 	Player(Engine::InputManager* inputManager, Engine::Camera2D* camera);
+	Player() : GameEntity(10){
+
+	}
+
+	void init(Engine::InputManager* inputManager, Engine::Camera2D* camera);
 	virtual ~Player();
 
 	void render(Engine::SpriteBatch& batcher) const; // this appears to not work
