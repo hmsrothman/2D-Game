@@ -75,6 +75,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>Include\;..\Dependencies\SDL\Include\;..\Dependencies\;..\;..\Dependencies\Freetype\Include\;..\Dependencies\Freetype\Include\Freetype2\</AdditionalIncludeDirectories>
+      <ShowIncludes>Yes</ShowIncludes>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>

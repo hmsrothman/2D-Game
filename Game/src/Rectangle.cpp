@@ -1,15 +1,15 @@
 /*
- * Rectangle.cpp
- *
- *  Created on: May 23, 2017
- *      Author: Simon
- */
+* Rectangle.cpp
+*
+*  Created on: May 23, 2017
+*      Author: Simon
+*/
 
-#include <Game/src/Rectangle.h>
+#include "Rectangle.h"
 #include <iostream>
 
 Rectangle::Rectangle(int x, int y, int xSize, int ySize) :
-		position(x, y, xSize, ySize) {
+	position(x, y, xSize, ySize) {
 
 }
 
@@ -23,7 +23,7 @@ bool Rectangle::overlaps(const Rectangle& other) const {
 
 	glm::ivec2 l2(other.position.x, other.position.y);
 	glm::ivec2 r2(other.position.x + other.position.z,
-			other.position.y + other.position.w);
+		other.position.y + other.position.w);
 
 	// If one rectangle is on left side of other
 	if (r1.y < l2.y || l1.y > r2.y) {

@@ -8,6 +8,7 @@
 
 
 #include <cstdlib>
+#include <vector>
 #include <iostream>
 #include <queue>
 #include <random>
@@ -40,19 +41,14 @@ void DungeonGenerator::generate(unsigned char** out_tileArray,
 	subTiles = (unsigned char*) malloc(
 			(_gridSize * 3) * (_gridSize * 3) * sizeof(unsigned char));
 	prepare();
-	std::cout << "prep" << std::endl;
 	placeRooms();
-	std::cout << "place" << std::endl;
 	buildHallways();
-	std::cout << "buiild" << std::endl;
 	breakMaze();
-	std::cout << "break"<<std::endl;
 	cullDeadEnds();
-	std::cout << "cull" << std::endl;
 	fillSubTiles();
-	std::cout << "fill" << std::endl;
-	velociraptors.emplace_back();
-	std::cout << "velo++" << std::endl;
+	*out_tileArray = subTiles;
+	*out_gridSize = _gridSize * 3;
+
 
 }
 

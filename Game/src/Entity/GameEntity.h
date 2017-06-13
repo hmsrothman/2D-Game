@@ -1,9 +1,9 @@
 /*
- * GameEntity.h
- *
- *  Created on: May 26, 2017
- *      Author: Simon
- */
+* GameEntity.h
+*
+*  Created on: May 26, 2017
+*      Author: Simon
+*/
 
 #ifndef GAMEENTITY_H_
 #define GAMEENTITY_H_
@@ -13,14 +13,13 @@
 #include "../Dungeon/Dungeon.h"
 #include "../Items/Item.h"
 #include "../Items/Inventory.h"
-#include "../Rectangle.h"
 
 class Dungeon;
 
-class GameEntity: public Engine::Entity {
+class GameEntity : public Engine::Entity {
 public:
 	GameEntity(int size) :
-			renderSize(size) {
+		renderSize(size) {
 	}
 	virtual ~GameEntity() {
 
@@ -32,7 +31,7 @@ public:
 	void move(glm::vec2 translation, Dungeon& map);
 	virtual void render(Engine::SpriteBatch& batcher) const = 0;
 
-	virtual void kill()=0;
+	virtual void kill() = 0;
 
 	const static glm::ivec2 UP, DOWN, LEFT, RIGHT;
 	Rectangle getBoundingBox();
