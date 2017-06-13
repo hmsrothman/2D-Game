@@ -27,7 +27,6 @@ void SpriteBatch::begin(GlyphSortType sortType) {
 	_sortType = sortType;
 	_glyphs.clear();
 	_renderBatches.clear();
-	_numQueuedSprites = 0;
 }
 
 void SpriteBatch::end() {
@@ -140,6 +139,8 @@ void SpriteBatch::sortGlyphs() {
 	case GlyphSortType::TEXTURE:
 		std::stable_sort(_glyphPointers.begin(), _glyphPointers.end(),
 				compareTexture);
+		break;
+	case GlyphSortType::NONE:
 		break;
 	}
 }

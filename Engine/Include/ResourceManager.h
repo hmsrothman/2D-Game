@@ -12,9 +12,10 @@
 #include <string>
 #include "GLTexture.h"
 #include <OpenGL/gl3.h>
-#include "Font.h"
 
 namespace Engine {
+
+struct Font;
 
 class ResourceManager {
 public:

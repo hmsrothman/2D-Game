@@ -24,9 +24,9 @@ public:
 	Glyph() {
 
 	}
-	GLuint texture;
+	GLuint texture = 0;
 
-	float depth;
+	float depth = 0;
 
 	Vertex topLeft;
 	Vertex bottomLeft;
@@ -84,9 +84,7 @@ private:
 	GLuint _vboID;
 	GLuint _vaoID;
 
-	unsigned int _numQueuedSprites;
-
-	GlyphSortType _sortType;
+	GlyphSortType _sortType = GlyphSortType::TEXTURE;
 
 	std::vector<Glyph*> _glyphPointers; //this is for sorting
 	std::vector<Glyph> _glyphs;	//these are the glyphs

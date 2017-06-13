@@ -9,6 +9,7 @@
 #include <OpenGL/gl3.h>
 #include <Errors.h>
 #include <iostream>
+#include "SpriteBatch.h"
 
 namespace Engine {
 

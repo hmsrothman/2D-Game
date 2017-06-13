@@ -8,9 +8,10 @@
 #ifndef IMAGELOADER_H_
 #define IMAGELOADER_H_
 
-#include "GLTexture.h"
 #include <string>
 namespace Engine{
+
+struct GL_Texture;
 
 class ImageLoader {
 public:
