@@ -5,8 +5,8 @@
 // Copyright   : 
 //============================================================================
 
+#include <Game/src/MainGame.h>
 #include <iostream>
-#include "MainGame.h"
 #include <cstdlib>
 #include <time.h>
 

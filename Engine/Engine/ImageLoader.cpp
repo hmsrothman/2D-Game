@@ -14,8 +14,8 @@
 //#include <OpenGL/gl3.h>
 namespace Engine {
 
-GL_Texture ImageLoader::loadPng(const std::string& filePath) {
-	GL_Texture texture = { };
+GLTexture ImageLoader::loadPng(const std::string& filePath) {
+	GLTexture texture = { };
 
 	std::vector<unsigned char> out;
 	unsigned long width, height;

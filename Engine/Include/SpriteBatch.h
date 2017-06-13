@@ -25,9 +25,9 @@ public:
 	Glyph() {
 
 	}
-	GLuint texture;
+	GLuint texture = 0;
 
-	float depth;
+	float depth = 0;
 
 	Vertex topLeft;
 	Vertex bottomLeft;
@@ -91,6 +91,7 @@ private:
 
 	std::vector<Glyph*> _glyphPointers; //this is for sorting
 	std::vector<Glyph> _glyphs;	//these are the glyphs
+
 	std::vector<RenderBatch> _renderBatches;
 
 	void createRenderBatches();

@@ -19,19 +19,24 @@
 class Player: public GameEntity {
 public:
 	Player(Engine::InputManager* inputManager, Engine::Camera2D* camera);
+	Player() : GameEntity(10){
+
+	}
+
+	void init(Engine::InputManager* inputManager, Engine::Camera2D* camera);
 	virtual ~Player();
 
 	void render(Engine::SpriteBatch& batcher) const; // this appears to not work
 	void move(glm::vec2 displacement, Dungeon& map);
 	void kill();
 
-	void update(std::vector<Bullet>& bullets);
+	void update(std::vector<Bullet>& bullets, Dungeon& map);
 
 	bool isded = false;
 
 	void addGun(Gun* gun);
 
-	int speed = 10;
+	int speed = 2;
 private:
 	std::vector<Gun*> _guns;
 	int _currentGun = -1;

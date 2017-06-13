@@ -11,7 +11,7 @@
 #include <Gl\gl.h>
 namespace Engine{
 
-struct GL_Texture{
+struct GLTexture{
 	GLuint id;
 	int width;
 	int height;

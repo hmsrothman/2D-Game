@@ -14,7 +14,7 @@ namespace Engine{
 
 class ImageLoader {
 public:
-	static GL_Texture loadPng(const std::string& filepath);
+	static GLTexture loadPng(const std::string& filepath);
 };
 }
 #endif /* IMAGELOADER_H_ */

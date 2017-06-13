@@ -13,6 +13,7 @@
 #include "../Dungeon/Dungeon.h"
 #include "../Items/Item.h"
 #include "../Items/Inventory.h"
+#include "../Rectangle.h"
 
 class Dungeon;
 
@@ -34,10 +35,16 @@ public:
 	virtual void kill()=0;
 
 	const static glm::ivec2 UP, DOWN, LEFT, RIGHT;
+	Rectangle getBoundingBox();
 
-	void giveItem(Item& item);
+	float health = 100;
+	bool invuln = false;
+	int invulnCounter = 0;
+	int invulnTime;
+
+	void giveInvulnFrames(int number);
+	void update();
 protected:
-	Inventory _inventory;
 };
 
 #endif /* GAMEENTITY_H_ */

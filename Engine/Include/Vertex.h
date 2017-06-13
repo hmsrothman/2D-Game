@@ -13,6 +13,10 @@
 namespace Engine {
 
 struct Color {
+	Color(GLubyte R, GLubyte G, GLubyte B, GLubyte A) :
+			r(R), g(G), b(B), a(A) {
+
+	}
 	GLubyte r;
 	GLubyte g;
 	GLubyte b;
@@ -32,6 +36,11 @@ struct Vertex {
 	Position position;
 	Color color;
 	UV uv;
+
+	Vertex() :
+			color(255, 255, 255, 255) {
+
+	}
 
 	void setPosition(float x, float y) {
 		position.x = x;

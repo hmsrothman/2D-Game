@@ -1,11 +1,11 @@
 /*
- * MainGame.cpp
+ * MainGame2.cpp
  *
- *  Created on: May 16, 2017
+ *  Created on: Jun 13, 2017
  *      Author: Simon
  */
 
-#include "MainGame.h"
+#include <Game/src/MainGame.h>
 #include "Engine/Include/Errors.h"
 #include "Engine/Include/Engine.h"
 #include "Engine/Include/ResourceManager.h"
@@ -15,6 +15,7 @@
 #include "Dungeon/TileFlags.h"
 #include "Items/Gun.h"
 #include "Engine/Include/Font.h"
+<<<<<<< HEAD
 /**
  * Constructor only initializes variables
  */
@@ -22,19 +23,26 @@ MainGame::MainGame() :
 		_screenWidth(1024), _screenHeight(768), _gameState(GameState::PLAY), _fps(
 				0), _maxFPS(60), _player(&_inputManager, &_camera) {
 	_camera.init(_screenWidth, _screenHeight);
+=======
+
+MainGame::MainGame() {
+	// TODO Auto-generated constructor stub
+
+>>>>>>> refs/remotes/origin/master
 }
 
 MainGame::~MainGame() {
+	// TODO Auto-generated destructor stub
 }
 
-/**
- * starts game
- */
-void MainGame::run() {
-	initSystems();
-	gameLoop();
+void MainGame::initShaders() {
+	_textureShader.makeShaderProgram("shaders/colorShading.vert",
+			"shaders/colorShading.frag");
+	_textShader.makeShaderProgram("shaders/colorShading.vert",
+			"shaders/text.frag");
 }
 
+<<<<<<< HEAD
 /**
  * initializes everything--SDL, opengl, shaders, the maze, etc
  */
@@ -45,9 +53,24 @@ void MainGame::initSystems() {
 	_window.create("Game Engine", _screenWidth, _screenHeight, 0);
 
 	_fpsLimiter.setMaxFPS(60);
+=======
+void MainGame::onInit() {
+	//init cameras
+	_camera.init(_screenWidth, _screenHeight);
+	_HUDCamera.init(_screenWidth, _screenHeight);
+	_camera.setScale(0.25f);
 
-	initShaders();
+	//setup sprite batchers
+	_mapBatcher.init();
+	_otherBatcher.init();
+	_HUDBatcher.init();
+>>>>>>> refs/remotes/origin/master
 
+	//setup font
+	_font = Engine::ResourceManager::getFont(
+			"Resources/roboto/roboto-black.ttf");
+
+<<<<<<< HEAD
 	//setup sprite batchers
 	_mapBatcher.init();
 	_otherBatcher.init();
@@ -55,6 +78,10 @@ void MainGame::initSystems() {
 
 	//setup font
 	_font = Engine::ResourceManager::getFont("roboto/roboto-black.ttf");
+=======
+	//init player
+	_player = Player(&_inputManager, &_camera);
+>>>>>>> refs/remotes/origin/master
 
 	_dungeon.genMap();
 	for (int i = 0; i < 400; i++) {
@@ -79,8 +106,8 @@ void MainGame::initSystems() {
 
 	_player.addGun(new Gun("Magnum", 1, 10, 0.1f, 2, 50, 100000));
 	_camera.lockToEntity(&_player);
-}
 
+<<<<<<< HEAD
 /**
  * does what it says on the tin
  */
@@ -122,6 +149,12 @@ void MainGame::processInput() {
 		}
 	}
 
+=======
+}
+
+void MainGame::update() {
+	const float SCALE_SPEED = 0.01;
+>>>>>>> refs/remotes/origin/master
 	if (_inputManager.isKeyPressed(SDLK_q)) {
 		_camera.setScale(_camera.getScale() * (1 + SCALE_SPEED));
 	}
@@ -129,11 +162,8 @@ void MainGame::processInput() {
 	if (_inputManager.isKeyPressed(SDLK_e)) {
 		_camera.setScale(_camera.getScale() * (1 - SCALE_SPEED));
 	}
-}
 
-void MainGame::gameLoop() {
-	while (_gameState != GameState::EXIT) {
-
+<<<<<<< HEAD
 		_fpsLimiter.begin();
 		processInput();
 		_player.update(_dungeon.bullets, _dungeon);
@@ -182,6 +212,21 @@ void MainGame::ded() {
 	_otherBatcher.draw(destRect, uvRect, dedTexture.id, 0, color);
 	_otherBatcher.end();
 	_otherBatcher.renderBatch();
+=======
+	_player.update(_dungeon.bullets, _dungeon);
+	_dungeonController.update(_dungeon.velociraptors, _player, _dungeon);
+	_camera.update();
+	_HUDCamera.update();
+}
+
+void MainGame::draw() {
+	if (_player.health > 0) {
+		drawGame();
+		drawHUD();
+	} else {
+		ded();
+	}
+>>>>>>> refs/remotes/origin/master
 }
 
 void MainGame::drawGame() {
@@ -225,6 +270,7 @@ void MainGame::drawGame() {
 }
 
 void MainGame::drawHUD() {
+<<<<<<< HEAD
 
 	static char charBuffer[256];
 
@@ -255,4 +301,73 @@ void MainGame::drawHUD() {
 	//cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);
 	_textShader.unuse();
+=======
+	static char charBuffer[256];
+
+	//use shader
+	_textShader.use();
+
+	//turn on textures
+	glActiveTexture(GL_TEXTURE0);
+
+	//pass texture
+	GLint textureLocation = _textureShader.getUniformLocation("sampler");
+	glUniform1i(textureLocation, 0);
+
+	//pass matrix
+	GLuint pLocation = _textureShader.getUniformLocation("P");
+	glm::mat4 cameraMatrix = _HUDCamera.getMatrix();
+	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+
+	_HUDBatcher.begin();
+
+	snprintf(charBuffer, 256, "Your health is: %.1f", _player.health);
+
+	Engine::FontRenderer::drawText(_font, _HUDBatcher, charBuffer,
+			glm::vec2(0, 0), 1);
+
+	_HUDBatcher.end();
+	_HUDBatcher.renderBatch();
+
+	//cleanup
+	glBindTexture(GL_TEXTURE_2D, 0);
+	_textShader.unuse();
+}
+
+void MainGame::ded() {
+	glClearDepth(1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glClearDepth(1.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//use shader
+	_textureShader.use();
+
+	//turn on textures
+	glActiveTexture(GL_TEXTURE0);
+
+	//pass texture
+	GLint textureLocation = _textureShader.getUniformLocation("sampler");
+	glUniform1i(textureLocation, 0);
+
+	//pass matrix
+	GLuint pLocation = _textureShader.getUniformLocation("P");
+	glm::mat4 cameraMatrix = _HUDCamera.getMatrix();
+	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
+
+	//_player.setPosition(glm::vec2(0, 0));
+	//_camera.setPosition(glm::vec2(0, 0));
+	//_camera.update();
+	static Engine::GLTexture dedTexture = Engine::ResourceManager::getTexture(
+			"endgame.png");
+	_otherBatcher.begin();
+	glm::vec4 destRect(-300, -300, 300, 300);
+	glm::vec4 uvRect(0, 0, 1, -1);
+	Engine::Color color(255, 255, 255, 255);
+
+	_otherBatcher.draw(destRect, uvRect, dedTexture.id, 0, color);
+	_otherBatcher.end();
+	_otherBatcher.renderBatch();
+>>>>>>> refs/remotes/origin/master
 }

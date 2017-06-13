@@ -8,19 +8,27 @@
 #ifndef RESOURCEMANAGER_H_
 #define RESOURCEMANAGER_H_
 
-#include "TextureCache.h"
+#include "Cache.h"
 #include <string>
 #include "GLTexture.h"
+<<<<<<< HEAD
 #include <Gl\glew.h>
 #include <Gl\gl.h>
+=======
+#include <OpenGL/gl3.h>
+#include "Font.h"
+
+>>>>>>> refs/remotes/origin/master
 namespace Engine {
 
 class ResourceManager {
 public:
-	static GL_Texture getTexture(const std::string& texturePath);
+	static GLTexture getTexture(const std::string& texturePath);
+	static Font getFont(const std::string& fontPath);
 
 private:
-	static TextureCache _textureCache;
+	static Cache<GLTexture> _textureCache;
+	static Cache<Font> _fontCache;
 };
 }
 #endif /* RESOURCEMANAGER_H_ */

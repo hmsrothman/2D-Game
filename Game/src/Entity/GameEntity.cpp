@@ -77,7 +77,20 @@ void GameEntity::move(glm::vec2 translation, Dungeon& map) {
 	}
 }
 
-void GameEntity::giveItem(Item& item) {
-	_inventory.addItem(item);
+void GameEntity::giveInvulnFrames(int num) {
+	invulnCounter = 0;
+	invulnTime = num;
+	invuln = true;
 }
 
+Rectangle GameEntity::getBoundingBox() {
+	return Rectangle(_position.x, _position.y, renderSize, renderSize);
+}
+
+void GameEntity::update() {
+	if (invuln) {
+		if (invulnCounter++ > invulnTime) {
+			invuln = false;
+		}
+	}
+}

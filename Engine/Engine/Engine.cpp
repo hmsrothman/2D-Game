@@ -5,10 +5,16 @@
  *      Author: Simon
  */
 
+<<<<<<< HEAD
 #include <SDL.h>
 #include <Gl\glew.h>
 #include <Gl\gl.h>
 #include "Errors.h"
+=======
+#include "/Library/Frameworks/SDL2.framework/Headers/SDL.h"
+#include <OpenGL/gl3.h>
+#include <iostream>
+>>>>>>> refs/remotes/origin/master
 
 namespace Engine {
 int init() {

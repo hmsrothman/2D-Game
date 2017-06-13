@@ -19,10 +19,8 @@ public:
 	DungeonController();
 	virtual ~DungeonController();
 
-	void updateRaptors(std::vector<Velociraptor>& raptors, GameEntity& target,
+	void update(std::vector<Velociraptor>& raptors, GameEntity& target,
 			Dungeon& map);
-	void updatePlayer(Player& player, Engine::InputManager& inputManager,
-			Dungeon& map, Engine::Camera2D& camera);
 };
 
 #endif /* DUNGEON_DUNGEONCONTROLLER_H_ */

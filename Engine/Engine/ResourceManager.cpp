@@ -6,11 +6,18 @@
  */
 
 #include "ResourceManager.h"
-namespace Engine{
+namespace Engine {
 
-TextureCache ResourceManager::_textureCache;
+Cache<GLTexture> ResourceManager::_textureCache;
+Cache<Font> ResourceManager::_fontCache;
 
-GL_Texture ResourceManager::getTexture(const std::string& texturePath) {
-	return _textureCache.getTexture(texturePath);
+GLTexture ResourceManager::getTexture(const std::string& texturePath) {
+	return _textureCache.get(texturePath);
 }
+
+Font ResourceManager::getFont(const std::string& fontPath) {
+	return _fontCache.get(fontPath);
 }
+
+}
+

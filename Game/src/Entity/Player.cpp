@@ -31,15 +31,11 @@ void Player::move(glm::vec2 displacement, Dungeon& map) {
 }
 
 void Player::render(Engine::SpriteBatch& batcher) const {
-	static Engine::GL_Texture playerTexture =
-			Engine::ResourceManager::getTexture("archaeologist.png");
+	static Engine::GLTexture playerTexture =
+			Engine::ResourceManager::getTexture("Resources/archaeologist.png");
 	glm::vec4 uvRect(1, 1, -1, -1);
-	Engine::Color color;
-	//right now it's just plain white
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	color.a = 255;
+	Engine::Color color(255,255,255,255);
+
 	glm::vec4 destRect(_position.x, _position.y, renderSize, renderSize);
 	batcher.draw(destRect, uvRect, playerTexture.id, 0, color);
 }
@@ -56,15 +52,30 @@ void Player::addGun(Gun * gun) {
 	}
 }
 
-void Player::update(std::vector<Bullet>& bullets) {
+void Player::update(std::vector<Bullet>& bullets, Dungeon& map) {
+	GameEntity::update();
 	if (_currentGun != -1) {
 		glm::vec2 dir = _inputManager->getMouseCoords();
 		dir = _camera->convertScreenToWorld(dir);
-		dir -=_position;
+		dir -= _position;
 		dir = glm::normalize(dir);
-
 		_guns[_currentGun]->update(_inputManager->isKeyPressed(SDL_BUTTON_LEFT),
 				_position, dir, bullets);
+	}
+
+	if (_inputManager->isKeyPressed(SDLK_w)) {
+		move(glm::vec2(0, speed), map);
+	}
+	if (_inputManager->isKeyPressed(SDLK_s)) {
+
+		move(glm::vec2(0, -speed), map);
+	}
+	if (_inputManager->isKeyPressed(SDLK_a)) {
+
+		move(glm::vec2(-speed, 0), map);
+	}
+	if (_inputManager->isKeyPressed(SDLK_d)) {
+		move(glm::vec2(speed, 0), map);
 	}
 }
 
